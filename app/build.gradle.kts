@@ -47,8 +47,9 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.1.1")
 
     //Kodein
-    implementation("org.kodein.di:kodein-di-generic-jvm:6.2.0")
-    implementation("org.kodein.di:kodein-di-framework-android-x:6.2.0")
+    val kodeinVersion = "6.2.0"
+    implementation("org.kodein.di:kodein-di-generic-jvm:$kodeinVersion")
+    implementation("org.kodein.di:kodein-di-framework-android-x:$kodeinVersion")
 
     //Retrofit 2
     implementation ("com.squareup.retrofit2:retrofit:2.5.0")
@@ -57,10 +58,9 @@ dependencies {
     implementation ("pub.devrel:easypermissions:2.0.0")
 
     //Room
-    val roomVersion = "2.1.0-alpha06"
+    val roomVersion = "2.1.0-alpha07"
     implementation ("androidx.room:room-runtime:$roomVersion")
     kapt ("androidx.room:room-compiler:$roomVersion")
-    kapt ("androidx.room:room-compiler:2.1.0-alpha07")
 
     //Anko
     val ankoVersion = "0.10.8"
@@ -68,6 +68,7 @@ dependencies {
     implementation ("org.jetbrains.anko:anko-commons:$ankoVersion")
 
     //Coroutines
-    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.2.1")
-    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.2.1")
+    val coroutinesVersion = "1.2.1"
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion")
 }
