@@ -52,23 +52,28 @@ dependencies {
     implementation("org.kodein.di:kodein-di-framework-android-x:$kodeinVersion")
 
     //Retrofit 2
-    implementation ("com.squareup.retrofit2:retrofit:2.5.0")
+    val retrofitVersion = "2.5.0"
+    implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
+    implementation("com.squareup.retrofit2:converter-gson:$retrofitVersion")
+
+    //Logging-interceptor
+    implementation("com.squareup.okhttp3:logging-interceptor:3.12.0")
 
     //Easy permissions
-    implementation ("pub.devrel:easypermissions:2.0.0")
+    implementation("pub.devrel:easypermissions:2.0.0")
 
     //Room
     val roomVersion = "2.1.0-alpha07"
-    implementation ("androidx.room:room-runtime:$roomVersion")
-    kapt ("androidx.room:room-compiler:$roomVersion")
+    implementation("androidx.room:room-runtime:$roomVersion")
+    kapt("androidx.room:room-compiler:$roomVersion")
 
     //Anko
     val ankoVersion = "0.10.8"
-    implementation ("org.jetbrains.anko:anko:$ankoVersion")
-    implementation ("org.jetbrains.anko:anko-commons:$ankoVersion")
+    implementation("org.jetbrains.anko:anko:$ankoVersion")
+    implementation("org.jetbrains.anko:anko-commons:$ankoVersion")
 
     //Coroutines
     val coroutinesVersion = "1.2.1"
-    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
-    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion")
 }

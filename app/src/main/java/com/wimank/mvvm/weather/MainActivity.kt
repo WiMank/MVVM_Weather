@@ -1,9 +1,11 @@
 package com.wimank.mvvm.weather
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+import org.kodein.di.Kodein
+import org.kodein.di.KodeinAware
 
-class MainActivity : AppCompatActivity() {
+class MainActivity(override val kodein: Kodein) : AppCompatActivity(), KodeinAware {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
