@@ -1,5 +1,6 @@
 package di.module
 
+import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import org.kodein.di.Kodein
 import org.kodein.di.generic.bind
@@ -17,15 +18,11 @@ class RetrofitKodeinModule {
 
         bind() from singleton {
             Retrofit.Builder()
-                .baseUrl("https://www.googleapis.com")
+                .baseUrl("https://api.darksky.net")
                 .client(instance())
-                .addConverterFactory(instance())
+                .addConverterFactory(GsonConverterFactory.create())
                 .build()
                 .create(WeatherService::class.java)
         }
-
-        bind() from singleton { GsonBuilder().create() }
-
-        bind() from singleton { GsonConverterFactory.create(instance()) }
     }
 }

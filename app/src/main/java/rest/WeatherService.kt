@@ -1,16 +1,17 @@
 package rest
 
-import rest.pojo.Forecast
+import rest.pojo.DarkSkyModel
 import retrofit2.Call
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface WeatherService {
-    @GET("/customsearch/v1")
-    fun weatherPtovider(
-        @Query("key") key: String,
-        @Query("fields") fields: String,
-        @Query("cx") cx: String,
-        @Query("q") query: String
-    ): Call<Forecast>
+    @GET("/forecast/{key}/{latitude},{longitude}")
+    fun weatherProvider(
+        @Path("key") key: String,
+        @Path("latitude") latitude: String,
+        @Path("longitude") longitude: String,
+        @Query("exclude") excludeForecast: String
+    ): Call<DarkSkyModel.DarkSky>
 }

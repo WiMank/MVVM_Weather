@@ -23,7 +23,7 @@ class OkHttpKodeinModule {
         }
 
         bind() from singleton {
-            HttpLoggingInterceptor().apply { this.level = HttpLoggingInterceptor.Level.BASIC }
+            HttpLoggingInterceptor().apply { this.level = HttpLoggingInterceptor.Level.BODY }
         }
     }
 }

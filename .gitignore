@@ -12,4 +12,5 @@
 /captures
 .externalNativeBuild
 /secret
-/secret/Secret.kt
+/app/src/main/java/secret
+/app/src/main/java/secret/Secret.kt
