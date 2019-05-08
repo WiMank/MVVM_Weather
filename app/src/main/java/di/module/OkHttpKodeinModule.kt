@@ -12,7 +12,7 @@ class OkHttpKodeinModule {
 
     val okHttpModule = Kodein.Module("ok_http_module") {
 
-        bind<OkHttpClient>() with singleton {
+        bind() from singleton {
             OkHttpClient()
                 .newBuilder()
                 .addInterceptor(instance())
@@ -22,10 +22,8 @@ class OkHttpKodeinModule {
                 .build()
         }
 
-        bind<HttpLoggingInterceptor>() with singleton {
-            HttpLoggingInterceptor().apply {
-                this.level = HttpLoggingInterceptor.Level.BASIC
-            }
+        bind() from singleton {
+            HttpLoggingInterceptor().apply { this.level = HttpLoggingInterceptor.Level.BASIC }
         }
     }
 }
