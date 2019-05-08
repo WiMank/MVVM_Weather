@@ -12,7 +12,7 @@ class RoomKodeinModule {
 
     val roomModule = Kodein.Module("room_module") {
         bind<AppDataBase>() with eagerSingleton {
-            Room.databaseBuilder(instance(), AppDataBase::class.java, "database.db")
+            Room.databaseBuilder(instance(), AppDataBase::class.java, "weather_database.db")
                 .fallbackToDestructiveMigration()
                 .build()
         }

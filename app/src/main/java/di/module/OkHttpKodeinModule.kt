@@ -11,6 +11,7 @@ import java.util.concurrent.TimeUnit
 class OkHttpKodeinModule {
 
     val okHttpModule = Kodein.Module("ok_http_module") {
+
         bind<OkHttpClient>() with singleton {
             OkHttpClient()
                 .newBuilder()
@@ -23,7 +24,7 @@ class OkHttpKodeinModule {
 
         bind<HttpLoggingInterceptor>() with singleton {
             HttpLoggingInterceptor().apply {
-                this.level = HttpLoggingInterceptor.Level.NONE
+                this.level = HttpLoggingInterceptor.Level.BASIC
             }
         }
     }

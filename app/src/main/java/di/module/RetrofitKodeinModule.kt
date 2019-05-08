@@ -13,6 +13,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 class RetrofitKodeinModule {
 
     val retrofitModule = Kodein.Module("retrofit_module") {
+
         import(OkHttpKodeinModule().okHttpModule)
 
         bind<WeatherService>() with singleton {
