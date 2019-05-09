@@ -1,6 +1,6 @@
 package rest
 
-import rest.pojo.DarkSkyModel
+import rest.pojo.DarkSkyPojo
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -13,5 +13,5 @@ interface WeatherService {
         @Path("latitude") latitude: String,
         @Path("longitude") longitude: String,
         @Query("exclude") excludeForecast: String
-    ): Call<DarkSkyModel.DarkSky>
+    ): Call<DarkSkyPojo.DarkSky>
 }

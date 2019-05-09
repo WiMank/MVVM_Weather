@@ -1,6 +1,6 @@
 package rest.pojo
 
-object DarkSkyModel {
+object DarkSkyPojo {
 
     data class DarkSky(
         val latitude: Double,
