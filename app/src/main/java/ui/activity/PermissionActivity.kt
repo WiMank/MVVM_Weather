@@ -33,7 +33,8 @@ class PermissionActivity : AppCompatActivity(), AnkoLogger, EasyPermissions.Perm
                 this,
                 getString(R.string.rationale_gps_perm),
                 GPS,
-                Manifest.permission.ACCESS_FINE_LOCATION
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION
             )
         }
     }
@@ -54,6 +55,10 @@ class PermissionActivity : AppCompatActivity(), AnkoLogger, EasyPermissions.Perm
     }
 
     private fun hasGPSPermission(): Boolean {
-        return EasyPermissions.hasPermissions(this, Manifest.permission.ACCESS_FINE_LOCATION)
+        return EasyPermissions.hasPermissions(
+            this,
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION
+        )
     }
 }

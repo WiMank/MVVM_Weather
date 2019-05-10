@@ -21,7 +21,7 @@ class SplashScreenActivity : AppCompatActivity() {
 
     @AfterPermissionGranted(GPS)
     private fun checkPermission() {
-        val perms = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION)
+        val perms = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
         if (EasyPermissions.hasPermissions(this, *perms)) {
             startActivity<MainActivity>()
             finish()

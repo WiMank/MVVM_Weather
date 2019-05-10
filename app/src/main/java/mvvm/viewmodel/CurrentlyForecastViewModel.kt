@@ -3,7 +3,6 @@ package mvvm.viewmodel
 import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
 import com.wimank.mvvm.weather.R
-import kotlinx.coroutines.*
 import mvvm.model.RepoForecast
 import org.kodein.di.Kodein
 import org.kodein.di.generic.instance
@@ -11,7 +10,7 @@ import org.kodein.di.generic.instance
 
 class CurrentlyForecastViewModel(val kodein: Kodein) : ViewModel() {
 
-    private val mRepoForecastModel: RepoForecast by kodein.instance()
+    private val mRepoForecast: RepoForecast by kodein.instance()
 
     var city = ObservableField<String>("CITY")
     var temp = ObservableField<String>("TEMP")
@@ -19,15 +18,6 @@ class CurrentlyForecastViewModel(val kodein: Kodein) : ViewModel() {
     var isLoading = ObservableField<Boolean>(false)
 
     fun refresh() {
-        isLoading.set(true)
-        GlobalScope.launch {
-            delay(3000)
-            withContext(Dispatchers.Main) {
-                city.set("New data")
-                temp.set("New temp")
-                icon.set(R.drawable.ic_cloud_sun_solid)
-                isLoading.set(false)
-            }
-        }
+        mRepoForecast.forecast()
     }
 }

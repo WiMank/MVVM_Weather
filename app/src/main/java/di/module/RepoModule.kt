@@ -9,6 +9,6 @@ import org.kodein.di.generic.singleton
 class RepoModule {
 
     val repoModule = Kodein.Module("repo_mdule") {
-        bind<RepoForecast>() with singleton { RepoForecast(instance()) }
+        bind<RepoForecast>() with singleton { RepoForecast(instance(), kodein) }
     }
 }

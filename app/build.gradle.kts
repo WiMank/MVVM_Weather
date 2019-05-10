@@ -5,7 +5,6 @@ plugins {
     kotlin("kapt")
 }
 
-
 android {
     compileSdkVersion(28)
     defaultConfig {
@@ -80,6 +79,4 @@ dependencies {
     //Lifecycle
     val lifecycleVersion = "2.0.0"
     implementation("androidx.lifecycle:lifecycle-extensions:$lifecycleVersion")
-    kapt("androidx.lifecycle:lifecycle-compiler:$lifecycleVersion")
-
 }
