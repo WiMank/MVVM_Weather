@@ -12,17 +12,4 @@ class RepoForecast(private val netManager: NetManager) : AnkoLogger {
     private val scope = CoroutineScope(Dispatchers.Default + job)
 
 
-    /*   fun getForecast() {
-           scope.launch {
-               val response: Response<DarkSkyPojo.DarkSky> =
-                   mWeatherService.weatherProvider(
-                       darkSkyApiKey,
-                       "55.75222",
-                       "37.61556",
-                       "daily"
-                   ).execute()
-               val body = response.body()
-               info { body }
-           }
-       }*/
 }

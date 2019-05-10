@@ -13,6 +13,7 @@ import org.kodein.di.generic.instance
 import org.kodein.di.generic.singleton
 import utils.NetManager
 
+@Suppress("unused")
 class KodeinApp : Application(), KodeinAware {
 
     override val kodein by Kodein.lazy {
@@ -21,8 +22,6 @@ class KodeinApp : Application(), KodeinAware {
         import(RoomKodeinModule().roomModule)
         import(ViewModelModule().viewModelModule)
         import(RepoModule().repoModule)
-
-
 
         bind<NetManager>() with singleton { NetManager(instance()) }
     }
