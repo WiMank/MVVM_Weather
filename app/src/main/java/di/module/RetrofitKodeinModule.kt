@@ -14,7 +14,7 @@ class RetrofitKodeinModule {
 
         import(OkHttpKodeinModule().okHttpModule)
 
-        bind() from singleton {
+        bind<WeatherService>() with singleton {
             Retrofit.Builder()
                 .baseUrl("https://api.darksky.net")
                 .client(instance())

@@ -79,4 +79,7 @@ dependencies {
     //Lifecycle
     val lifecycleVersion = "2.0.0"
     implementation("androidx.lifecycle:lifecycle-extensions:$lifecycleVersion")
+
+    //Location
+    implementation("com.google.android.gms:play-services-location:16.0.0")
 }

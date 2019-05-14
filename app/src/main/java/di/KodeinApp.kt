@@ -24,6 +24,7 @@ class KodeinApp : Application(), KodeinAware {
         import(RepoModule().repoModule)
 
         bind<NetManager>() with singleton { NetManager(instance()) }
+
     }
 
     override fun onCreate() {

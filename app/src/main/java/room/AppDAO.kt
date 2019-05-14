@@ -14,6 +14,9 @@ interface AppDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(previewPositionEntity: AppEntity)
 
+    @Query("SELECT * FROM appEntity WHERE city == :qCity AND :time <= update_time")
+    fun hasNeedUpdate(qCity: String, time: Long): Boolean
+
     @Update
     fun update(previewPositionEntity: AppEntity)
 

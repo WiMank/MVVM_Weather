@@ -1,6 +1,5 @@
 package mvvm.model
 
-import android.location.LocationManager
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.CoroutineScope
@@ -18,7 +17,8 @@ class RepoForecast(private val netManager: NetManager, override val kodein: Kode
     private val job = SupervisorJob()
     private val scope = CoroutineScope(Dispatchers.Default + job)
 
-    private val locationManager: LocationManager by instance()
+    private val repoForecastLocation: RepoForecastLocation by instance()
+    private val repoForecastRemoteData: RepoForecastRemoteData by instance()
 
 
     fun forecast(): LiveData<DarkSkyPojo.DarkSky> {

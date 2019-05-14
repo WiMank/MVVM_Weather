@@ -14,6 +14,12 @@ data class AppEntity(
     @ColumnInfo(name = "city")
     var searchQuery: String,
 
+    @ColumnInfo(name = "longitude")
+    val longitude: Double = 0.0,
+
+    @ColumnInfo(name = "latitude")
+    val latitude: Double = 0.0,
+
     @ColumnInfo(name = "update_time")
     var updateTime: Long
 
