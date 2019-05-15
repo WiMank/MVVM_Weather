@@ -3,13 +3,15 @@ package mvvm.viewmodel
 import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
 import com.wimank.mvvm.weather.R
+import kotlinx.coroutines.*
 import mvvm.model.RepoForecast
 import org.kodein.di.Kodein
 import org.kodein.di.generic.instance
 
 
 class CurrentlyForecastViewModel(val kodein: Kodein) : ViewModel() {
-
+    private val job = SupervisorJob()
+    private val scope = CoroutineScope(Dispatchers.Main + job)
     private val mRepoForecast: RepoForecast by kodein.instance()
 
     var city = ObservableField<String>("CITY")
@@ -17,7 +19,12 @@ class CurrentlyForecastViewModel(val kodein: Kodein) : ViewModel() {
     var icon = ObservableField<Int>(R.drawable.ic_launcher_foreground)
     var isLoading = ObservableField<Boolean>(false)
 
-    fun refresh() {
+    fun refresh() = scope.launch {
         mRepoForecast.forecast()
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        job.cancelChildren()
     }
 }

@@ -1,8 +1,5 @@
 package mvvm.model
 
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
 import rest.WeatherService
 import rest.pojo.DarkSkyPojo
 import retrofit2.Response
@@ -12,17 +9,10 @@ import secret.DARK_SKY_API_KEY
 
 private const val ONE_HOUR = 3600000L
 
-class RepoForecastRemoteData(
-    private val appDAO: AppDAO,
-    private val weatherService: WeatherService,
-    private val coordinates: Coordinates
-) {
-    private val job = SupervisorJob()
-    private val scope = CoroutineScope(Dispatchers.Default + job)
+class RepoForecastRemoteData(private val appDAO: AppDAO, private val weatherService: WeatherService) {
     private val currentTime = System.currentTimeMillis()
 
-
-    private fun getData(): DarkSkyPojo.DarkSky? {
+    fun forecastRemote(coordinates: Coordinates): DarkSkyPojo.DarkSky? {
         val response: Response<DarkSkyPojo.DarkSky> =
             weatherService.weatherProvider(
                 DARK_SKY_API_KEY,

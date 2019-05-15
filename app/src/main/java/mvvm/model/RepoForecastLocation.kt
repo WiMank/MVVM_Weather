@@ -27,10 +27,10 @@ class RepoForecastLocation(private val mContext: Context) : AnkoLogger,
         info("${location?.latitude} ${location?.longitude}")
     }
 
-    private lateinit var location: Location
 
     fun location(): Coordinates {
         var coordinates = Coordinates(0.0, 0.0)
+        var location: Location
         if (checkPermission()) {
             val locationManager = mContext.getSystemService(Context.LOCATION_SERVICE) as LocationManager
             val isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
