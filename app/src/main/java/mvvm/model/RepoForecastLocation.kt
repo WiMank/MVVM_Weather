@@ -12,8 +12,8 @@ import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
 import utils.GPS
 
-class RepoForecastLocation(private val mContext: Context) : AnkoLogger,
-    LocationListener {
+class RepoForecastLocation(private val mContext: Context) : AnkoLogger, LocationListener {
+
     override fun onProviderEnabled(provider: String?) {
     }
 
@@ -39,19 +39,15 @@ class RepoForecastLocation(private val mContext: Context) : AnkoLogger,
             if (isGPSEnabled) {
                 locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 100L, 100f, this)
                 location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
-                coordinates = Coordinates(
-                    location.longitude,
-                    location.latitude
-                )
+                coordinates = Coordinates(location.longitude, location.latitude)
+                locationManager.removeUpdates(this)
             }
 
             if (isNetworkEnabled) {
                 locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 100L, 100f, this)
                 location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
-                coordinates = Coordinates(
-                    location.longitude,
-                    location.latitude
-                )
+                coordinates = Coordinates(location.longitude, location.latitude)
+                locationManager.removeUpdates(this)
             }
         }
         return coordinates

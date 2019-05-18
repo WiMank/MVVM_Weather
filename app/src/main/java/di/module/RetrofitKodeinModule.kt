@@ -1,5 +1,6 @@
 package di.module
 
+import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import org.kodein.di.Kodein
 import org.kodein.di.generic.bind
 import org.kodein.di.generic.instance
@@ -18,6 +19,7 @@ class RetrofitKodeinModule {
             Retrofit.Builder()
                 .baseUrl("https://api.darksky.net")
                 .client(instance())
+                .addCallAdapterFactory(CoroutineCallAdapterFactory())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
                 .create(WeatherService::class.java)

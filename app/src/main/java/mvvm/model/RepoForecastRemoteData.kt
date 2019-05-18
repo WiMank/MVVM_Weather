@@ -12,14 +12,14 @@ private const val ONE_HOUR = 3600000L
 class RepoForecastRemoteData(private val appDAO: AppDAO, private val weatherService: WeatherService) {
     private val currentTime = System.currentTimeMillis()
 
-    fun forecastRemote(coordinates: Coordinates): DarkSkyPojo.DarkSky? {
+    suspend fun forecastRemoteAsync(coordinates: Coordinates): DarkSkyPojo.DarkSky? {
         val response: Response<DarkSkyPojo.DarkSky> =
-            weatherService.weatherProvider(
+            weatherService.weatherProviderAsync(
                 DARK_SKY_API_KEY,
                 coordinates.latitude.toString(),
-                coordinates.toString(),
+                coordinates.longitude.toString(),
                 "daily"
-            ).execute()
+            ).await()
 
         if (response.isSuccessful) {
             appDAO.insert(

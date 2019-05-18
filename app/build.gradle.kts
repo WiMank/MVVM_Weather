@@ -75,6 +75,7 @@ dependencies {
     val coroutinesVersion = "1.2.1"
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion")
+    implementation("com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2")
 
     //Lifecycle
     val lifecycleVersion = "2.0.0"
