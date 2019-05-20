@@ -3,6 +3,7 @@ plugins {
     kotlin("android")
     kotlin("android.extensions")
     kotlin("kapt")
+    id("kotlinx-serialization")
 }
 
 android {
@@ -25,14 +26,26 @@ android {
     dataBinding {
         isEnabled = true
     }
+
+    packagingOptions {
+        exclude("META-INF/ktor-http.kotlin_module")
+        exclude("META-INF/kotlinx-io.kotlin_module")
+        exclude("META-INF/atomicfu.kotlin_module")
+        exclude("META-INF/ktor-utils.kotlin_module")
+        exclude("META-INF/kotlinx-coroutines-io.kotlin_module")
+        exclude("META-INF/kotlinx-coroutines-core.kotlin_module")
+        exclude("META-INF/ktor-http-cio.kotlin_module")
+        exclude("META-INF/ktor-client-core.kotlin_module")
+    }
 }
+
 
 dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
 
     //Kotlin
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.3.31")
-    implementation("androidx.core:core-ktx:1.0.1")
+    implementation("androidx.core:core-ktx:1.0.2")
 
     //Appcompat
     implementation("androidx.appcompat:appcompat:1.0.2")
@@ -83,4 +96,11 @@ dependencies {
 
     //Location
     implementation("com.google.android.gms:play-services-location:16.0.0")
+
+    //Ktor
+    implementation("io.ktor:ktor-client-core:1.2.0")
+    implementation("io.ktor:ktor-client-android:1.2.0")
+    implementation("io.ktor:ktor-client-json-jvm:1.2.0")
+    implementation("io.ktor:ktor-client-gson:1.2.0")
+    implementation("io.ktor:ktor-client-logging-jvm:1.2.0")
 }

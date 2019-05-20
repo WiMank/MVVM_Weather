@@ -1,10 +1,7 @@
 package di
 
 import android.app.Application
-import di.module.RepoModule
-import di.module.RetrofitKodeinModule
-import di.module.RoomKodeinModule
-import di.module.ViewModelModule
+import di.module.*
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.androidXModule
@@ -22,6 +19,7 @@ class KodeinApp : Application(), KodeinAware {
         import(RoomKodeinModule().roomModule)
         import(ViewModelModule().viewModelModule)
         import(RepoModule().repoModule)
+        import(KtorModule().ktorClientModule)
 
         bind<NetManager>() with singleton { NetManager(instance()) }
 
