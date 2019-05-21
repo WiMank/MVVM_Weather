@@ -13,20 +13,6 @@ class RepoForecastRemoteData(private val appDAO: AppDAO, private val ktorClient:
     private val currentTime = System.currentTimeMillis()
 
     suspend fun forecastRemoteAsync(coordinates: Coordinates): DarkSkyPojo.DarkSky? {
-        /*  val response: Response<DarkSkyPojo.DarkSky> =
-              weatherService.weatherProviderAsync(
-                  DARK_SKY_API_KEY,
-                  coordinates.latitude.toString(),
-                  coordinates.longitude.toString(),
-                  "daily"
-              ).await()
-
-          if (response.isSuccessful) {
-              appDAO.insert(
-                  AppEntity(0, "TEST", coordinates.latitude, coordinates.longitude, currentTime + ONE_HOUR)
-              )
-          }*/
-
 
         val forecast: DarkSkyPojo.DarkSky = ktorClient.use {
             it.get(
