@@ -91,8 +91,9 @@ dependencies {
     implementation("com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2")
 
     //Lifecycle
-    val lifecycleVersion = "2.0.0"
+    val lifecycleVersion = "2.2.0-alpha01"
     implementation("androidx.lifecycle:lifecycle-extensions:$lifecycleVersion")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion")
 
     //Location
     implementation("com.google.android.gms:play-services-location:16.0.0")
@@ -103,4 +104,7 @@ dependencies {
     implementation("io.ktor:ktor-client-json-jvm:1.2.0")
     implementation("io.ktor:ktor-client-gson:1.2.0")
     implementation("io.ktor:ktor-client-logging-jvm:1.2.0")
+
+    //KTX
+    implementation("androidx.core:core-ktx:1.0.2")
 }
