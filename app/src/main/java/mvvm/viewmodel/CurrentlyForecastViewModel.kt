@@ -39,6 +39,9 @@ class CurrentlyForecastViewModel(val kodein: Kodein) : ViewModel(), AnkoLogger {
                     info { "COMPLETE!!!" }
                 } catch (e: ClientRequestException) {
                     temp.set("${e.response.status.description}: ${e.response.status.value}")
+                } catch (e: IllegalStateException) {
+                    temp.set("${e.message}")
+                } finally {
                     isLoading.set(false)
                 }
             }

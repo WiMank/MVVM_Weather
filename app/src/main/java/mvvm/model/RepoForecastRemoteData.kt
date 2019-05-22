@@ -16,7 +16,7 @@ class RepoForecastRemoteData(private val appDAO: AppDAO, private val ktorClient:
 
         val forecast: DarkSkyPojo.DarkSky = ktorClient.use {
             it.get(
-                DARK_SKY_API_LINK + "56ujfy${coordinates.latitude},${coordinates.longitude}"
+                DARK_SKY_API_LINK + "${coordinates.latitude},${coordinates.longitude}"
             )
         }
 
