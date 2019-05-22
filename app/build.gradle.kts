@@ -63,14 +63,6 @@ dependencies {
     implementation("org.kodein.di:kodein-di-generic-jvm:$kodeinVersion")
     implementation("org.kodein.di:kodein-di-framework-android-x:$kodeinVersion")
 
-    //Retrofit 2
-    val retrofitVersion = "2.5.0"
-    implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
-    implementation("com.squareup.retrofit2:converter-gson:$retrofitVersion")
-
-    //Logging-interceptor
-    implementation("com.squareup.okhttp3:logging-interceptor:3.12.0")
-
     //Easy permissions
     implementation("pub.devrel:easypermissions:2.0.0")
 
@@ -88,7 +80,6 @@ dependencies {
     val coroutinesVersion = "1.2.1"
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion")
-    implementation("com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2")
 
     //Lifecycle
     val lifecycleVersion = "2.2.0-alpha01"
@@ -104,5 +95,8 @@ dependencies {
     implementation("io.ktor:ktor-client-json-jvm:1.2.0")
     implementation("io.ktor:ktor-client-gson:1.2.0")
     implementation("io.ktor:ktor-client-logging-jvm:1.2.0")
+
+    //MapBox
+    implementation("com.mapbox.mapboxsdk:mapbox-android-plugin-places:0.5.0")
 
 }
