@@ -12,6 +12,7 @@ class RepoForecast(private val netManager: NetManager, override val kodein: Kode
     private val repoForecastRemoteData: RepoForecastRemoteData by instance()
 
     suspend fun forecastAsync(): DarkSkyPojo.DarkSky? {
+        //TODO: Нужна проверка для выбора источника данных
         return if (netManager.isConnectedToInternet!!) {
             repoForecastRemoteData.forecastRemoteAsync(repoForecastLocation.location())
         } else {

@@ -105,6 +105,4 @@ dependencies {
     implementation("io.ktor:ktor-client-gson:1.2.0")
     implementation("io.ktor:ktor-client-logging-jvm:1.2.0")
 
-    //KTX
-    implementation("androidx.core:core-ktx:1.0.2")
 }
