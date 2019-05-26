@@ -97,6 +97,8 @@ dependencies {
     implementation("io.ktor:ktor-client-logging-jvm:1.2.0")
 
     //MapBox
-    implementation("com.mapbox.mapboxsdk:mapbox-android-plugin-places:0.5.0")
+    //implementation("com.mapbox.mapboxsdk:mapbox-android-plugin-places:0.5.0")
+
+    //  implementation  ("com.google.android.gms:play-services-location:16.0.0")
 
 }

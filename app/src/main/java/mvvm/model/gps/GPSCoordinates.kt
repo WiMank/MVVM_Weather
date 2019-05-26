@@ -1,4 +1,4 @@
-package mvvm.model
+package mvvm.model.gps
 
 data class GPSCoordinates(
     val latitude: Double = 0.0,

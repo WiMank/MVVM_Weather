@@ -28,7 +28,7 @@ class CurrentlyForecastViewModel(val kodein: Kodein) : ViewModel(), AnkoLogger {
     val isLoading = ObservableBoolean(false)
 
     fun refresh() {
-        viewModelScope.launch(handler) {
+        viewModelScope.launch {
             this.launch(Dispatchers.Default) {
                 isLoading.set(true)
                 try {

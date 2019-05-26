@@ -1,4 +1,4 @@
-package mvvm.model
+package mvvm.model.gps
 
 import android.Manifest
 import android.content.Context

@@ -12,7 +12,7 @@ class MainActivity : KodeinActivity() {
         setContentView(R.layout.activity_main)
 
         supportFragmentManager.beginTransaction()
-            .add(R.id.main_frame, CurrentlyWeatherFragment(), "text")
+            .add(R.id.main_frame, CurrentlyWeatherFragment(), "frc")
             .commit()
 
     }

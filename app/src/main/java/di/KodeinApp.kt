@@ -3,7 +3,7 @@ package di
 import android.app.Application
 import di.module.KtorModule
 import di.module.RepoModule
-import di.module.RoomKodeinModule
+import di.module.RoomModule
 import di.module.ViewModelModule
 import kotlinx.coroutines.CoroutineExceptionHandler
 import org.jetbrains.anko.AnkoLogger
@@ -21,7 +21,7 @@ class KodeinApp : Application(), KodeinAware, AnkoLogger {
 
     override val kodein by Kodein.lazy {
         import(androidXModule(this@KodeinApp))
-        import(RoomKodeinModule().roomModule)
+        import(RoomModule().roomModule)
         import(ViewModelModule().viewModelModule)
         import(RepoModule().repoModule)
         import(KtorModule().ktorClientModule)

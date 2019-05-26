@@ -7,7 +7,7 @@ import org.kodein.di.generic.eagerSingleton
 import org.kodein.di.generic.instance
 import room.AppDataBase
 
-class RoomKodeinModule {
+class RoomModule {
 
     val roomModule = Kodein.Module("room_module") {
         bind() from eagerSingleton {
