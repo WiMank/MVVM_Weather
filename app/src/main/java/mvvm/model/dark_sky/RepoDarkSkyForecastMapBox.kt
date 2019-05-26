@@ -1,0 +1,3 @@
+package mvvm.model.dark_sky
+
+class RepoDarkSkyForecastMapBox

@@ -14,7 +14,7 @@ import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
 import utils.GPS
 
-class RepoForecastLocation(private val mContext: Context) : AnkoLogger, LocationListener {
+class RepoGPSCoordinates(private val mContext: Context) : AnkoLogger, LocationListener {
 
     override fun onProviderEnabled(provider: String?) {
     }
@@ -29,8 +29,8 @@ class RepoForecastLocation(private val mContext: Context) : AnkoLogger, Location
         info("${location?.latitude} ${location?.longitude}")
     }
 
-    suspend fun location(): Coordinates = withContext(Dispatchers.Main) {
-        var coordinates = Coordinates(0.0, 0.0)
+    suspend fun location(): GPSCoordinates = withContext(Dispatchers.Main) {
+        var coordinates = GPSCoordinates(0.0, 0.0)
         var location: Location
         if (checkPermission()) {
             val locationManager = mContext.getSystemService(Context.LOCATION_SERVICE) as LocationManager
@@ -42,11 +42,11 @@ class RepoForecastLocation(private val mContext: Context) : AnkoLogger, Location
                     LocationManager.GPS_PROVIDER,
                     100L,
                     100f,
-                    this@RepoForecastLocation
+                    this@RepoGPSCoordinates
                 )
                 location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
-                coordinates = Coordinates(location.longitude, location.latitude)
-                locationManager.removeUpdates(this@RepoForecastLocation)
+                coordinates = GPSCoordinates(location.longitude, location.latitude)
+                locationManager.removeUpdates(this@RepoGPSCoordinates)
             }
 
             if (isNetworkEnabled) {
@@ -54,11 +54,11 @@ class RepoForecastLocation(private val mContext: Context) : AnkoLogger, Location
                     LocationManager.NETWORK_PROVIDER,
                     100L,
                     100f,
-                    this@RepoForecastLocation
+                    this@RepoGPSCoordinates
                 )
                 location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
-                coordinates = Coordinates(location.longitude, location.latitude)
-                locationManager.removeUpdates(this@RepoForecastLocation)
+                coordinates = GPSCoordinates(location.longitude, location.latitude)
+                locationManager.removeUpdates(this@RepoGPSCoordinates)
             }
         }
         coordinates
