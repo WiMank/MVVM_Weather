@@ -14,7 +14,7 @@ class RepoDarkSkyForecast(private val netManager: NetManager, override val kodei
     private val repoForecastLocation: RepoGPSCoordinates by instance()
     private val repoForecastRemoteData: RepoDarkSkyForecastRemoteData by instance()
     private val mRepoDarkSkyForecastLocalData: RepoDarkSkyForecastLocalData by instance()
-    private val repoMapBox: RepoMapBox by instance()
+    private val repoMapBox: RepoMapBox = RepoMapBox()
     private lateinit var gpsCoordinates: GPSCoordinates
 
     suspend fun forecastAsync(): DarkSkyForecast.DarkSky? {
@@ -23,7 +23,7 @@ class RepoDarkSkyForecast(private val netManager: NetManager, override val kodei
             gpsCoordinates = repoForecastLocation.location()
             val map = repoMapBox.getLocationName(gpsCoordinates)
             info { "TEST ${map}" }
-            // val remoteResult = repoForecastRemoteData.forecastRemoteAsync(gpsCoordinates)
+            //  val remoteResult = repoForecastRemoteData.forecastRemote(gpsCoordinates)
             // remoteResult?.let { mRepoDarkSkyForecastLocalData.saveForecastInDb(it) }
             null
         } else {
