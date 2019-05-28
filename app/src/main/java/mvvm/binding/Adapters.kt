@@ -5,6 +5,6 @@ import androidx.databinding.BindingAdapter
 
 
 @BindingAdapter("android:bindSrc")
-fun setImageViewResource(imageView: ImageView, resource: Int) {
+fun bindSrc(imageView: ImageView, resource: Int) {
     imageView.setImageResource(resource)
 }

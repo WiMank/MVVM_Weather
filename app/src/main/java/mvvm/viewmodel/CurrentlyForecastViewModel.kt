@@ -5,7 +5,6 @@ import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.wimank.mvvm.weather.R
 import io.ktor.client.features.ClientRequestException
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
@@ -24,7 +23,7 @@ class CurrentlyForecastViewModel(val kodein: Kodein) : ViewModel(), AnkoLogger {
 
     val city = ObservableField<String>("CITY")
     val temp = ObservableField<String>("TEMP")
-    val icon = ObservableInt(R.drawable.ic_launcher_foreground)
+    val icon = ObservableInt(0)
     val isLoading = ObservableBoolean(false)
 
     fun refresh() {
