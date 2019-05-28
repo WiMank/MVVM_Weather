@@ -28,9 +28,8 @@ class RepoModule {
             )
         }
 
-
         bind<RepoDarkSkyForecastLocalData>() with singleton {
-            RepoDarkSkyForecastLocalData(instance())
+            RepoDarkSkyForecastLocalData(instance(), instance())
         }
     }
 }

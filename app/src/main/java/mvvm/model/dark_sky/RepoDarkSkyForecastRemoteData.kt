@@ -8,7 +8,7 @@ import secret.DARK_SKY_API_LINK
 
 class RepoDarkSkyForecastRemoteData(private val ktorClient: HttpClient) {
 
-    suspend fun forecastRemote(coordinates: GPSCoordinates): DarkSkyForecast.DarkSky? {
+    suspend fun forecastRemote(coordinates: GPSCoordinates): DarkSkyForecast.DarkSky {
         return ktorClient.use {
             it.get(
                 DARK_SKY_API_LINK + "${coordinates.latitude},${coordinates.longitude}"

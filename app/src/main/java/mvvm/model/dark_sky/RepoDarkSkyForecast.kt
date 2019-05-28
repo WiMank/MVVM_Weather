@@ -1,10 +1,12 @@
 package mvvm.model.dark_sky
 
-import mvvm.model.gps.GPSCoordinates
+import kotlinx.coroutines.async
+import kotlinx.coroutines.channels.consumeEach
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import mvvm.model.gps.RepoGPSCoordinates
 import mvvm.model.mapBox.RepoMapBox
 import org.jetbrains.anko.AnkoLogger
-import org.jetbrains.anko.info
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.generic.instance
@@ -15,20 +17,20 @@ class RepoDarkSkyForecast(private val netManager: NetManager, override val kodei
     private val repoForecastRemoteData: RepoDarkSkyForecastRemoteData by instance()
     private val mRepoDarkSkyForecastLocalData: RepoDarkSkyForecastLocalData by instance()
     private val repoMapBox: RepoMapBox = RepoMapBox()
-    private lateinit var gpsCoordinates: GPSCoordinates
 
-    suspend fun forecastAsync(): DarkSkyForecast.DarkSky? {
-        //TODO: Нужна проверка для выбора источника данных
-        return if (netManager.isConnectedToInternet!!) {
-            gpsCoordinates = repoForecastLocation.location()
-            val map = repoMapBox.getLocationName(gpsCoordinates)
-            info { "TEST ${map}" }
-            //  val remoteResult = repoForecastRemoteData.forecastRemote(gpsCoordinates)
-            // remoteResult?.let { mRepoDarkSkyForecastLocalData.saveForecastInDb(it) }
-            null
-        } else {
-            //TODO: DB Data return
-            null
+
+    suspend fun loadForecast() = runBlocking {
+        if (netManager.isConnectedToInternet!!) {
+            repoForecastLocation.getLocation().consumeEach {
+                launch {
+                    val cityName = async { repoMapBox.getLocationName(it) }
+                    if (mRepoDarkSkyForecastLocalData.needUpdate(cityName.await())) {
+                        val forecastRemote = async { repoForecastRemoteData.forecastRemote(it) }
+                        mRepoDarkSkyForecastLocalData.saveForecastInDb(cityName.await(), forecastRemote.await())
+                        mRepoDarkSkyForecastLocalData.saveCityQuery(cityName.await())
+                    }
+                }
+            }
         }
     }
 }

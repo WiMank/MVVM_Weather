@@ -70,6 +70,7 @@ dependencies {
     val roomVersion = "2.1.0-alpha07"
     implementation("androidx.room:room-runtime:$roomVersion")
     kapt("androidx.room:room-compiler:$roomVersion")
+    implementation("androidx.room:room-ktx:$roomVersion")
 
     //Anko
     val ankoVersion = "0.10.8"

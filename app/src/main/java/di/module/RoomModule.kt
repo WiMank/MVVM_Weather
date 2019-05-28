@@ -17,5 +17,7 @@ class RoomModule {
         }
 
         bind() from eagerSingleton { instance<AppDataBase>().appDAO() }
+
+        bind() from eagerSingleton { instance<AppDataBase>().cityDAO() }
     }
 }

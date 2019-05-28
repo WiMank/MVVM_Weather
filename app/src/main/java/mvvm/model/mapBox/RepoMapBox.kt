@@ -8,12 +8,12 @@ import secret.MAP_BOX_TOKEN
 
 class RepoMapBox {
 
-    fun getLocationName(gpsCoordinates: GPSCoordinates): String? {
+    fun getLocationName(gpsCoordinates: GPSCoordinates): String {
         val map = MapboxGeocoding.builder()
             .accessToken(MAP_BOX_TOKEN)
             .query(Point.fromLngLat(gpsCoordinates.longitude, gpsCoordinates.latitude))
             .geocodingTypes(GeocodingCriteria.TYPE_PLACE)
             .build().executeCall()
-        return map.body()?.features()!![0].text()
+        return map.body()?.features()!![0].text().toString()
     }
 }

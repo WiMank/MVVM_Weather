@@ -2,72 +2,79 @@ package mvvm.model.gps
 
 import android.Manifest
 import android.content.Context
-import android.location.Location
-import android.location.LocationListener
-import android.location.LocationManager
-import android.os.Bundle
+import android.content.Intent
+import android.provider.Settings
+import androidx.core.content.ContextCompat.startActivity
+import com.google.android.gms.common.api.ResolvableApiException
+import com.google.android.gms.location.*
+import com.google.android.gms.tasks.Task
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.jetbrains.anko.AnkoLogger
-import org.jetbrains.anko.info
+import org.jetbrains.anko.toast
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
 import utils.GPS
 
-class RepoGPSCoordinates(private val mContext: Context) : AnkoLogger, LocationListener {
+class RepoGPSCoordinates(private val context: Context) {
+    private lateinit var locationCallback: LocationCallback
+    private lateinit var locationRequest: LocationRequest
+    private val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
+    private val client: SettingsClient = LocationServices.getSettingsClient(context)
+    private val locationChannel = Channel<GPSCoordinates>()
 
-    override fun onProviderEnabled(provider: String?) {
-    }
-
-    override fun onProviderDisabled(provider: String?) {
-    }
-
-    override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
-    }
-
-    override fun onLocationChanged(location: Location?) {
-        info("${location?.latitude} ${location?.longitude}")
-    }
-
-    suspend fun location(): GPSCoordinates = withContext(Dispatchers.Main) {
-        var coordinates = GPSCoordinates(0.0, 0.0)
-        var location: Location
+    suspend fun getLocation(): Channel<GPSCoordinates> = withContext(Dispatchers.Main) {
         if (checkPermission()) {
-            val locationManager = mContext.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-            val isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
-            val isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
-
-            if (isGPSEnabled) {
-                locationManager.requestLocationUpdates(
-                    LocationManager.GPS_PROVIDER,
-                    100L,
-                    100f,
-                    this@RepoGPSCoordinates
-                )
-                location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
-                coordinates = GPSCoordinates(location.longitude, location.latitude)
-                locationManager.removeUpdates(this@RepoGPSCoordinates)
+            locationRequest = LocationRequest.create().apply {
+                interval = 10000
+                fastestInterval = 5000
+                priority = LocationRequest.PRIORITY_HIGH_ACCURACY
             }
 
-            if (isNetworkEnabled) {
-                locationManager.requestLocationUpdates(
-                    LocationManager.NETWORK_PROVIDER,
-                    100L,
-                    100f,
-                    this@RepoGPSCoordinates
-                )
-                location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
-                coordinates = GPSCoordinates(location.longitude, location.latitude)
-                locationManager.removeUpdates(this@RepoGPSCoordinates)
+            val builder = LocationSettingsRequest.Builder().addLocationRequest(locationRequest)
+            val task: Task<LocationSettingsResponse> = client.checkLocationSettings(builder.build())
+
+            locationCallback = object : LocationCallback() {
+                override fun onLocationResult(locationResult: LocationResult?) {
+                    locationResult ?: return
+                    for (location in locationResult.locations) {
+                        launch {
+                            locationChannel.send(GPSCoordinates(location.longitude, location.latitude))
+                            locationChannel.close()
+                        }
+                        stopLocationUpdates()
+                    }
+                }
+            }
+
+            task.addOnSuccessListener { locationCallback }
+
+            fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null)
+
+            task.addOnFailureListener { exception ->
+                if (exception is ResolvableApiException) {
+                    startActivity(
+                        context,
+                        Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
+                        null
+                    )
+                    context.toast("Необходимо включить местоположение по всем источникам!")
+                }
             }
         }
-        coordinates
+        locationChannel
     }
 
+    fun stopLocationUpdates() {
+        if (::locationCallback.isInitialized)
+            fusedLocationClient.removeLocationUpdates(locationCallback)
+        locationChannel.close()
+    }
 
     @AfterPermissionGranted(GPS)
     private fun checkPermission(): Boolean {
         val perms = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
-        return EasyPermissions.hasPermissions(mContext, *perms)
+        return EasyPermissions.hasPermissions(context, *perms)
     }
 }

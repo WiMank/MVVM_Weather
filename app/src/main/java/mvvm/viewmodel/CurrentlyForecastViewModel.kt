@@ -33,8 +33,7 @@ class CurrentlyForecastViewModel(val kodein: Kodein) : ViewModel(), AnkoLogger {
                 isLoading.set(true)
                 try {
                     info { "GOOOOOOO!!!" }
-                    val go = async { mRepoForecast.forecastAsync() }
-                    temp.set(go.await()?.currently?.temperature.toString())
+                    val go = async { mRepoForecast.loadForecast() }
                     isLoading.set(false)
                     info { "COMPLETE!!!" }
                 } catch (e: ClientRequestException) {
