@@ -9,10 +9,10 @@ import androidx.room.PrimaryKey
 data class AppEntity(
 
     @PrimaryKey(autoGenerate = true)
-    var id: Int,
+    var id: Int = 0,
 
     @ColumnInfo(name = "city")
-    var city: String,
+    var city: String = "",
 
     @ColumnInfo(name = "longitude")
     val longitude: Double = 0.0,
@@ -23,33 +23,33 @@ data class AppEntity(
     @ColumnInfo(name = "update_time")
     var updateTime: Long,
 
-    var time: Long,
+    var time: Long = 0,
 
-    var summary: String,
+    var summary: String = "",
 
     @ColumnInfo(name = "precip_probability")
     var precipProbability: Double,
 
     @ColumnInfo(name = "precip_type")
-    var precipType: String,
+    var precipType: String = "",
 
-    var temperature: Double,
+    var temperature: Double = 0.0,
 
     @ColumnInfo(name = "apparent_temperature")
-    var apparentTemperature: Double,
+    var apparentTemperature: Double = 0.0,
 
-    var humidity: Double,
+    var humidity: Double = 0.0,
 
-    var pressure: Double,
+    var pressure: Double = 0.0,
 
     @ColumnInfo(name = "wind_speed")
-    var windSpeed: Double,
+    var windSpeed: Double = 0.0,
 
     @ColumnInfo(name = "wind_gust")
-    var windGust: Double,
+    var windGust: Double = 0.0,
 
     @ColumnInfo(name = "cloud_cover")
-    var cloudCover: Double,
+    var cloudCover: Double = 0.0,
 
-    var visibility: Double
+    var visibility: Double = 0.0
 )

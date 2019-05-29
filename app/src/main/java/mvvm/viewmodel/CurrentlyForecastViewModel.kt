@@ -8,7 +8,7 @@ import androidx.lifecycle.viewModelScope
 import io.ktor.client.features.ClientRequestException
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
+import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.launch
 import mvvm.model.dark_sky.RepoDarkSkyForecast
 import org.jetbrains.anko.AnkoLogger
@@ -32,7 +32,10 @@ class CurrentlyForecastViewModel(val kodein: Kodein) : ViewModel(), AnkoLogger {
                 isLoading.set(true)
                 try {
                     info { "GOOOOOOO!!!" }
-                    val go = async { mRepoForecast.loadForecast() }
+                    mRepoForecast.loadForecast().consumeEach {
+                        city.set(it.city)
+                        temp.set(it.temperature.toString())
+                    }
                     isLoading.set(false)
                     info { "COMPLETE!!!" }
                 } catch (e: ClientRequestException) {
