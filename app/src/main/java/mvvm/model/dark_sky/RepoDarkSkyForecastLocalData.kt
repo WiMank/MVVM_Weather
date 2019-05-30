@@ -1,5 +1,6 @@
 package mvvm.model.dark_sky
 
+import org.jetbrains.anko.AnkoLogger
 import room.AppDAO
 import room.AppEntity
 import room.CityDAO
@@ -7,7 +8,7 @@ import room.CityEntity
 import utils.ONE_HOUR
 
 
-class RepoDarkSkyForecastLocalData(private val appDAO: AppDAO, private val cityDAO: CityDAO) {
+class RepoDarkSkyForecastLocalData(private val appDAO: AppDAO, private val cityDAO: CityDAO) : AnkoLogger {
 
     suspend fun saveForecastInDb(cityName: String, darkSky: DarkSkyForecast.DarkSky) {
         val currentTime = System.currentTimeMillis()
@@ -35,10 +36,11 @@ class RepoDarkSkyForecastLocalData(private val appDAO: AppDAO, private val cityD
     }
 
     suspend fun needUpdate(q: String): Boolean {
-        return if (q == cityDAO.getCityName().cityName)
-            appDAO.hasNeedUpdate(cityDAO.getCityName().cityName, System.currentTimeMillis())
-        else
-            false
+        return if (q == cityDAO.getCityName().cityName) {
+            appDAO.updateTime(q) > System.currentTimeMillis()
+        } else {
+            true
+        }
     }
 
     suspend fun saveCityQuery(cityName: String) {

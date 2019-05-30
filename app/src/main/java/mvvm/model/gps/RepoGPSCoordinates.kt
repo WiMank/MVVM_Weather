@@ -23,11 +23,18 @@ class RepoGPSCoordinates(private val context: Context) {
     private val client: SettingsClient = LocationServices.getSettingsClient(context)
     private val locationChannel = Channel<GPSCoordinates>()
 
+    private val locationRequest = LocationRequest.create().apply {
+        interval = 10000
+        fastestInterval = 5000
+        priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+    }
+
+    private val builder = LocationSettingsRequest.Builder().addLocationRequest(this.locationRequest)
+    private val task: Task<LocationSettingsResponse> = client.checkLocationSettings(builder.build())
+
+
     suspend fun getLocation(): Channel<GPSCoordinates> = withContext(Dispatchers.Main) {
         if (checkPermission()) {
-
-            val builder = LocationSettingsRequest.Builder().addLocationRequest(locationRequest)
-            val task: Task<LocationSettingsResponse> = client.checkLocationSettings(builder.build())
 
             locationCallback = object : LocationCallback() {
                 override fun onLocationResult(locationResult: LocationResult?) {
@@ -41,7 +48,6 @@ class RepoGPSCoordinates(private val context: Context) {
                     }
                 }
             }
-
             task.addOnSuccessListener { locationCallback }
             task.addOnFailureListener { exception ->
                 if (exception is ResolvableApiException) {
@@ -56,13 +62,6 @@ class RepoGPSCoordinates(private val context: Context) {
         }
         fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null)
         locationChannel
-    }
-
-
-    private val locationRequest = LocationRequest.create().apply {
-        interval = 10000
-        fastestInterval = 5000
-        priority = LocationRequest.PRIORITY_HIGH_ACCURACY
     }
 
 

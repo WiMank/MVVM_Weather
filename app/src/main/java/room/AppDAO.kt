@@ -17,13 +17,13 @@ interface AppDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(previewPositionEntity: AppEntity)
 
-    @Query("SELECT * FROM appEntity WHERE city == :qCity AND :time <= update_time")
-    suspend fun hasNeedUpdate(qCity: String, time: Long): Boolean
+    @Query("SELECT (update_time) FROM appEntity WHERE city == :qCity ")
+    suspend fun updateTime(qCity: String): Long
 
     @Update
-    suspend fun update(previewPositionEntity: AppEntity)
+    suspend fun update(value: AppEntity)
 
     @Delete
-    suspend fun delete(previewPositionEntity: AppEntity)
+    suspend fun delete(value: AppEntity)
 
 }
