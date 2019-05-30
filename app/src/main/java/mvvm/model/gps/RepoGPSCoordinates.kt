@@ -19,18 +19,12 @@ import utils.GPS
 
 class RepoGPSCoordinates(private val context: Context) {
     private lateinit var locationCallback: LocationCallback
-    private lateinit var locationRequest: LocationRequest
     private val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
     private val client: SettingsClient = LocationServices.getSettingsClient(context)
     private val locationChannel = Channel<GPSCoordinates>()
 
     suspend fun getLocation(): Channel<GPSCoordinates> = withContext(Dispatchers.Main) {
         if (checkPermission()) {
-            locationRequest = LocationRequest.create().apply {
-                interval = 10000
-                fastestInterval = 5000
-                priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-            }
 
             val builder = LocationSettingsRequest.Builder().addLocationRequest(locationRequest)
             val task: Task<LocationSettingsResponse> = client.checkLocationSettings(builder.build())
@@ -49,9 +43,6 @@ class RepoGPSCoordinates(private val context: Context) {
             }
 
             task.addOnSuccessListener { locationCallback }
-
-            fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null)
-
             task.addOnFailureListener { exception ->
                 if (exception is ResolvableApiException) {
                     startActivity(
@@ -63,12 +54,20 @@ class RepoGPSCoordinates(private val context: Context) {
                 }
             }
         }
+        fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null)
         locationChannel
     }
 
+
+    private val locationRequest = LocationRequest.create().apply {
+        interval = 10000
+        fastestInterval = 5000
+        priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+    }
+
+
     fun stopLocationUpdates() {
-        if (::locationCallback.isInitialized)
-            fusedLocationClient.removeLocationUpdates(locationCallback)
+        fusedLocationClient.removeLocationUpdates(locationCallback)
         locationChannel.close()
     }
 
