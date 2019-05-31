@@ -1,5 +1,6 @@
 package mvvm.model.dark_sky
 
+import io.reactivex.Flowable
 import org.jetbrains.anko.AnkoLogger
 import room.AppDAO
 import room.AppEntity
@@ -47,7 +48,7 @@ class RepoDarkSkyForecastLocalData(private val appDAO: AppDAO, private val cityD
         return cityDAO.insert(CityEntity(0, cityName))
     }
 
-    suspend fun loadLocalForecast(cityName: String): AppEntity {
+    fun loadLocalForecast(cityName: String): Flowable<AppEntity> {
         return appDAO.getByNameAsync(cityName)
     }
 }

@@ -21,14 +21,14 @@ data class AppEntity(
     val latitude: Double = 0.0,
 
     @ColumnInfo(name = "update_time")
-    var updateTime: Long,
+    var updateTime: Long = 0,
 
     var time: Long = 0,
 
     var summary: String = "",
 
     @ColumnInfo(name = "precip_probability")
-    var precipProbability: Double,
+    var precipProbability: Double = 0.0,
 
     @ColumnInfo(name = "precip_type")
     var precipType: String = "",

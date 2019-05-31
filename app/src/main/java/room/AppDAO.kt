@@ -1,6 +1,7 @@
 package room
 
 import androidx.room.*
+import io.reactivex.Flowable
 
 @Dao
 interface AppDAO {
@@ -12,7 +13,7 @@ interface AppDAO {
     suspend fun getById(id: Long): AppEntity
 
     @Query("SELECT * FROM appEntity WHERE city = :name")
-    suspend fun getByNameAsync(name: String): AppEntity
+    fun getByNameAsync(name: String): Flowable<AppEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(previewPositionEntity: AppEntity)

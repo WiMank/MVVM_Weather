@@ -67,11 +67,11 @@ dependencies {
     implementation("pub.devrel:easypermissions:2.0.0")
 
     //Room
-    val roomVersion = "2.1.0-alpha07"
+    val roomVersion = "2.1.0-rc01"
     implementation("androidx.room:room-runtime:$roomVersion")
     kapt("androidx.room:room-compiler:$roomVersion")
     implementation("androidx.room:room-ktx:$roomVersion")
-    //implementation("androidx.room:room-coroutines:2.1.0-alpha04")
+    implementation("androidx.room:room-rxjava2:$roomVersion")
 
     //Anko
     val ankoVersion = "0.10.8"
@@ -82,6 +82,10 @@ dependencies {
     val coroutinesVersion = "1.2.1"
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion")
+
+    //RX
+    implementation("io.reactivex.rxjava2:rxandroid:2.1.1")
+    implementation("io.reactivex.rxjava2:rxkotlin:2.3.0")
 
     //Lifecycle
     val lifecycleVersion = "2.2.0-alpha01"
