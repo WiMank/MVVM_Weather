@@ -36,7 +36,7 @@ class CurrentlyForecastViewModel(val kodein: Kodein) : ViewModel(), AnkoLogger {
 
 
     fun start() {
-        viewModelScope.launch {
+        viewModelScope.launch(handler) {
             this.launch(Dispatchers.Default) {
                 load()
                 dbObserve()
@@ -46,14 +46,15 @@ class CurrentlyForecastViewModel(val kodein: Kodein) : ViewModel(), AnkoLogger {
 
     private suspend fun load() {
         isLoading.set(true)
-        info { "GOOOOOOO!!!" }
+        info { "TEST GOOOOOOO!!!" }
 
 
         val status = mRepoForecast.loadForecast()
+        // info { "GPS RESPONSE [${status.longitude}, ${status.latitude}]" }
 
 
         isLoading.set(false)
-        info { "COMPLETE! $status" }
+        info { "TEST COMPLETE! $status" }
     }
 
 
@@ -63,7 +64,7 @@ class CurrentlyForecastViewModel(val kodein: Kodein) : ViewModel(), AnkoLogger {
             this.subscribe {
                 city.set(it.city)
                 temp.set(it.temperature.toString())
-                info { "RXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXR" }
+                info { "TEST RX" }
             }
         }
     }

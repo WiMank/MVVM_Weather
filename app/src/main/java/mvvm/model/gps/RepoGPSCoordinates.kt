@@ -12,6 +12,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.launch
 import org.jetbrains.anko.AnkoLogger
+import org.jetbrains.anko.info
 import org.jetbrains.anko.toast
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
@@ -21,12 +22,13 @@ class RepoGPSCoordinates(private val context: Context) : AnkoLogger {
 
     private val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
     private val client: SettingsClient = LocationServices.getSettingsClient(context)
-    private val locationChannel = Channel<GPSCoordinates>()
-    private val scope = CoroutineScope(Dispatchers.Main)
+    private val scope = CoroutineScope(Dispatchers.Default)
+    private lateinit var locationChannel: Channel<GPSCoordinates>
 
     fun getLocation(): Channel<GPSCoordinates> {
         if (checkPermission()) {
-
+            info("TEST GET LOCATION")
+            locationChannel = Channel()
             val locationSettingsRequest = LocationSettingsRequest.Builder().addLocationRequest(locationRequest).build()
             client.checkLocationSettings(locationSettingsRequest).apply {
                 addOnSuccessListener {
@@ -58,7 +60,9 @@ class RepoGPSCoordinates(private val context: Context) : AnkoLogger {
             locationResult ?: return
             for (location in locationResult.locations) {
                 scope.launch {
+                    info { "TEST LOCATION SEND ${location.longitude}, ${location.latitude}" }
                     locationChannel.send(GPSCoordinates(location.longitude, location.latitude))
+                    locationChannel.close()
                     stopLocationUpdates()
                 }
             }
@@ -66,6 +70,7 @@ class RepoGPSCoordinates(private val context: Context) : AnkoLogger {
 
         override fun onLocationAvailability(locationAvailability: LocationAvailability) {
             if (!locationAvailability.isLocationAvailable) {
+                locationChannel.close()
                 stopLocationUpdates()
             }
         }

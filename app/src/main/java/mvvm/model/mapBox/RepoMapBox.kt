@@ -12,7 +12,8 @@ class RepoMapBox : AnkoLogger {
 
     fun getLocationName(gpsCoordinates: GPSCoordinates): String {
 
-        info("TEST BOX latitude: ${gpsCoordinates.latitude}  longitude: ${gpsCoordinates.longitude}")
+        info("TEST MAP BOX latitude: ${gpsCoordinates.latitude}  longitude: ${gpsCoordinates.longitude}")
+
 
         val map = MapboxGeocoding.builder()
             .accessToken(MAP_BOX_TOKEN)

@@ -19,7 +19,7 @@ interface AppDAO {
     suspend fun insert(previewPositionEntity: AppEntity)
 
     @Query("SELECT (update_time) FROM appEntity WHERE city == :qCity ")
-    suspend fun updateTime(qCity: String): Long
+    suspend fun updateTime(qCity: String): Long?
 
     @Update
     suspend fun update(value: AppEntity)

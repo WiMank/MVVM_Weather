@@ -37,10 +37,10 @@ class RepoDarkSkyForecastLocalData(private val appDAO: AppDAO, private val cityD
         )
     }
 
-    suspend fun needUpdate(q: String): Boolean {
+    suspend fun checkNeedUpdate(q: String): Boolean {
         return if (q == cityDAO.getCityName()?.cityName ?: "") {
             info { "UpdateTime: [${appDAO.updateTime(q)}] CurrentTimeMillis: [${System.currentTimeMillis()}]" }
-            appDAO.updateTime(q) < System.currentTimeMillis()
+            appDAO.updateTime(q) ?: 0 < System.currentTimeMillis()
         } else {
             true
         }
