@@ -27,7 +27,6 @@ class RepoGPSCoordinates(private val context: Context) : AnkoLogger {
 
     fun getLocation(): Channel<GPSCoordinates> {
         if (checkPermission()) {
-            info("TEST GET LOCATION")
             locationChannel = Channel()
             val locationSettingsRequest = LocationSettingsRequest.Builder().addLocationRequest(locationRequest).build()
             client.checkLocationSettings(locationSettingsRequest).apply {
@@ -60,7 +59,7 @@ class RepoGPSCoordinates(private val context: Context) : AnkoLogger {
             locationResult ?: return
             for (location in locationResult.locations) {
                 scope.launch {
-                    info { "TEST LOCATION SEND ${location.longitude}, ${location.latitude}" }
+                    info { "LOCATION SEND ${location.longitude}, ${location.latitude}" }
                     locationChannel.send(GPSCoordinates(location.longitude, location.latitude))
                     locationChannel.close()
                     stopLocationUpdates()

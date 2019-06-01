@@ -10,6 +10,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ObsoleteCoroutinesApi
+import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.launch
 import mvvm.model.dark_sky.RepoDarkSkyForecast
 import org.jetbrains.anko.AnkoLogger
@@ -39,32 +40,31 @@ class CurrentlyForecastViewModel(val kodein: Kodein) : ViewModel(), AnkoLogger {
         viewModelScope.launch(handler) {
             this.launch(Dispatchers.Default) {
                 load()
-                dbObserve()
+                dataBaseObserve()
+                statusChannel()
             }
         }
     }
 
     private suspend fun load() {
         isLoading.set(true)
-        info { "TEST GOOOOOOO!!!" }
-
-
-        val status = mRepoForecast.loadForecast()
-        // info { "GPS RESPONSE [${status.longitude}, ${status.latitude}]" }
-
-
+        mRepoForecast.loadForecast()
         isLoading.set(false)
-        info { "TEST COMPLETE! $status" }
+
     }
 
+    private suspend fun statusChannel() {
+        mRepoForecast.channel().consumeEach {
+            info { "TEST STATUS [$it]" }
+        }
+    }
 
-    private suspend fun dbObserve() {
+    private suspend fun dataBaseObserve() {
         flow = mRepoForecast.db().apply {
             this.observeOn(AndroidSchedulers.mainThread())
             this.subscribe {
                 city.set(it.city)
                 temp.set(it.temperature.toString())
-                info { "TEST RX" }
             }
         }
     }

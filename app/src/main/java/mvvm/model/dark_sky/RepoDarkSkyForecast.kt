@@ -1,19 +1,18 @@
 package mvvm.model.dark_sky
 
 import io.reactivex.Flowable
-import kotlinx.coroutines.ObsoleteCoroutinesApi
-import kotlinx.coroutines.async
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
+import kotlinx.coroutines.channels.Channel
 import mvvm.model.gps.GPSCoordinates
 import mvvm.model.gps.RepoGPSCoordinates
 import mvvm.model.mapBox.RepoMapBox
 import org.jetbrains.anko.AnkoLogger
-import org.jetbrains.anko.info
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.generic.instance
 import room.AppEntity
 import utils.NetManager
+import utils.Status
 
 @ObsoleteCoroutinesApi
 class RepoDarkSkyForecast(private val netManager: NetManager, override val kodein: Kodein) : KodeinAware, AnkoLogger {
@@ -21,43 +20,56 @@ class RepoDarkSkyForecast(private val netManager: NetManager, override val kodei
     private val repoForecastRemoteData: RepoDarkSkyForecastRemoteData by instance()
     private val mRepoDarkSkyForecastLocalData: RepoDarkSkyForecastLocalData by instance()
     private val repoMapBox: RepoMapBox = RepoMapBox()
+    private val scope = CoroutineScope(Dispatchers.Default)
+    private val statusChannel = Channel<Status>()
 
-
-    private suspend fun locationDetermination() = runBlocking {
-        info("TEST locationDetermination")
+    private suspend fun locationDetermination() = withContext(Dispatchers.Default) {
+        sendStatus(Status.LOCATION_DETERMINATION)
         val locationDetermination = async { repoForecastLocation.getLocation().receive() }
         mapBoxPlaceName(locationDetermination.await())
     }
 
-    private suspend fun mapBoxPlaceName(gpsCoordinates: GPSCoordinates) = runBlocking {
-        info("TEST mapBoxPlaceName")
+    private suspend fun mapBoxPlaceName(gpsCoordinates: GPSCoordinates) = withContext(Dispatchers.Default) {
+        sendStatus(Status.LOOKING_FOR_LOCATION_NAME)
         val mapBoxPlaceName = async { repoMapBox.getLocationName(gpsCoordinates) }
         hasNeedUpdate(mapBoxPlaceName.await(), gpsCoordinates)
     }
 
-    private suspend fun hasNeedUpdate(placeName: String, gpsCoordinates: GPSCoordinates) = runBlocking {
-        info("TEST hasNeedUpdate $placeName")
-        if (mRepoDarkSkyForecastLocalData.checkNeedUpdate(placeName)) {
-            save(placeName, gpsCoordinates)
-        } else
-            info("TEST hasNeedUpdate $placeName FALSE")
-            false
-    }
+    private suspend fun hasNeedUpdate(placeName: String, gpsCoordinates: GPSCoordinates) =
+        withContext(Dispatchers.Default) {
 
-    private suspend fun save(placeName: String, gpsCoordinates: GPSCoordinates) = runBlocking {
-        info("TEST save")
+            if (mRepoDarkSkyForecastLocalData.checkNeedUpdate(placeName)) {
+                sendStatus(Status.UPDATE_NEEDED)
+                save(placeName, gpsCoordinates)
+            } else
+                sendStatus(Status.DATA_UP_TO_DATE)
+        }
+
+    private suspend fun save(placeName: String, gpsCoordinates: GPSCoordinates) = withContext(Dispatchers.Default) {
+        sendStatus(Status.SAVE_THE_DATA)
         mRepoDarkSkyForecastLocalData.saveForecastInDb(placeName, repoForecastRemoteData.forecastRemote(gpsCoordinates))
         mRepoDarkSkyForecastLocalData.saveCityQuery(placeName)
-        info("TEST save END")
     }
 
 
-    suspend fun loadForecast() = runBlocking {
+    suspend fun loadForecast() = withContext(Dispatchers.Default) {
         if (netManager.isConnectedToInternet!!) {
             locationDetermination()
         }
     }
 
-    suspend fun db(): Flowable<AppEntity> =
-        mRepoDarkSkyForecastLocalData.loadLocalForecast(mRepoDarkSkyForecastLocalData.getCity())
+    suspend fun db(): Flowable<AppEntity> {
+        sendStatus(Status.READY)
+        return mRepoDarkSkyForecastLocalData.loadLocalForecast(mRepoDarkSkyForecastLocalData.getCity())
+    }
+
+
+    private suspend fun sendStatus(status: Status) {
+        scope.launch {
+            statusChannel.send(status)
+        }
+    }
+
+    fun channel(): Channel<Status> = statusChannel
+
 }
