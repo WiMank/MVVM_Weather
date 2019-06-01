@@ -2,6 +2,7 @@ package mvvm.model.dark_sky
 
 import io.reactivex.Flowable
 import org.jetbrains.anko.AnkoLogger
+import org.jetbrains.anko.info
 import room.AppDAO
 import room.AppEntity
 import room.CityDAO
@@ -37,8 +38,9 @@ class RepoDarkSkyForecastLocalData(private val appDAO: AppDAO, private val cityD
     }
 
     suspend fun needUpdate(q: String): Boolean {
-        return if (q == cityDAO.getCityName().cityName) {
-            appDAO.updateTime(q) > System.currentTimeMillis()
+        return if (q == cityDAO.getCityName()?.cityName ?: "") {
+            info { "UpdateTime: [${appDAO.updateTime(q)}] CurrentTimeMillis: [${System.currentTimeMillis()}]" }
+            appDAO.updateTime(q) < System.currentTimeMillis()
         } else {
             true
         }
@@ -46,6 +48,10 @@ class RepoDarkSkyForecastLocalData(private val appDAO: AppDAO, private val cityD
 
     suspend fun saveCityQuery(cityName: String) {
         return cityDAO.insert(CityEntity(0, cityName))
+    }
+
+    suspend fun getCity(): String {
+        return cityDAO.getCityName()?.cityName ?: ""
     }
 
     fun loadLocalForecast(cityName: String): Flowable<AppEntity> {

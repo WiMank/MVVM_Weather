@@ -59,7 +59,6 @@ class RepoGPSCoordinates(private val context: Context) : AnkoLogger {
             for (location in locationResult.locations) {
                 scope.launch {
                     locationChannel.send(GPSCoordinates(location.longitude, location.latitude))
-                    locationChannel.close()
                     stopLocationUpdates()
                 }
             }
@@ -68,7 +67,6 @@ class RepoGPSCoordinates(private val context: Context) : AnkoLogger {
         override fun onLocationAvailability(locationAvailability: LocationAvailability) {
             if (!locationAvailability.isLocationAvailable) {
                 stopLocationUpdates()
-                locationChannel.close()
             }
         }
     }

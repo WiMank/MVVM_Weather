@@ -31,7 +31,7 @@ data class AppEntity(
     var precipProbability: Double = 0.0,
 
     @ColumnInfo(name = "precip_type")
-    var precipType: String = "",
+    var precipType: String? = "",
 
     var temperature: Double = 0.0,
 
