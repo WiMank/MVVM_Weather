@@ -38,9 +38,8 @@ class RepoDarkSkyForecast(
 
     private suspend fun hasNeedUpdate(placeName: String, gpsCoordinates: GPSCoordinates) =
         withContext(Dispatchers.Default) {
-
+            StatusChannel.sendStatus(Status.UPDATE_NEEDED)
             if (mRepoDarkSkyForecastLocalData.checkNeedUpdate(placeName)) {
-                StatusChannel.sendStatus(Status.UPDATE_NEEDED)
                 save(placeName, gpsCoordinates)
             } else
                 StatusChannel.sendStatus(Status.DATA_UP_TO_DATE)

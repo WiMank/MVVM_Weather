@@ -58,7 +58,7 @@ class CurrentlyForecastViewModel(
                 when (it) {
                     Status.LOCATION_DETERMINATION -> status.set("Определяем местоположение...")
                     Status.LOOKING_FOR_LOCATION_NAME -> status.set("Пытаемся найти название местоположения...")
-                    Status.UPDATE_NEEDED -> status.set("Обновляем данные...")
+                    Status.UPDATE_NEEDED -> status.set("Проверяем актуальность данных...")
                     Status.DATA_UP_TO_DATE -> status.set("Данные в актуальном состоянии!")
                     Status.SAVE_THE_DATA -> status.set("Сохраняем новые данные...")
                     Status.READY -> status.set("Готово!")
