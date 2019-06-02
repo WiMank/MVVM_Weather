@@ -61,6 +61,20 @@
                         android:layout_marginTop="32dp"
                         app:layout_constraintTop_toBottomOf="@+id/icon"/>
 
+                <TextView
+                        android:id="@+id/status"
+                        android:textSize="22sp"
+                        android:textStyle="bold"
+                        tools:text="STATUS"
+                        android:textColor="@color/colorAccent"
+                        android:text="@{viewModel.status}"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        app:layout_constraintBottom_toBottomOf="parent" android:layout_marginStart="8dp"
+                        app:layout_constraintStart_toStartOf="parent" android:layout_marginEnd="8dp"
+                        app:layout_constraintEnd_toEndOf="parent"/>
+
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

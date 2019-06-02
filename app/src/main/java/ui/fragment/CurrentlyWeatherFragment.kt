@@ -9,10 +9,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.wimank.mvvm.weather.R
 import com.wimank.mvvm.weather.databinding.FragmentCurrentlyWeatherBinding
+import kotlinx.coroutines.ObsoleteCoroutinesApi
 import mvvm.viewmodel.CurrentlyForecastViewModel
 import org.kodein.di.generic.instance
 
 
+@ObsoleteCoroutinesApi
 class CurrentlyWeatherFragment : KodeinFragment() {
     private lateinit var binding: FragmentCurrentlyWeatherBinding
     private val viewModelFactory: ViewModelProvider.Factory by instance()
