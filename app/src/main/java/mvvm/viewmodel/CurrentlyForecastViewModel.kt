@@ -7,19 +7,22 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.ObsoleteCoroutinesApi
 import kotlinx.coroutines.channels.consumeEach
+import kotlinx.coroutines.launch
 import mvvm.model.dark_sky.RepoDarkSkyForecast
-import mvvm.model.dark_sky.StatusRepo
+import mvvm.model.status.Status
+import mvvm.model.status.StatusChannel
 import org.jetbrains.anko.AnkoLogger
-import org.jetbrains.anko.info
 import org.kodein.di.Kodein
 import org.kodein.di.generic.instance
 import room.AppEntity
-import utils.Status
 
 
 @ObsoleteCoroutinesApi
+@ExperimentalCoroutinesApi
 class CurrentlyForecastViewModel(val kodein: Kodein) : ViewModel(), AnkoLogger {
     private val mRepoForecast: RepoDarkSkyForecast by kodein.instance()
     private val handler: CoroutineExceptionHandler by kodein.instance()
@@ -32,46 +35,32 @@ class CurrentlyForecastViewModel(val kodein: Kodein) : ViewModel(), AnkoLogger {
     val isLoading = ObservableBoolean(false)
 
     init {
-        start()
+        refresh()
     }
 
-    fun start() {
-
+    fun refresh() {
         viewModelScope.launch(handler) {
-            this.launch(Dispatchers.Default) {
-                load()
-                dataBaseObserve()
-                //statusChannel()
-
-
-                StatusRepo.rxChannel
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe {
-                        info {
-                            "RX $it"
-                        }
-
-                    }
-
-
-            }
+            statusChannel()
+            loadForecast()
+            dataBaseObserve()
         }
     }
 
-    private suspend fun load() {
+    private suspend fun loadForecast() {
         isLoading.set(true)
         mRepoForecast.loadForecast()
         isLoading.set(false)
     }
 
-    private suspend fun statusChannel() = withContext(Dispatchers.Default) {
-        this.launch {
-            StatusRepo.channel.consumeEach {
+
+    private suspend fun statusChannel() {
+        viewModelScope.launch {
+            StatusChannel.channel.consumeEach {
                 when (it) {
                     Status.LOCATION_DETERMINATION -> status.set("Определяем местоположение...")
                     Status.LOOKING_FOR_LOCATION_NAME -> status.set("Пытаемся найти название местоположения...")
                     Status.UPDATE_NEEDED -> status.set("Обновляем данные...")
-                    Status.DATA_UP_TO_DATE -> status.set("Данные в актуальном состоянии...")
+                    Status.DATA_UP_TO_DATE -> status.set("Данные в актуальном состоянии!")
                     Status.SAVE_THE_DATA -> status.set("Сохраняем новые данные...")
                     Status.READY -> status.set("Готово!")
                     Status.NO_NETWORK_CONNECTION -> status.set("Нет подключения к сети!")
@@ -88,5 +77,10 @@ class CurrentlyForecastViewModel(val kodein: Kodein) : ViewModel(), AnkoLogger {
                 temp.set(it.temperature.toString())
             }
         }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        StatusChannel.channel.close()
     }
 }

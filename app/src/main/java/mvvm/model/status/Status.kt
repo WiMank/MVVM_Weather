@@ -1,4 +1,4 @@
-package utils
+package mvvm.model.status
 
 enum class Status {
 
