@@ -16,16 +16,16 @@ import mvvm.model.dark_sky.RepoDarkSkyForecast
 import mvvm.model.status.Status
 import mvvm.model.status.StatusChannel
 import org.jetbrains.anko.AnkoLogger
-import org.kodein.di.Kodein
-import org.kodein.di.generic.instance
 import room.AppEntity
 
 
 @ObsoleteCoroutinesApi
 @ExperimentalCoroutinesApi
-class CurrentlyForecastViewModel(val kodein: Kodein) : ViewModel(), AnkoLogger {
-    private val mRepoForecast: RepoDarkSkyForecast by kodein.instance()
-    private val handler: CoroutineExceptionHandler by kodein.instance()
+class CurrentlyForecastViewModel(
+    private val mRepoForecast: RepoDarkSkyForecast,
+    private val handler: CoroutineExceptionHandler
+) : ViewModel(), AnkoLogger {
+
     private lateinit var flow: Flowable<AppEntity>
 
     val city = ObservableField<String>("CITY")
@@ -51,7 +51,6 @@ class CurrentlyForecastViewModel(val kodein: Kodein) : ViewModel(), AnkoLogger {
         mRepoForecast.loadForecast()
         isLoading.set(false)
     }
-
 
     private suspend fun statusChannel() {
         viewModelScope.launch {

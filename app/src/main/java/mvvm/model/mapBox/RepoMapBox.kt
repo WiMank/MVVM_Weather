@@ -14,17 +14,14 @@ class RepoMapBox : AnkoLogger {
 
         info("TEST MAP BOX latitude: ${gpsCoordinates.latitude}  longitude: ${gpsCoordinates.longitude}")
 
-
         val map = MapboxGeocoding.builder()
             .accessToken(MAP_BOX_TOKEN)
             .query(Point.fromLngLat(gpsCoordinates.longitude, gpsCoordinates.latitude))
             .geocodingTypes(GeocodingCriteria.TYPE_PLACE)
             .build().executeCall()
 
-        return if (map.isSuccessful and map.body()!!.features().isNotEmpty()) {
+        return if (map.isSuccessful and map.body()!!.features().isNotEmpty())
             map.body()?.features()!![0].text().toString()
-        } else {
-            "Empty"
-        }
+        else "EMPTY"
     }
 }

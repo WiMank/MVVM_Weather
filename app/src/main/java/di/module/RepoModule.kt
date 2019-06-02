@@ -5,6 +5,7 @@ import mvvm.model.dark_sky.RepoDarkSkyForecast
 import mvvm.model.dark_sky.RepoDarkSkyForecastLocalData
 import mvvm.model.dark_sky.RepoDarkSkyForecastRemoteData
 import mvvm.model.gps.RepoGPSCoordinates
+import mvvm.model.mapBox.RepoMapBox
 import org.kodein.di.Kodein
 import org.kodein.di.generic.bind
 import org.kodein.di.generic.instance
@@ -16,7 +17,7 @@ class RepoModule {
 
     val repoModule = Kodein.Module("repo_mdule") {
         bind() from singleton {
-            RepoDarkSkyForecast(instance(), kodein)
+            RepoDarkSkyForecast(instance(), instance(), instance(), instance(), instance())
         }
 
         bind() from singleton { RepoGPSCoordinates(instance()) }
@@ -30,5 +31,7 @@ class RepoModule {
         bind() from singleton {
             RepoDarkSkyForecastLocalData(instance(), instance())
         }
+
+        bind() from singleton { RepoMapBox() }
     }
 }

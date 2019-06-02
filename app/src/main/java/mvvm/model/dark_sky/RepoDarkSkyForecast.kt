@@ -11,18 +11,18 @@ import mvvm.model.mapBox.RepoMapBox
 import mvvm.model.status.Status
 import mvvm.model.status.StatusChannel
 import org.jetbrains.anko.AnkoLogger
-import org.kodein.di.Kodein
-import org.kodein.di.KodeinAware
-import org.kodein.di.generic.instance
 import room.AppEntity
 import utils.NetManager
 
 @ExperimentalCoroutinesApi
-class RepoDarkSkyForecast(private val netManager: NetManager, override val kodein: Kodein) : KodeinAware, AnkoLogger {
-    private val repoForecastLocation: RepoGPSCoordinates by instance()
-    private val repoForecastRemoteData: RepoDarkSkyForecastRemoteData by instance()
-    private val mRepoDarkSkyForecastLocalData: RepoDarkSkyForecastLocalData by instance()
-    private val repoMapBox: RepoMapBox = RepoMapBox()
+class RepoDarkSkyForecast(
+    private val repoForecastRemoteData: RepoDarkSkyForecastRemoteData,
+    private val repoForecastLocation: RepoGPSCoordinates,
+    private val mRepoDarkSkyForecastLocalData: RepoDarkSkyForecastLocalData,
+    private val repoMapBox: RepoMapBox,
+    private val netManager: NetManager
+) : AnkoLogger {
+
 
     private suspend fun locationDetermination() = withContext(Dispatchers.Default) {
         StatusChannel.sendStatus(Status.LOCATION_DETERMINATION)
