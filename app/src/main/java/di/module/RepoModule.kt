@@ -1,5 +1,6 @@
 package di.module
 
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import mvvm.model.dark_sky.RepoDarkSkyForecast
 import mvvm.model.dark_sky.RepoDarkSkyForecastLocalData
 import mvvm.model.dark_sky.RepoDarkSkyForecastRemoteData
@@ -10,25 +11,23 @@ import org.kodein.di.generic.instance
 import org.kodein.di.generic.singleton
 
 
+@ExperimentalCoroutinesApi
 class RepoModule {
 
     val repoModule = Kodein.Module("repo_mdule") {
-        bind<RepoDarkSkyForecast>() with singleton {
-            RepoDarkSkyForecast(
-                instance(),
-                kodein
-            )
+        bind() from singleton {
+            RepoDarkSkyForecast(instance(), kodein)
         }
 
-        bind<RepoGPSCoordinates>() with singleton { RepoGPSCoordinates(instance()) }
+        bind() from singleton { RepoGPSCoordinates(instance()) }
 
-        bind<RepoDarkSkyForecastRemoteData>() with singleton {
+        bind() from singleton {
             RepoDarkSkyForecastRemoteData(
                 instance()
             )
         }
 
-        bind<RepoDarkSkyForecastLocalData>() with singleton {
+        bind() from singleton {
             RepoDarkSkyForecastLocalData(instance(), instance())
         }
     }

@@ -6,6 +6,8 @@ import di.module.RepoModule
 import di.module.RoomModule
 import di.module.ViewModelModule
 import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.ObsoleteCoroutinesApi
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.info
 import org.kodein.di.Kodein
@@ -16,6 +18,8 @@ import org.kodein.di.generic.instance
 import org.kodein.di.generic.singleton
 import utils.NetManager
 
+@ExperimentalCoroutinesApi
+@ObsoleteCoroutinesApi
 @Suppress("unused")
 class KodeinApp : Application(), KodeinAware, AnkoLogger {
 
@@ -26,18 +30,12 @@ class KodeinApp : Application(), KodeinAware, AnkoLogger {
         import(RepoModule().repoModule)
         import(KtorModule().ktorClientModule)
 
-        bind<NetManager>() with singleton { NetManager(instance()) }
+        bind() from singleton { NetManager(instance()) }
 
-        bind<CoroutineExceptionHandler>() with singleton {
+        bind() from singleton {
             CoroutineExceptionHandler { _, exception ->
                 info("Caught $exception")
             }
         }
-    }
-
-    override fun onCreate() {
-        super.onCreate()
-        val k = kodein
-        println(k)
     }
 }
