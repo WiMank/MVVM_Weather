@@ -20,7 +20,6 @@ class RepoDarkSkyForecast(
     private val netManager: NetManager
 ) : AnkoLogger {
 
-
     private suspend fun locationDetermination() {
         StatusChannel.sendStatus(Status.LOCATION_DETERMINATION)
         mapBoxPlaceName(repoForecastLocation.getLocation().receive())
@@ -42,9 +41,8 @@ class RepoDarkSkyForecast(
         StatusChannel.sendStatus(Status.SAVE_THE_DATA)
         mRepoDarkSkyForecastLocalData.saveForecastInDb(placeName, repoForecastRemoteData.forecastRemote(gpsCoordinates))
         mRepoDarkSkyForecastLocalData.saveCityQuery(placeName)
-        StatusChannel.sendStatus(Status.READY)
+        StatusChannel.sendStatus(Status.DONE)
     }
-
 
     suspend fun loadGPSForecast() {
         if (netManager.isConnectedToInternet!!)
