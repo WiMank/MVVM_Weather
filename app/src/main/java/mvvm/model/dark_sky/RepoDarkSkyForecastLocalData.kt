@@ -41,20 +41,13 @@ class RepoDarkSkyForecastLocalData(private val appDAO: AppDAO, private val cityD
         return if (q == cityDAO.getCityName()?.cityName ?: "") {
             info { "UpdateTime: [${appDAO.updateTime(q)}] CurrentTimeMillis: [${System.currentTimeMillis()}]" }
             appDAO.updateTime(q) ?: 0 < System.currentTimeMillis()
-        } else {
-            true
-        }
+        } else true
     }
 
-    suspend fun saveCityQuery(cityName: String) {
-        return cityDAO.insert(CityEntity(0, cityName))
-    }
+    suspend fun saveCityQuery(cityName: String) = cityDAO.insert(CityEntity(0, cityName))
 
-    suspend fun getCity(): String {
-        return cityDAO.getCityName()?.cityName ?: ""
-    }
+    suspend fun getCity(): String = cityDAO.getCityName()?.cityName ?: ""
 
-    fun loadLocalForecast(cityName: String): Flowable<AppEntity> {
-        return appDAO.getByNameAsync(cityName)
-    }
+    fun loadLocalForecast(cityName: String): Flowable<AppEntity> = appDAO.getByNameAsync(cityName)
+
 }

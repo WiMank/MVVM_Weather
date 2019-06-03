@@ -90,29 +90,23 @@ dependencies {
     //Lifecycle
     val lifecycleVersion = "2.2.0-alpha01"
     implementation("androidx.lifecycle:lifecycle-extensions:$lifecycleVersion")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion")
 
     //Location
     implementation("com.google.android.gms:play-services-location:16.0.0")
 
     //Ktor
-    val ktor_version = "1.2.0"
-    implementation("io.ktor:ktor-client-core:$ktor_version")
-    implementation("io.ktor:ktor-client-android:$ktor_version")
-    implementation("io.ktor:ktor-client-json-jvm:$ktor_version")
-    implementation("io.ktor:ktor-client-gson:$ktor_version")
-    implementation("io.ktor:ktor-client-logging-jvm:$ktor_version")
-    // implementation("io.ktor:ktor-client-jackson:$ktor_version")
-    // implementation ("io.ktor:ktor-client-okhttp:$ktor_version")
+    val ktorVersion = "1.2.0"
+    implementation("io.ktor:ktor-client-core:$ktorVersion")
+    implementation("io.ktor:ktor-client-android:$ktorVersion")
+    implementation("io.ktor:ktor-client-json-jvm:$ktorVersion")
+    implementation("io.ktor:ktor-client-gson:$ktorVersion")
+    implementation("io.ktor:ktor-client-logging-jvm:$ktorVersion")
 
     //MapBox
     implementation("com.mapbox.mapboxsdk:mapbox-android-plugin-places-v7:0.8.0")
 
-    //  implementation  ("com.google.android.gms:play-services-location:16.0.0")
-
-
-    val retrofit_version = "2.5.0"
-    implementation("com.squareup.retrofit2:retrofit:$retrofit_version")
-    implementation("com.squareup.retrofit2:converter-gson:$retrofit_version")
+    val retrofitVersion = "2.5.0"
+    implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
+    implementation("com.squareup.retrofit2:converter-gson:$retrofitVersion")
     implementation("com.squareup.okhttp3:logging-interceptor:3.12.0")
 }

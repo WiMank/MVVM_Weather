@@ -4,14 +4,10 @@ import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
-import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.ObsoleteCoroutinesApi
+import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.consumeEach
-import kotlinx.coroutines.launch
 import mvvm.model.dark_sky.RepoDarkSkyForecast
 import mvvm.model.status.Status
 import mvvm.model.status.StatusChannel
@@ -27,6 +23,8 @@ class CurrentlyForecastViewModel(
 ) : ViewModel(), AnkoLogger {
 
     private lateinit var flow: Flowable<AppEntity>
+    private val job = SupervisorJob()
+    private val scope = CoroutineScope(Dispatchers.Default + job)
 
     val city = ObservableField<String>("CITY")
     val temp = ObservableField<String>("TEMP")
@@ -34,12 +32,13 @@ class CurrentlyForecastViewModel(
     val icon = ObservableInt(0)
     val isLoading = ObservableBoolean(false)
 
+
     init {
         refresh()
     }
 
     fun refresh() {
-        viewModelScope.launch(handler) {
+        scope.launch(handler) {
             statusChannel()
             loadForecast()
             dataBaseObserve()
@@ -48,22 +47,20 @@ class CurrentlyForecastViewModel(
 
     private suspend fun loadForecast() {
         isLoading.set(true)
-        mRepoForecast.loadForecast()
+        mRepoForecast.loadGPSForecast()
         isLoading.set(false)
     }
 
-    private suspend fun statusChannel() {
-        viewModelScope.launch {
-            StatusChannel.channel.consumeEach {
-                when (it) {
-                    Status.LOCATION_DETERMINATION -> status.set("Определяем местоположение...")
-                    Status.LOOKING_FOR_LOCATION_NAME -> status.set("Пытаемся найти название местоположения...")
-                    Status.UPDATE_NEEDED -> status.set("Проверяем актуальность данных...")
-                    Status.DATA_UP_TO_DATE -> status.set("Данные в актуальном состоянии!")
-                    Status.SAVE_THE_DATA -> status.set("Сохраняем новые данные...")
-                    Status.READY -> status.set("Готово!")
-                    Status.NO_NETWORK_CONNECTION -> status.set("Нет подключения к сети!")
-                }
+    private suspend fun statusChannel() = scope.launch {
+        StatusChannel.channel.consumeEach {
+            when (it) {
+                Status.LOCATION_DETERMINATION -> status.set("Определяем местоположение...")
+                Status.LOOKING_FOR_LOCATION_NAME -> status.set("Пытаемся найти название местоположения...")
+                Status.UPDATE_NEEDED -> status.set("Проверяем актуальность данных...")
+                Status.DATA_UP_TO_DATE -> status.set("Данные в актуальном состоянии!")
+                Status.SAVE_THE_DATA -> status.set("Сохраняем новые данные...")
+                Status.READY -> status.set("Готово!")
+                Status.NO_NETWORK_CONNECTION -> status.set("Нет подключения к сети!")
             }
         }
     }
@@ -81,5 +78,6 @@ class CurrentlyForecastViewModel(
     override fun onCleared() {
         super.onCleared()
         StatusChannel.channel.close()
+        job.cancel()
     }
 }

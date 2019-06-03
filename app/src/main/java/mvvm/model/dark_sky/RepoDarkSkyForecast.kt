@@ -1,10 +1,7 @@
 package mvvm.model.dark_sky
 
 import io.reactivex.Flowable
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.async
-import kotlinx.coroutines.withContext
 import mvvm.model.gps.GPSCoordinates
 import mvvm.model.gps.RepoGPSCoordinates
 import mvvm.model.mapBox.RepoMapBox
@@ -24,28 +21,24 @@ class RepoDarkSkyForecast(
 ) : AnkoLogger {
 
 
-    private suspend fun locationDetermination() = withContext(Dispatchers.Default) {
+    private suspend fun locationDetermination() {
         StatusChannel.sendStatus(Status.LOCATION_DETERMINATION)
-        val locationDetermination = async { repoForecastLocation.getLocation().receive() }
-        mapBoxPlaceName(locationDetermination.await())
+        mapBoxPlaceName(repoForecastLocation.getLocation().receive())
     }
 
-    private suspend fun mapBoxPlaceName(gpsCoordinates: GPSCoordinates) = withContext(Dispatchers.Default) {
+    private suspend fun mapBoxPlaceName(gpsCoordinates: GPSCoordinates) {
         StatusChannel.sendStatus(Status.LOOKING_FOR_LOCATION_NAME)
-        val mapBoxPlaceName = async { repoMapBox.getLocationName(gpsCoordinates) }
-        hasNeedUpdate(mapBoxPlaceName.await(), gpsCoordinates)
+        hasNeedUpdate(repoMapBox.getLocationName(gpsCoordinates), gpsCoordinates)
     }
 
-    private suspend fun hasNeedUpdate(placeName: String, gpsCoordinates: GPSCoordinates) =
-        withContext(Dispatchers.Default) {
-            StatusChannel.sendStatus(Status.UPDATE_NEEDED)
-            if (mRepoDarkSkyForecastLocalData.checkNeedUpdate(placeName)) {
-                save(placeName, gpsCoordinates)
-            } else
-                StatusChannel.sendStatus(Status.DATA_UP_TO_DATE)
-        }
+    private suspend fun hasNeedUpdate(placeName: String, gpsCoordinates: GPSCoordinates) {
+        StatusChannel.sendStatus(Status.UPDATE_NEEDED)
+        if (mRepoDarkSkyForecastLocalData.checkNeedUpdate(placeName))
+            save(placeName, gpsCoordinates)
+        else StatusChannel.sendStatus(Status.DATA_UP_TO_DATE)
+    }
 
-    private suspend fun save(placeName: String, gpsCoordinates: GPSCoordinates) = withContext(Dispatchers.Default) {
+    private suspend fun save(placeName: String, gpsCoordinates: GPSCoordinates) {
         StatusChannel.sendStatus(Status.SAVE_THE_DATA)
         mRepoDarkSkyForecastLocalData.saveForecastInDb(placeName, repoForecastRemoteData.forecastRemote(gpsCoordinates))
         mRepoDarkSkyForecastLocalData.saveCityQuery(placeName)
@@ -53,11 +46,10 @@ class RepoDarkSkyForecast(
     }
 
 
-    suspend fun loadForecast() = withContext(Dispatchers.Default) {
+    suspend fun loadGPSForecast() {
         if (netManager.isConnectedToInternet!!)
             locationDetermination()
-        else
-            StatusChannel.sendStatus(Status.NO_NETWORK_CONNECTION)
+        else StatusChannel.sendStatus(Status.NO_NETWORK_CONNECTION)
     }
 
     suspend fun db(): Flowable<AppEntity> {
