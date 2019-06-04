@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">MVVM Weather</string>
     <string name="rationale_gps_perm">Access to GPS is required to determine your location.</string>
+    <string name="search">Search</string>
 </resources>

@@ -10,72 +10,123 @@
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                app:refreshing="@{safeUnbox(viewModel.isLoading)}"
-                app:onRefreshListener="@{() -> viewModel.refresh()}">
-            <androidx.constraintlayout.widget.ConstraintLayout
+
+        <LinearLayout android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:orientation="vertical">
+
+
+            <com.google.android.material.appbar.AppBarLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    tools:context="ui.fragment.CurrentlyWeatherFragment">
+                    android:layout_height="?attr/actionBarSize"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:id="@+id/appBarLayout">
 
-                <TextView
-                        android:id="@+id/city"
-                        tools:text="Moscow"
-                        android:text="@{viewModel.city}"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        android:layout_marginEnd="8dp"
-                        android:layout_marginStart="8dp"/>
 
-                <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/icon"
-                        android:bindSrc="@{safeUnbox(viewModel.icon)}"
-                        android:layout_marginTop="32dp"
-                        app:layout_constraintTop_toBottomOf="@+id/city"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        android:layout_marginEnd="8dp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        android:layout_marginStart="8dp"
-                        tools:ignore="ContentDescription"/>
+                <Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+                         android:orientation="vertical"
+                         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                         android:layout_width="match_parent"
+                         android:id="@+id/toolbar"
+                         android:layout_height="?attr/actionBarSize"
+                         android:background="?attr/colorPrimary">
 
-                <TextView
-                        android:id="@+id/temp"
-                        android:textSize="22sp"
-                        android:textStyle="bold"
-                        tools:text="64.5"
-                        android:text="@{viewModel.temp}"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        android:layout_marginEnd="8dp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginTop="32dp"
-                        app:layout_constraintTop_toBottomOf="@+id/icon"/>
+                    <ImageView
+                            android:id="@+id/gps"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_gravity="end"
+                            android:layout_marginEnd="16dp"
+                            android:onClick="@{(v) -> viewModel.refresh()}"
+                            android:src="@drawable/ic_baseline_gps_fixed_24px"
+                            tools:ignore="ContentDescription"/>
 
-                <TextView
-                        android:id="@+id/status"
-                        tools:text="STATUS"
-                        android:textColor="@color/colorAccent"
-                        android:text="@{viewModel.status}"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        android:layout_marginStart="8dp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        android:layout_marginEnd="8dp"
-                        app:layout_constraintEnd_toEndOf="parent"/>
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+                    <ImageView
+                            android:id="@+id/search"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_gravity="end"
+                            android:layout_marginEnd="24dp"
+                            android:src="@drawable/ic_baseline_search_24px"
+                            tools:ignore="ContentDescription"/>
+
+                </Toolbar>
+
+
+            </com.google.android.material.appbar.AppBarLayout>
+
+
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    app:refreshing="@{safeUnbox(viewModel.isLoading)}"
+                    app:onRefreshListener="@{() -> viewModel.refresh()}">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        tools:context="ui.fragment.CurrentlyWeatherFragment">
+
+                    <TextView
+                            android:id="@+id/city"
+                            tools:text="Moscow"
+                            android:text="@{viewModel.city}"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginStart="8dp"/>
+
+                    <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/icon"
+                            android:bindSrc="@{safeUnbox(viewModel.icon)}"
+                            android:layout_marginTop="32dp"
+                            app:layout_constraintTop_toBottomOf="@+id/city"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            android:layout_marginEnd="8dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            android:layout_marginStart="8dp"
+                            tools:ignore="ContentDescription"/>
+
+                    <TextView
+                            android:id="@+id/temp"
+                            android:textSize="22sp"
+                            android:textStyle="bold"
+                            tools:text="64.5"
+                            android:text="@{viewModel.temp}"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            android:layout_marginEnd="8dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="32dp"
+                            app:layout_constraintTop_toBottomOf="@+id/icon"/>
+
+                    <TextView
+                            android:id="@+id/status"
+                            tools:text="STATUS"
+                            android:textColor="@color/colorAccent"
+                            android:text="@{viewModel.status}"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            android:layout_marginStart="8dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            android:layout_marginEnd="8dp"
+                            app:layout_constraintEnd_toEndOf="parent"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+        </LinearLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

@@ -12,6 +12,7 @@ import mvvm.model.dark_sky.RepoDarkSkyForecast
 import mvvm.model.status.Status
 import mvvm.model.status.StatusChannel
 import org.jetbrains.anko.AnkoLogger
+import org.jetbrains.anko.info
 
 
 @ObsoleteCoroutinesApi
@@ -35,14 +36,21 @@ class CurrentlyForecastViewModel(
     }
 
     fun refresh() {
+        info { "TEWRTERTERT" }
         scope.launch(handler) {
-            statusChannel()
-            loadForecast()
-            dataBaseObserve()
+            //  statusChannel()
+            //   loadForecast()
+            // dataBaseObserve()
         }
     }
 
     private suspend fun loadForecast() {
+        isLoading.set(true)
+        mRepoForecast.loadGPSForecast()
+        isLoading.set(false)
+    }
+
+    private suspend fun loadPlaceNameForecast() {
         isLoading.set(true)
         mRepoForecast.loadGPSForecast()
         isLoading.set(false)

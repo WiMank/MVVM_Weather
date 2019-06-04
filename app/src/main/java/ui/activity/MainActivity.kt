@@ -6,6 +6,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.ObsoleteCoroutinesApi
 import ui.fragment.CurrentlyWeatherFragment
 
+
 @ObsoleteCoroutinesApi
 @ExperimentalCoroutinesApi
 class MainActivity : KodeinActivity() {
@@ -17,6 +18,7 @@ class MainActivity : KodeinActivity() {
         supportFragmentManager.beginTransaction()
             .add(R.id.main_frame, CurrentlyWeatherFragment(), "frc")
             .commit()
+
 
     }
 }
