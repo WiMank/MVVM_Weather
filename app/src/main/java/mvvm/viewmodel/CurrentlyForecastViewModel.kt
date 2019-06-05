@@ -1,5 +1,6 @@
 package mvvm.viewmodel
 
+import androidx.appcompat.widget.SearchView
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
@@ -35,6 +36,7 @@ class CurrentlyForecastViewModel(
         refresh()
     }
 
+
     fun refresh() {
         info { "TEWRTERTERT" }
         scope.launch(handler) {
@@ -44,17 +46,20 @@ class CurrentlyForecastViewModel(
         }
     }
 
+
     private suspend fun loadForecast() {
         isLoading.set(true)
         mRepoForecast.loadGPSForecast()
         isLoading.set(false)
     }
 
+
     private suspend fun loadPlaceNameForecast() {
         isLoading.set(true)
         mRepoForecast.loadGPSForecast()
         isLoading.set(false)
     }
+
 
     private suspend fun statusChannel() = scope.launch {
         StatusChannel.channel.consumeEach {
@@ -70,6 +75,7 @@ class CurrentlyForecastViewModel(
         }
     }
 
+
     private suspend fun dataBaseObserve() {
         composite.add(
             mRepoForecast.db()
@@ -78,6 +84,19 @@ class CurrentlyForecastViewModel(
                     city.set(it.city)
                     temp.set(it.temperature.toString())
                 })
+    }
+
+
+    val onQueryTextListener = object : SearchView.OnQueryTextListener {
+        override fun onQueryTextSubmit(query: String?): Boolean {
+            info("$query")
+            return false
+        }
+
+        override fun onQueryTextChange(newText: String?): Boolean {
+            info("$newText")
+            return false
+        }
     }
 
 

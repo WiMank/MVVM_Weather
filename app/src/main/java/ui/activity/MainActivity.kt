@@ -19,6 +19,5 @@ class MainActivity : KodeinActivity() {
             .add(R.id.main_frame, CurrentlyWeatherFragment(), "frc")
             .commit()
 
-
     }
 }
