@@ -31,6 +31,7 @@ class CurrentlyForecastViewModel(
     val status = ObservableField<String>("...")
     val icon = ObservableInt(0)
     val isLoading = ObservableBoolean(false)
+    val collapseSearchView = ObservableBoolean(false)
 
     init {
         refresh()
@@ -38,14 +39,17 @@ class CurrentlyForecastViewModel(
 
 
     fun refresh() {
-        info { "TEWRTERTERT" }
         scope.launch(handler) {
-            //  statusChannel()
-            //   loadForecast()
-            // dataBaseObserve()
+            initStatusAndDb()
+            //loadForecast()
         }
     }
 
+
+    private suspend fun initStatusAndDb() {
+        statusChannel()
+        dataBaseObserve()
+    }
 
     private suspend fun loadForecast() {
         isLoading.set(true)
@@ -71,6 +75,7 @@ class CurrentlyForecastViewModel(
                 Status.SAVE_THE_DATA -> status.set("Сохраняем новые данные...")
                 Status.DONE -> status.set("Готово!")
                 Status.NO_NETWORK_CONNECTION -> status.set("Нет подключения к сети!")
+                Status.PLACE_COORDINATES -> status.set("Узнаём координаты места...")
             }
         }
     }
@@ -90,6 +95,14 @@ class CurrentlyForecastViewModel(
     val onQueryTextListener = object : SearchView.OnQueryTextListener {
         override fun onQueryTextSubmit(query: String?): Boolean {
             info("$query")
+            scope.launch {
+                mRepoForecast.loadPlaceNameCoordinates(query ?: "")
+                initStatusAndDb()
+                if (collapseSearchView.get())
+                    collapseSearchView.set(false)
+                else
+                    collapseSearchView.set(true)
+            }
             return false
         }
 

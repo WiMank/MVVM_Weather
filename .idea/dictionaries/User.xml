@@ -4,6 +4,7 @@
       <w>anko</w>
       <w>constraintlayout</w>
       <w>coroutines</w>
+      <w>geocoding</w>
       <w>kapt</w>
       <w>kodein</w>
       <w>kotlinx</w>
@@ -13,6 +14,7 @@
       <w>squareup</w>
       <w>viewmodel</w>
       <w>wikidata</w>
+      <w>сoordinates</w>
     </words>
   </dictionary>
 </component>

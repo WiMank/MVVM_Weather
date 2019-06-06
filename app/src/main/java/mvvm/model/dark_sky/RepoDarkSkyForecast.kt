@@ -20,6 +20,11 @@ class RepoDarkSkyForecast(
     private val netManager: NetManager
 ) : AnkoLogger {
 
+    private suspend fun placeCoordinates(place: String) {
+        StatusChannel.sendStatus(Status.PLACE_COORDINATES)
+        hasNeedUpdate(place, repoMapBox.coordinatesByName(place))
+    }
+
     private suspend fun locationDetermination() {
         StatusChannel.sendStatus(Status.LOCATION_DETERMINATION)
         mapBoxPlaceName(repoForecastLocation.getLocation().receive())
@@ -27,7 +32,7 @@ class RepoDarkSkyForecast(
 
     private suspend fun mapBoxPlaceName(gpsCoordinates: GPSCoordinates) {
         StatusChannel.sendStatus(Status.LOOKING_FOR_LOCATION_NAME)
-        hasNeedUpdate(repoMapBox.getLocationName(gpsCoordinates), gpsCoordinates)
+        hasNeedUpdate(repoMapBox.locationName(gpsCoordinates), gpsCoordinates)
     }
 
     private suspend fun hasNeedUpdate(placeName: String, gpsCoordinates: GPSCoordinates) {
@@ -47,6 +52,12 @@ class RepoDarkSkyForecast(
     suspend fun loadGPSForecast() {
         if (netManager.isConnectedToInternet!!)
             locationDetermination()
+        else StatusChannel.sendStatus(Status.NO_NETWORK_CONNECTION)
+    }
+
+    suspend fun loadPlaceNameCoordinates(place: String) {
+        if (netManager.isConnectedToInternet!!)
+            placeCoordinates(place)
         else StatusChannel.sendStatus(Status.NO_NETWORK_CONNECTION)
     }
 
