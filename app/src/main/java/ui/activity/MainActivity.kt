@@ -15,7 +15,6 @@ class MainActivity : KodeinActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        //TODO: Проблема пересоздания viewmodel
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
                 .add(R.id.main_frame, CurrentlyWeatherFragment(), "frc")

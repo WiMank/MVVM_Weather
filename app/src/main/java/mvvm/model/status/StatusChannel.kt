@@ -6,7 +6,7 @@ import kotlinx.coroutines.channels.ConflatedBroadcastChannel
 import kotlinx.coroutines.withContext
 
 @ExperimentalCoroutinesApi
-object StatusChannel {
+class StatusChannel {
 
     val channel: ConflatedBroadcastChannel<Status> = ConflatedBroadcastChannel()
 

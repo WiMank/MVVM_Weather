@@ -24,7 +24,8 @@ class CurrentlyForecastViewModel(
     private val mRepoForecast: RepoDarkSkyForecast,
     private val handler: CoroutineExceptionHandler,
     private val observableFields: ObservableFields,
-    private val settings: Settings
+    private val settings: Settings,
+    private val statusChannel: StatusChannel
 ) : ViewModel(), AnkoLogger {
 
     private val job = SupervisorJob()
@@ -32,36 +33,39 @@ class CurrentlyForecastViewModel(
     private val composite = CompositeDisposable()
 
     init {
-        info { "VM init" }
         refresh()
+        info { "VM StatusChannel [$statusChannel]" }
     }
 
-
     fun refresh() = scope.launch(handler) {
-        info { "GPS: [${settings.getBooleanSettings(GPS_KEY)}] PLACE: [${settings.getBooleanSettings(PLACE_KEY)}]" }
+        info { "VM GPS: [${settings.getBooleanSettings(GPS_KEY)}] PLACE: [${settings.getBooleanSettings(PLACE_KEY)}]" }
         statusChannel()
         when {
             settings.getBooleanSettings(PLACE_KEY) -> {
                 if (settings.getStringsSettings(SEARCH_QUERY).isNotEmpty()) {
                     observableFields.gpsEnabled.set(false)
                     loadPlaceNameForecast(settings.getStringsSettings(SEARCH_QUERY))
+                    info { "VM PLACE_KEY TRUE" }
                 }
             }
             settings.getBooleanSettings(GPS_KEY) -> {
                 observableFields.gpsEnabled.set(true)
                 loadGPSForecast()
+                info { "VM GPS_KEY TRUE" }
             }
 
             else -> {
                 observableFields.gpsEnabled.set(true)
                 settings.saveSettings(GPS_KEY, true)
                 loadGPSForecast()
+                info { "VM ELSE" }
             }
         }
         dataBaseObserve()
     }
 
     private suspend fun loadGPSForecast() {
+        info { "VM loadGPSForecast()" }
         observableFields.isLoading.set(true)
         mRepoForecast.loadGPSForecast()
         observableFields.isLoading.set(false)
@@ -74,9 +78,8 @@ class CurrentlyForecastViewModel(
         observableFields.isLoading.set(false)
     }
 
-
     private suspend fun statusChannel() = scope.launch {
-        StatusChannel.channel.consumeEach {
+        statusChannel.channel.consumeEach {
             when (it) {
                 Status.LOCATION_DETERMINATION -> observableFields.status.set("Определяем местоположение...")
                 Status.LOOKING_FOR_LOCATION_NAME -> observableFields.status.set("Пытаемся найти название местоположения...")
@@ -125,9 +128,11 @@ class CurrentlyForecastViewModel(
     }
 
     override fun onCleared() {
-        info { "VM onCleared()" }
+        info { "VM onCleared() ${observableFields.isLoading.get()}" }
         super.onCleared()
-        StatusChannel.channel.close()
+        observableFields.isLoading.set(false)
+        //Проблема с закрытием канала
+        //statusChannel.channel.close()
         composite.dispose()
         job.cancel()
     }

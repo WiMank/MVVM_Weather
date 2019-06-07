@@ -19,11 +19,13 @@ class ViewModelModule {
                 instance(),
                 instance(),
                 instance(),
+                instance(),
                 instance()
             )
         }
         bind() from provider {
             KodeinViewModelFactory(
+                instance(),
                 instance(),
                 instance(),
                 instance(),

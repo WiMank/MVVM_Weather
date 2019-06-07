@@ -1,29 +1,17 @@
 package di
 
 import android.app.Application
-import di.module.KtorModule
-import di.module.RepoModule
-import di.module.RoomModule
-import di.module.ViewModelModule
-import kotlinx.coroutines.CoroutineExceptionHandler
+import di.module.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.ObsoleteCoroutinesApi
-import mvvm.model.dark_sky.ObservableFields
-import org.jetbrains.anko.AnkoLogger
-import org.jetbrains.anko.info
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.androidXModule
-import org.kodein.di.generic.bind
-import org.kodein.di.generic.instance
-import org.kodein.di.generic.singleton
-import utils.NetManager
-import utils.Settings
 
 @ExperimentalCoroutinesApi
 @ObsoleteCoroutinesApi
 @Suppress("unused")
-class KodeinApp : Application(), KodeinAware, AnkoLogger {
+class KodeinApp : Application(), KodeinAware {
 
     override val kodein by Kodein.lazy {
         import(androidXModule(this@KodeinApp))
@@ -31,17 +19,6 @@ class KodeinApp : Application(), KodeinAware, AnkoLogger {
         import(ViewModelModule().viewModelModule)
         import(RepoModule().repoModule)
         import(KtorModule().ktorClientModule)
-
-        bind() from singleton {
-            CoroutineExceptionHandler { _, exception ->
-                info("Caught $exception")
-            }
-        }
-
-        bind() from singleton { NetManager(instance()) }
-
-        bind() from singleton { ObservableFields() }
-
-        bind() from singleton { Settings(instance()) }
+        import(UtilsModule().utilsModule)
     }
 }
