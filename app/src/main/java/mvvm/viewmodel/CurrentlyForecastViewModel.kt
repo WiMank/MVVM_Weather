@@ -38,7 +38,6 @@ class CurrentlyForecastViewModel(
 
     fun refresh() = scope.launch(handler) {
         info { "GPS ${settings.getBooleanSettings(GPS_KEY)} PLACE ${settings.getBooleanSettings(PLACE_KEY)}" }
-        initStatusAndDb()
         when {
             settings.getBooleanSettings(PLACE_KEY) -> {
                 info { PLACE_KEY }
@@ -58,6 +57,7 @@ class CurrentlyForecastViewModel(
                 loadGPSForecast()
             }
         }
+        initStatusAndDb()
     }
 
     private suspend fun loadGPSForecast() {
