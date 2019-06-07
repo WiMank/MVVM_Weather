@@ -43,7 +43,7 @@
                             android:layout_height="24dp"
                             android:layout_gravity="end"
                             android:layout_marginEnd="16dp"
-                            android:onClick="@{(v) -> viewModel.refresh()}"
+                            android:onClick="@{(v) -> viewModel.gps()}"
                             android:src="@drawable/ic_baseline_gps_fixed_24px"
                             tools:ignore="ContentDescription"/>
 

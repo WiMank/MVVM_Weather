@@ -48,6 +48,6 @@ class RepoDarkSkyForecastLocalData(private val appDAO: AppDAO, private val cityD
 
     suspend fun getCity(): String = cityDAO.getCityName()?.cityName ?: ""
 
-    fun loadLocalForecast(cityName: String): Flowable<AppEntity> = appDAO.getByNameAsync(cityName)
+    fun forecastDB(cityName: String): Flowable<AppEntity> = appDAO.getByNameAsync(cityName)
 
 }

@@ -12,6 +12,10 @@ import mvvm.model.status.Status
 import mvvm.model.status.StatusChannel
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.info
+import utils.GPS_KEY
+import utils.PLACE_KEY
+import utils.SEARCH_QUERY
+import utils.Settings
 
 
 @ObsoleteCoroutinesApi
@@ -19,7 +23,8 @@ import org.jetbrains.anko.info
 class CurrentlyForecastViewModel(
     private val mRepoForecast: RepoDarkSkyForecast,
     private val handler: CoroutineExceptionHandler,
-    private val observableFields: ObservableFields
+    private val observableFields: ObservableFields,
+    private val settings: Settings
 ) : ViewModel(), AnkoLogger {
 
     private val job = SupervisorJob()
@@ -31,32 +36,47 @@ class CurrentlyForecastViewModel(
     }
 
 
-    fun refresh() {
-        scope.launch(handler) {
-            initStatusAndDb()
-            //loadForecast()
+    fun refresh() = scope.launch(handler) {
+        info { "GPS ${settings.getBooleanSettings(GPS_KEY)} PLACE ${settings.getBooleanSettings(PLACE_KEY)}" }
+        initStatusAndDb()
+        when {
+            settings.getBooleanSettings(PLACE_KEY) -> {
+                info { PLACE_KEY }
+                if (settings.getStringsSettings(SEARCH_QUERY).isNotEmpty()) {
+                    info { "City ${settings.getStringsSettings(SEARCH_QUERY)}" }
+                    loadPlaceNameForecast(settings.getStringsSettings(SEARCH_QUERY))
+                }
+            }
+            settings.getBooleanSettings(GPS_KEY) -> {
+                info { GPS_KEY }
+                loadGPSForecast()
+            }
+
+            else -> {
+                info { "ELSE $GPS_KEY" }
+                settings.saveSettings(GPS_KEY, true)
+                loadGPSForecast()
+            }
         }
     }
 
+    private suspend fun loadGPSForecast() {
+        observableFields.isLoading.set(true)
+        mRepoForecast.loadGPSForecast()
+        observableFields.isLoading.set(false)
+
+    }
+
+    private suspend fun loadPlaceNameForecast(query: String) {
+        observableFields.isLoading.set(true)
+        mRepoForecast.loadPlaceNameCoordinates(query)
+        observableFields.isLoading.set(false)
+    }
 
     private suspend fun initStatusAndDb() {
         statusChannel()
         dataBaseObserve()
     }
-
-    private suspend fun loadForecast() {
-        observableFields.isLoading.set(true)
-        mRepoForecast.loadGPSForecast()
-        observableFields.isLoading.set(false)
-    }
-
-
-    private suspend fun loadPlaceNameForecast() {
-        observableFields.isLoading.set(true)
-        mRepoForecast.loadGPSForecast()
-        observableFields.isLoading.set(false)
-    }
-
 
     private suspend fun statusChannel() = scope.launch {
         StatusChannel.channel.consumeEach {
@@ -73,7 +93,6 @@ class CurrentlyForecastViewModel(
         }
     }
 
-
     private suspend fun dataBaseObserve() {
         composite.add(
             mRepoForecast.db()
@@ -84,30 +103,29 @@ class CurrentlyForecastViewModel(
                 })
     }
 
-
     val onQueryTextListener = object : SearchView.OnQueryTextListener {
         override fun onQueryTextSubmit(query: String?): Boolean {
-            info("$query")
-
-            scope.launch {
-
-                mRepoForecast.loadPlaceNameCoordinates(query ?: "")
-
-                initStatusAndDb()
-                if (observableFields.collapseSearchView.get())
-                    observableFields.collapseSearchView.set(false)
-                else
-                    observableFields.collapseSearchView.set(true)
-            }
+            settings.saveSettings(PLACE_KEY, true)
+            settings.saveSettings(GPS_KEY, false)
+            settings.saveSettings(SEARCH_QUERY, query ?: "")
+            refresh()
+            if (observableFields.collapseSearchView.get())
+                observableFields.collapseSearchView.set(false)
+            else
+                observableFields.collapseSearchView.set(true)
             return false
         }
 
         override fun onQueryTextChange(newText: String?): Boolean {
-            info("$newText")
             return false
         }
     }
 
+    fun gps() {
+        settings.saveSettings(PLACE_KEY, false)
+        settings.saveSettings(GPS_KEY, true)
+        refresh()
+    }
 
     override fun onCleared() {
         super.onCleared()

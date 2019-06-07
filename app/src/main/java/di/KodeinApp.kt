@@ -19,6 +19,7 @@ import org.kodein.di.generic.instance
 import org.kodein.di.generic.scoped
 import org.kodein.di.generic.singleton
 import utils.NetManager
+import utils.Settings
 
 @ExperimentalCoroutinesApi
 @ObsoleteCoroutinesApi
@@ -32,14 +33,16 @@ class KodeinApp : Application(), KodeinAware, AnkoLogger {
         import(RepoModule().repoModule)
         import(KtorModule().ktorClientModule)
 
-        bind() from singleton { NetManager(instance()) }
-
         bind() from singleton {
             CoroutineExceptionHandler { _, exception ->
                 info("Caught $exception")
             }
         }
 
+        bind() from singleton { NetManager(instance()) }
+
         bind() from scoped(fragmentScope).singleton { ObservableFields() }
+
+        bind() from scoped(fragmentScope).singleton { Settings(instance()) }
     }
 }
