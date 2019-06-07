@@ -15,9 +15,12 @@ class MainActivity : KodeinActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        supportFragmentManager.beginTransaction()
-            .add(R.id.main_frame, CurrentlyWeatherFragment(), "frc")
-            .commit()
-
+        val fm = supportFragmentManager
+        val fragment = fm.findFragmentById(R.id.main_frame)
+        if (fragment == null) {
+            fm.beginTransaction()
+                .add(R.id.main_frame, CurrentlyWeatherFragment(), "frc")
+                .commit()
+        }
     }
 }

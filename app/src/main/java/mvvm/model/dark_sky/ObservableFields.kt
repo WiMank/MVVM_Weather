@@ -12,5 +12,6 @@ class ObservableFields {
     val icon = ObservableInt(0)
     val isLoading = ObservableBoolean(false)
     val collapseSearchView = ObservableBoolean(false)
+    val gpsEnabled = ObservableBoolean(false)
 
 }

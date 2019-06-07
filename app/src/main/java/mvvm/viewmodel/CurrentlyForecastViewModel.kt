@@ -37,22 +37,21 @@ class CurrentlyForecastViewModel(
 
 
     fun refresh() = scope.launch(handler) {
-        info { "GPS ${settings.getBooleanSettings(GPS_KEY)} PLACE ${settings.getBooleanSettings(PLACE_KEY)}" }
+        info { "GPS: [${settings.getBooleanSettings(GPS_KEY)}] PLACE: [${settings.getBooleanSettings(PLACE_KEY)}]" }
         when {
             settings.getBooleanSettings(PLACE_KEY) -> {
-                info { PLACE_KEY }
                 if (settings.getStringsSettings(SEARCH_QUERY).isNotEmpty()) {
-                    info { "City ${settings.getStringsSettings(SEARCH_QUERY)}" }
+                    observableFields.gpsEnabled.set(false)
                     loadPlaceNameForecast(settings.getStringsSettings(SEARCH_QUERY))
                 }
             }
             settings.getBooleanSettings(GPS_KEY) -> {
-                info { GPS_KEY }
+                observableFields.gpsEnabled.set(true)
                 loadGPSForecast()
             }
 
             else -> {
-                info { "ELSE $GPS_KEY" }
+                observableFields.gpsEnabled.set(true)
                 settings.saveSettings(GPS_KEY, true)
                 loadGPSForecast()
             }
