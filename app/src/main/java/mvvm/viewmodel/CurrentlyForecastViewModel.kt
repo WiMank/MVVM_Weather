@@ -38,6 +38,7 @@ class CurrentlyForecastViewModel(
 
     fun refresh() = scope.launch(handler) {
         info { "GPS: [${settings.getBooleanSettings(GPS_KEY)}] PLACE: [${settings.getBooleanSettings(PLACE_KEY)}]" }
+        statusChannel()
         when {
             settings.getBooleanSettings(PLACE_KEY) -> {
                 if (settings.getStringsSettings(SEARCH_QUERY).isNotEmpty()) {
@@ -56,7 +57,7 @@ class CurrentlyForecastViewModel(
                 loadGPSForecast()
             }
         }
-        initStatusAndDb()
+        dataBaseObserve()
     }
 
     private suspend fun loadGPSForecast() {
@@ -72,10 +73,6 @@ class CurrentlyForecastViewModel(
         observableFields.isLoading.set(false)
     }
 
-    private suspend fun initStatusAndDb() {
-        statusChannel()
-        dataBaseObserve()
-    }
 
     private suspend fun statusChannel() = scope.launch {
         StatusChannel.channel.consumeEach {
@@ -127,6 +124,7 @@ class CurrentlyForecastViewModel(
     }
 
     override fun onCleared() {
+        info { "VM onCleared()" }
         super.onCleared()
         StatusChannel.channel.close()
         composite.dispose()

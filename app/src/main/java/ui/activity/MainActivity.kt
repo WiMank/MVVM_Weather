@@ -15,10 +15,9 @@ class MainActivity : KodeinActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val fm = supportFragmentManager
-        val fragment = fm.findFragmentById(R.id.main_frame)
-        if (fragment == null) {
-            fm.beginTransaction()
+        //TODO: Проблема пересоздания viewmodel
+        if (savedInstanceState == null) {
+            supportFragmentManager.beginTransaction()
                 .add(R.id.main_frame, CurrentlyWeatherFragment(), "frc")
                 .commit()
         }
