@@ -1,6 +1,5 @@
 package di.module
 
-import di.fragmentScope
 import io.ktor.client.HttpClient
 import io.ktor.client.features.json.GsonSerializer
 import io.ktor.client.features.json.JsonFeature
@@ -11,13 +10,12 @@ import io.ktor.client.features.logging.Logging
 import org.jetbrains.anko.AnkoLogger
 import org.kodein.di.Kodein
 import org.kodein.di.generic.bind
-import org.kodein.di.generic.scoped
 import org.kodein.di.generic.singleton
 
 class KtorModule : AnkoLogger {
     val ktorClientModule = Kodein.Module("ktor_client_module") {
 
-        bind<HttpClient>() with scoped(fragmentScope).singleton {
+        bind<HttpClient>() with singleton {
             HttpClient {
                 install(JsonFeature) {
                     serializer = GsonSerializer()

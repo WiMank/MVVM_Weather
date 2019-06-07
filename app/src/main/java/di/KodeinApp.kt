@@ -16,7 +16,6 @@ import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.androidXModule
 import org.kodein.di.generic.bind
 import org.kodein.di.generic.instance
-import org.kodein.di.generic.scoped
 import org.kodein.di.generic.singleton
 import utils.NetManager
 import utils.Settings
@@ -41,8 +40,8 @@ class KodeinApp : Application(), KodeinAware, AnkoLogger {
 
         bind() from singleton { NetManager(instance()) }
 
-        bind() from scoped(fragmentScope).singleton { ObservableFields() }
+        bind() from singleton { ObservableFields() }
 
-        bind() from scoped(fragmentScope).singleton { Settings(instance()) }
+        bind() from singleton { Settings(instance()) }
     }
 }

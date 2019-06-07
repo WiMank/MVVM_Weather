@@ -32,6 +32,7 @@ class CurrentlyForecastViewModel(
     private val composite = CompositeDisposable()
 
     init {
+        info { "VM init" }
         refresh()
     }
 
