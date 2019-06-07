@@ -11,6 +11,7 @@ import com.wimank.mvvm.weather.R
 import com.wimank.mvvm.weather.databinding.FragmentCurrentlyWeatherBinding
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.ObsoleteCoroutinesApi
+import mvvm.model.dark_sky.ObservableFields
 import mvvm.viewmodel.CurrentlyForecastViewModel
 import org.kodein.di.generic.instance
 
@@ -24,6 +25,7 @@ class CurrentlyWeatherFragment : KodeinFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(layoutInflater, R.layout.fragment_currently_weather, container, false)
         binding.viewModel = ViewModelProviders.of(this, viewModelFactory).get(CurrentlyForecastViewModel::class.java)
+        binding.observableFields = ObservableFields()
         binding.executePendingBindings()
         return binding.root
     }

@@ -1,5 +1,6 @@
 package mvvm.model.dark_sky
 
+import android.content.SharedPreferences
 import io.reactivex.Flowable
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import mvvm.model.gps.GPSCoordinates
@@ -17,7 +18,8 @@ class RepoDarkSkyForecast(
     private val repoForecastLocation: RepoGPSCoordinates,
     private val mRepoDarkSkyForecastLocalData: RepoDarkSkyForecastLocalData,
     private val repoMapBox: RepoMapBox,
-    private val netManager: NetManager
+    private val netManager: NetManager,
+    private val sharedPreferences: SharedPreferences
 ) : AnkoLogger {
 
     private suspend fun placeCoordinates(place: String) {
@@ -60,6 +62,22 @@ class RepoDarkSkyForecast(
             placeCoordinates(place)
         else StatusChannel.sendStatus(Status.NO_NETWORK_CONNECTION)
     }
+
+
+    suspend fun loadForecast(place: String) {
+        if (netManager.isConnectedToInternet!!)
+            placeCoordinates(place)
+        else StatusChannel.sendStatus(Status.NO_NETWORK_CONNECTION)
+    }
+
+    suspend fun loadForecast() {
+        if (netManager.isConnectedToInternet!!) {
+
+            locationDetermination()
+
+        } else StatusChannel.sendStatus(Status.NO_NETWORK_CONNECTION)
+    }
+
 
     suspend fun db(): Flowable<AppEntity> {
         return mRepoDarkSkyForecastLocalData.loadLocalForecast(mRepoDarkSkyForecastLocalData.getCity())

@@ -24,6 +24,7 @@ class RepoModule {
                 instance(),
                 instance(),
                 instance(),
+                instance(),
                 instance()
             )
         }

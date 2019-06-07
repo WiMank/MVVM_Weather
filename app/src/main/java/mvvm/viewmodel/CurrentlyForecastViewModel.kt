@@ -1,14 +1,12 @@
 package mvvm.viewmodel
 
 import androidx.appcompat.widget.SearchView
-import androidx.databinding.ObservableBoolean
-import androidx.databinding.ObservableField
-import androidx.databinding.ObservableInt
 import androidx.lifecycle.ViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.consumeEach
+import mvvm.model.dark_sky.ObservableFields
 import mvvm.model.dark_sky.RepoDarkSkyForecast
 import mvvm.model.status.Status
 import mvvm.model.status.StatusChannel
@@ -26,12 +24,7 @@ class CurrentlyForecastViewModel(
     private val job = SupervisorJob()
     private val scope = CoroutineScope(Dispatchers.Default + job)
     private val composite = CompositeDisposable()
-    val city = ObservableField<String>("CITY")
-    val temp = ObservableField<String>("TEMP")
-    val status = ObservableField<String>("...")
-    val icon = ObservableInt(0)
-    val isLoading = ObservableBoolean(false)
-    val collapseSearchView = ObservableBoolean(false)
+    private val observableFields: ObservableFields = ObservableFields()
 
     init {
         refresh()
@@ -52,30 +45,30 @@ class CurrentlyForecastViewModel(
     }
 
     private suspend fun loadForecast() {
-        isLoading.set(true)
+        observableFields.isLoading.set(true)
         mRepoForecast.loadGPSForecast()
-        isLoading.set(false)
+        observableFields.isLoading.set(false)
     }
 
 
     private suspend fun loadPlaceNameForecast() {
-        isLoading.set(true)
+        observableFields.isLoading.set(true)
         mRepoForecast.loadGPSForecast()
-        isLoading.set(false)
+        observableFields.isLoading.set(false)
     }
 
 
     private suspend fun statusChannel() = scope.launch {
         StatusChannel.channel.consumeEach {
             when (it) {
-                Status.LOCATION_DETERMINATION -> status.set("Определяем местоположение...")
-                Status.LOOKING_FOR_LOCATION_NAME -> status.set("Пытаемся найти название местоположения...")
-                Status.UPDATE_NEEDED -> status.set("Проверяем актуальность данных...")
-                Status.DATA_UP_TO_DATE -> status.set("Данные в актуальном состоянии!")
-                Status.SAVE_THE_DATA -> status.set("Сохраняем новые данные...")
-                Status.DONE -> status.set("Готово!")
-                Status.NO_NETWORK_CONNECTION -> status.set("Нет подключения к сети!")
-                Status.PLACE_COORDINATES -> status.set("Узнаём координаты места...")
+                Status.LOCATION_DETERMINATION -> observableFields.status.set("Определяем местоположение...")
+                Status.LOOKING_FOR_LOCATION_NAME -> observableFields.status.set("Пытаемся найти название местоположения...")
+                Status.UPDATE_NEEDED -> observableFields.status.set("Проверяем актуальность данных...")
+                Status.DATA_UP_TO_DATE -> observableFields.status.set("Данные в актуальном состоянии!")
+                Status.SAVE_THE_DATA -> observableFields.status.set("Сохраняем новые данные...")
+                Status.DONE -> observableFields.status.set("Готово!")
+                Status.NO_NETWORK_CONNECTION -> observableFields.status.set("Нет подключения к сети!")
+                Status.PLACE_COORDINATES -> observableFields.status.set("Узнаём координаты места...")
             }
         }
     }
@@ -86,8 +79,8 @@ class CurrentlyForecastViewModel(
             mRepoForecast.db()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
-                    city.set(it.city)
-                    temp.set(it.temperature.toString())
+                    observableFields.city.set(it.city)
+                    observableFields.temp.set(it.temperature.toString())
                 })
     }
 
@@ -98,10 +91,10 @@ class CurrentlyForecastViewModel(
             scope.launch {
                 mRepoForecast.loadPlaceNameCoordinates(query ?: "")
                 initStatusAndDb()
-                if (collapseSearchView.get())
-                    collapseSearchView.set(false)
+                if (observableFields.collapseSearchView.get())
+                    observableFields.collapseSearchView.set(false)
                 else
-                    collapseSearchView.set(true)
+                    observableFields.collapseSearchView.set(true)
             }
             return false
         }
