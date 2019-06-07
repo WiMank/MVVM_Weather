@@ -34,7 +34,7 @@ class RepoMapBox : AnkoLogger {
             .query(place)
             .build().executeCall()
 
-        return if (mapBoxGeocoding.isSuccessful and mapBoxGeocoding.body()!!.features().isNotEmpty())
+        return if (mapBoxGeocoding.isSuccessful and mapBoxGeocoding.body()?.features()!!.isNotEmpty())
             GPSCoordinates(
                 mapBoxGeocoding.body()!!.features()[0].center()!!.longitude(),
                 mapBoxGeocoding.body()!!.features()[0].center()!!.latitude()

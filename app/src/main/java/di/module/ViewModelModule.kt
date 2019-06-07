@@ -16,7 +16,7 @@ import org.kodein.di.generic.singleton
 class ViewModelModule {
 
     val viewModelModule = Kodein.Module("viewmodel_module") {
-        bind() from scoped(fragmentScope).singleton { CurrentlyForecastViewModel(instance(), instance()) }
-        bind() from scoped(fragmentScope).singleton { KodeinViewModelFactory(instance(), instance()) }
+        bind() from scoped(fragmentScope).singleton { CurrentlyForecastViewModel(instance(), instance(), instance()) }
+        bind() from scoped(fragmentScope).singleton { KodeinViewModelFactory(instance(), instance(), instance()) }
     }
 }

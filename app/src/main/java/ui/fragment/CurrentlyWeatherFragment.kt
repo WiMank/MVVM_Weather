@@ -21,11 +21,12 @@ import org.kodein.di.generic.instance
 class CurrentlyWeatherFragment : KodeinFragment() {
     private lateinit var binding: FragmentCurrentlyWeatherBinding
     private val viewModelFactory: ViewModelProvider.Factory by instance()
+    private val observableFields: ObservableFields by instance()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(layoutInflater, R.layout.fragment_currently_weather, container, false)
         binding.viewModel = ViewModelProviders.of(this, viewModelFactory).get(CurrentlyForecastViewModel::class.java)
-        binding.observableFields = ObservableFields()
+        binding.observableFields = observableFields
         binding.executePendingBindings()
         return binding.root
     }

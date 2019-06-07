@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.ObsoleteCoroutinesApi
+import mvvm.model.dark_sky.ObservableFields
 import mvvm.model.dark_sky.RepoDarkSkyForecast
 
 
@@ -12,9 +13,10 @@ import mvvm.model.dark_sky.RepoDarkSkyForecast
 @ObsoleteCoroutinesApi
 class KodeinViewModelFactory(
     private val mRepoForecast: RepoDarkSkyForecast,
-    private val handler: CoroutineExceptionHandler
+    private val handler: CoroutineExceptionHandler,
+    private val observableFields: ObservableFields
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return CurrentlyForecastViewModel(mRepoForecast, handler) as T
+        return CurrentlyForecastViewModel(mRepoForecast, handler, observableFields) as T
     }
 }

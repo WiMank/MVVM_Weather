@@ -18,13 +18,13 @@ import org.jetbrains.anko.info
 @ExperimentalCoroutinesApi
 class CurrentlyForecastViewModel(
     private val mRepoForecast: RepoDarkSkyForecast,
-    private val handler: CoroutineExceptionHandler
+    private val handler: CoroutineExceptionHandler,
+    private val observableFields: ObservableFields
 ) : ViewModel(), AnkoLogger {
 
     private val job = SupervisorJob()
     private val scope = CoroutineScope(Dispatchers.Default + job)
     private val composite = CompositeDisposable()
-    private val observableFields: ObservableFields = ObservableFields()
 
     init {
         refresh()
@@ -88,8 +88,11 @@ class CurrentlyForecastViewModel(
     val onQueryTextListener = object : SearchView.OnQueryTextListener {
         override fun onQueryTextSubmit(query: String?): Boolean {
             info("$query")
+
             scope.launch {
+
                 mRepoForecast.loadPlaceNameCoordinates(query ?: "")
+
                 initStatusAndDb()
                 if (observableFields.collapseSearchView.get())
                     observableFields.collapseSearchView.set(false)
