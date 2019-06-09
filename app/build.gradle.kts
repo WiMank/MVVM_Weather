@@ -54,9 +54,10 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:1.1.3")
 
     //Test
+    implementation("androidx.preference:preference:1.1.0-alpha05")
     testImplementation("junit:junit:4.12")
-    androidTestImplementation("androidx.test:runner:1.1.1")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.1.1")
+    androidTestImplementation("androidx.test:runner:1.2.0")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.2.0")
 
     //Kodein
     val kodeinVersion = "6.2.0"
@@ -104,9 +105,4 @@ dependencies {
 
     //MapBox
     implementation("com.mapbox.mapboxsdk:mapbox-android-plugin-places-v7:0.8.0")
-
-    val retrofitVersion = "2.5.0"
-    implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
-    implementation("com.squareup.retrofit2:converter-gson:$retrofitVersion")
-    implementation("com.squareup.okhttp3:logging-interceptor:3.12.0")
 }
