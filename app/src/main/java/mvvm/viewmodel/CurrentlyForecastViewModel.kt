@@ -100,6 +100,7 @@ class CurrentlyForecastViewModel(
                 .subscribe {
                     observableFields.city.set(it.city)
                     observableFields.temp.set(it.temperature.toString())
+                    observableFields.summary.set(it.summary)
                 })
     }
 
