@@ -96,13 +96,6 @@ class CurrentlyForecastViewModel(
                     observableFields.summary.set(it.summary)
                     observableFields.toolbarTitle.value = it.city
                     observableFields.weatherIcon.set(WeatherIcons().map().getValue(it.icon))
-
-                    info { "VM ICON ${it.icon}" }
-
-
-                    //WeatherIcons().map()[it.icon]?.let { it1 -> observableFields.weatherIcon.set(it1) }
-
-
                 })
     }
 
