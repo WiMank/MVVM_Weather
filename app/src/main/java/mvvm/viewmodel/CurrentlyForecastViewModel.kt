@@ -85,6 +85,7 @@ class CurrentlyForecastViewModel(
         }
     }
 
+    //Room does not support coroutines channels
     private suspend fun dataBaseObserve() {
         composite.add(
             mRepoForecast.db()
@@ -111,7 +112,6 @@ class CurrentlyForecastViewModel(
         if (carmenFeature == null)
             return
         if (carmenFeature.center() != null) {
-            info("VM ${carmenFeature.text()}")
             settings.saveSettings(PLACE_KEY, true)
             settings.saveSettings(GPS_KEY, false)
             settings.saveSettings(SEARCH_QUERY, carmenFeature.text() ?: "")

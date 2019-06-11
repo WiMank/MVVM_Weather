@@ -1,4 +1,4 @@
-package utils
+package mvvm.model.dark_sky
 
 import android.content.Context
 import android.graphics.drawable.Drawable
