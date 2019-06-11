@@ -15,5 +15,11 @@
             app:showAsAction = "always"
             android:title = "@string/search"/>
 
+    <item
+            android:id = "@+id/gps"
+            android:icon = "@drawable/ic_baseline_gps_fixed_24px"
+            app:showAsAction = "ifRoom"
+            android:title = "@string/search"/>
+
 
 </menu>

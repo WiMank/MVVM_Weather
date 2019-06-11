@@ -8,7 +8,6 @@ import mvvm.model.mapBox.RepoMapBox
 import mvvm.model.status.Status
 import mvvm.model.status.StatusChannel
 import org.jetbrains.anko.AnkoLogger
-import org.jetbrains.anko.info
 import room.AppEntity
 import utils.NetManager
 
@@ -21,11 +20,6 @@ class RepoDarkSkyForecast(
     private val netManager: NetManager,
     private val statusChannel: StatusChannel
 ) : AnkoLogger {
-
-
-    init {
-        info { "VM Repo StatusChannel [$statusChannel]" }
-    }
 
     private suspend fun placeCoordinates(place: String) {
         statusChannel.sendStatus(Status.PLACE_COORDINATES)

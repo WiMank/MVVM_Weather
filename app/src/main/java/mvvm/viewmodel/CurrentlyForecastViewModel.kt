@@ -1,7 +1,8 @@
 package mvvm.viewmodel
 
-import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModel
+import com.mapbox.api.geocoding.v5.models.CarmenFeature
+import com.mapbox.mapboxsdk.plugins.places.autocomplete.ui.PlaceSelectionListener
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.coroutines.*
@@ -11,6 +12,7 @@ import mvvm.model.dark_sky.RepoDarkSkyForecast
 import mvvm.model.status.Status
 import mvvm.model.status.StatusChannel
 import org.jetbrains.anko.AnkoLogger
+import org.jetbrains.anko.error
 import org.jetbrains.anko.info
 import utils.GPS_KEY
 import utils.PLACE_KEY
@@ -26,7 +28,7 @@ class CurrentlyForecastViewModel(
     private val observableFields: ObservableFields,
     private val settings: Settings,
     private val statusChannel: StatusChannel
-) : ViewModel(), AnkoLogger {
+) : ViewModel(), AnkoLogger, PlaceSelectionListener {
 
     private val job = SupervisorJob()
     private val scope = CoroutineScope(Dispatchers.Default + job)
@@ -34,38 +36,28 @@ class CurrentlyForecastViewModel(
 
     init {
         refresh()
-        info { "VM StatusChannel [$statusChannel]" }
     }
 
+    @Suppress("MemberVisibilityCanBePrivate")
     fun refresh() = scope.launch(handler) {
-        info { "VM GPS: [${settings.getBooleanSettings(GPS_KEY)}] PLACE: [${settings.getBooleanSettings(PLACE_KEY)}]" }
         statusChannel()
         when {
             settings.getBooleanSettings(PLACE_KEY) -> {
-                if (settings.getStringsSettings(SEARCH_QUERY).isNotEmpty()) {
-                    observableFields.gpsEnabled.set(false)
+                if (settings.getStringsSettings(SEARCH_QUERY).isNotEmpty())
                     loadPlaceNameForecast(settings.getStringsSettings(SEARCH_QUERY))
-                    info { "VM PLACE_KEY TRUE" }
-                }
-            }
-            settings.getBooleanSettings(GPS_KEY) -> {
-                observableFields.gpsEnabled.set(true)
-                loadGPSForecast()
-                info { "VM GPS_KEY TRUE" }
             }
 
+            settings.getBooleanSettings(GPS_KEY) -> loadGPSForecast()
+
             else -> {
-                observableFields.gpsEnabled.set(true)
                 settings.saveSettings(GPS_KEY, true)
                 loadGPSForecast()
-                info { "VM ELSE" }
             }
         }
         dataBaseObserve()
     }
 
     private suspend fun loadGPSForecast() {
-        info { "VM loadGPSForecast()" }
         observableFields.isLoading.set(true)
         mRepoForecast.loadGPSForecast()
         observableFields.isLoading.set(false)
@@ -98,34 +90,36 @@ class CurrentlyForecastViewModel(
             mRepoForecast.db()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
-                    observableFields.city.set(it.city)
                     observableFields.temp.set(it.temperature.toString())
                     observableFields.summary.set(it.summary)
+                    observableFields.toolbarTitle.value = it.city
                 })
     }
 
-    val onQueryTextListener = object : SearchView.OnQueryTextListener {
-        override fun onQueryTextSubmit(query: String?): Boolean {
-            settings.saveSettings(PLACE_KEY, true)
-            settings.saveSettings(GPS_KEY, false)
-            settings.saveSettings(SEARCH_QUERY, query ?: "")
-            refresh()
-            if (observableFields.collapseSearchView.get())
-                observableFields.collapseSearchView.set(false)
-            else
-                observableFields.collapseSearchView.set(true)
-            return false
-        }
-
-        override fun onQueryTextChange(newText: String?): Boolean {
-            return false
-        }
+    override fun onCancel() {
+        observableFields.cancelPlaceSearch.value = true
     }
 
     fun gps() {
         settings.saveSettings(PLACE_KEY, false)
         settings.saveSettings(GPS_KEY, true)
         refresh()
+    }
+
+    override fun onPlaceSelected(carmenFeature: CarmenFeature?) {
+        observableFields.cancelPlaceSearch.value = false
+        if (carmenFeature == null)
+            return
+        if (carmenFeature.center() != null) {
+            info("VM ${carmenFeature.text()}")
+            settings.saveSettings(PLACE_KEY, true)
+            settings.saveSettings(GPS_KEY, false)
+            settings.saveSettings(SEARCH_QUERY, carmenFeature.text() ?: "")
+            refresh()
+        } else {
+            observableFields.status.set("Мы не смогли найти указанное место :(")
+            error { "CarmenFeature center's null." }
+        }
     }
 
     override fun onCleared() {
