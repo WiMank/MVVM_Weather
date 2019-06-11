@@ -9,6 +9,7 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.consumeEach
 import mvvm.model.dark_sky.ObservableFields
 import mvvm.model.dark_sky.RepoDarkSkyForecast
+import mvvm.model.dark_sky.WeatherIcons
 import mvvm.model.status.Status
 import mvvm.model.status.StatusChannel
 import org.jetbrains.anko.AnkoLogger
@@ -94,6 +95,14 @@ class CurrentlyForecastViewModel(
                     observableFields.temp.set(it.temperature.toString())
                     observableFields.summary.set(it.summary)
                     observableFields.toolbarTitle.value = it.city
+                    observableFields.weatherIcon.set(WeatherIcons().map().getValue(it.icon))
+
+                    info { "VM ICON ${it.icon}" }
+
+
+                    //WeatherIcons().map()[it.icon]?.let { it1 -> observableFields.weatherIcon.set(it1) }
+
+
                 })
     }
 

@@ -1,22 +1,20 @@
 package mvvm.model.dark_sky
 
-import android.content.Context
-import android.graphics.drawable.Drawable
+import com.wimank.mvvm.weather.R
 
 class WeatherIcons {
-
-    fun map(context: Context): Map<String, Drawable> {
-        val weatherIconMap = HashMap<String, Drawable>()
-        /*  weatherIconMap["clear-day"] = ContextCompat.getDrawable(context, R.drawable.ic_weather_clear_day)!!
-          weatherIconMap["clear-night"] = ContextCompat.getDrawable(context, R.drawable.ic_weather_clear_night)!!
-          weatherIconMap["rain"] = ContextCompat.getDrawable(context, R.drawable.ic_weather_rain)!!
-          weatherIconMap["snow"] = ContextCompat.getDrawable(context, R.drawable.ic_weather_snow)!!
-          weatherIconMap["sleet"] = ContextCompat.getDrawable(context, R.drawable.ic_weather_sleet)!!
-          weatherIconMap["wind"] = ContextCompat.getDrawable(context, R.drawable.ic_weather_wind)!!
-          weatherIconMap["fog"] = ContextCompat.getDrawable(context, R.drawable.ic_weather_fog)!!
-          weatherIconMap["cloudy"] = ContextCompat.getDrawable(context, R.drawable.ic_weather_cloudy)!!
-          weatherIconMap["partly-cloudy-day"] = ContextCompat.getDrawable(context, R.drawable.ic_weather_partly_cloudy_day)!!
-          weatherIconMap["partly-cloudy-night"] = ContextCompat.getDrawable(context, R.drawable.ic_weather_party_cloudy_night)!!*/
+    fun map(): Map<String, Int> {
+        val weatherIconMap = HashMap<String, Int>()
+        weatherIconMap["clear-day"] = R.drawable.ic_sun
+        weatherIconMap["clear-night"] = R.drawable.ic_moon
+        weatherIconMap["rain"] = R.drawable.ic_drops
+        weatherIconMap["snow"] = R.drawable.ic_snowflake
+        weatherIconMap["sleet"] = R.drawable.ic_sleet
+        weatherIconMap["wind"] = R.drawable.ic_wind
+        weatherIconMap["fog"] = R.drawable.ic_fog
+        weatherIconMap["cloudy"] = R.drawable.ic_cloudy
+        weatherIconMap["partly-cloudy-day"] = R.drawable.ic_partly_cloudy_day
+        weatherIconMap["partly-cloudy-night"] = R.drawable.ic_partly_cloudy_night
         return weatherIconMap
     }
 }

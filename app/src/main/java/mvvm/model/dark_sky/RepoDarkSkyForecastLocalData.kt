@@ -32,7 +32,8 @@ class RepoDarkSkyForecastLocalData(private val appDAO: AppDAO, private val cityD
                 darkSky.currently.windSpeed,
                 darkSky.currently.windGust,
                 darkSky.currently.cloudCover,
-                darkSky.currently.visibility
+                darkSky.currently.visibility,
+                darkSky.currently.icon
             )
         )
     }

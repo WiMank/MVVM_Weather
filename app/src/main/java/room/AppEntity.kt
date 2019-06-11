@@ -51,5 +51,7 @@ data class AppEntity(
     @ColumnInfo(name = "cloud_cover")
     var cloudCover: Double = 0.0,
 
-    var visibility: Double = 0.0
+    var visibility: Double = 0.0,
+
+    var icon: String = ""
 )

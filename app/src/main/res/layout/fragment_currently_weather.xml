@@ -32,10 +32,10 @@
 
 
                     <ImageView
-                            android:layout_width = "wrap_content"
-                            android:layout_height = "wrap_content"
+                            android:layout_width = "120dp"
+                            android:layout_height = "120dp"
                             android:id = "@+id/icon"
-                            android:bindSrc = "@{safeUnbox(observableFields.icon)}"
+                            android:bindSrc = "@{safeUnbox(observableFields.weatherIcon)}"
                             android:layout_marginTop = "8dp"
                             app:layout_constraintEnd_toEndOf = "parent"
                             android:layout_marginEnd = "8dp"

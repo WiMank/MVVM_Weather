@@ -10,7 +10,7 @@ class ObservableFields {
     val temp = ObservableField<String>("TEMP")
     val summary = ObservableField<String>("SUMMARY")
     val status = ObservableField<String>("...")
-    val icon = ObservableInt(0)
+    val weatherIcon = ObservableInt(0)
     val isLoading = ObservableBoolean(false)
     val cancelPlaceSearch = MutableLiveData<Boolean>()
     val toolbarTitle = MutableLiveData<String>("MVVM Weather")
