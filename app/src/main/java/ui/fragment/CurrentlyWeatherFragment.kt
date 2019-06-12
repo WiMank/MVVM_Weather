@@ -99,7 +99,9 @@ class CurrentlyWeatherFragment : KodeinFragment() {
     }
 
     private fun hidePlacesFragment() {
-        if (::placeAutoCompleteFragment.isInitialized)
+        if (::placeAutoCompleteFragment.isInitialized) {
             fm.beginTransaction().hide(placeAutoCompleteFragment).commit()
+            activity?.let { hideSoftInput(it) }
+        }
     }
 }
