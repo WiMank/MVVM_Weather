@@ -7,7 +7,7 @@ import androidx.lifecycle.MutableLiveData
 
 class ObservableFields {
 
-    val temp = ObservableField<String>("TEMP")
+    val temp = ObservableField<Double>(0.0)
     val summary = ObservableField<String>("SUMMARY")
     val status = ObservableField<String>("...")
     val weatherIcon = ObservableInt(0)

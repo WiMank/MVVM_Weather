@@ -92,7 +92,7 @@ class CurrentlyForecastViewModel(
             mRepoForecast.db()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
-                    observableFields.temp.set(it.temperature.toString())
+                    observableFields.temp.set(it.temperature)
                     observableFields.summary.set(it.summary)
                     observableFields.toolbarTitle.value = it.city
                     observableFields.weatherIcon.set(WeatherIcons().map().getValue(it.icon))
