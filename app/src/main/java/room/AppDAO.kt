@@ -2,6 +2,7 @@ package room
 
 import androidx.room.*
 import io.reactivex.Flowable
+import mvvm.model.dark_sky.DarkSkyForecast
 
 @Dao
 interface AppDAO {
@@ -26,5 +27,8 @@ interface AppDAO {
 
     @Delete
     suspend fun delete(value: AppEntity)
+
+    @Query("SELECT json_daily_array FROM appEntity WHERE city == :searchQueryInDb")
+    suspend fun loadJsonArrayFromDb(searchQueryInDb: String): DarkSkyForecast.Daily
 
 }

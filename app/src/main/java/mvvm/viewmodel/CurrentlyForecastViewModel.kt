@@ -39,7 +39,7 @@ class CurrentlyForecastViewModel(
         refresh()
     }
 
-    fun refresh() = scope.launch(handler) {
+    fun refresh() = scope.launch {
         statusChannel()
         when {
             settings.getBooleanSettings(PLACE_KEY) -> {

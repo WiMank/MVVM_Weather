@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import mvvm.model.dark_sky.DarkSkyForecast
 
 @Entity(indices = [Index(value = ["city"], unique = true)])
 data class AppEntity(
@@ -53,5 +54,8 @@ data class AppEntity(
 
     var visibility: Double = 0.0,
 
-    var icon: String = ""
+    var icon: String = "",
+
+    @ColumnInfo(name = "json_daily_array")
+    var jsonArray: DarkSkyForecast.Daily
 )
