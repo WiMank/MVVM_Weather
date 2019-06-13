@@ -19,7 +19,6 @@ class KtorModule : AnkoLogger {
             HttpClient {
                 install(JsonFeature) {
                     serializer = GsonSerializer()
-
                 }
                 install(Logging) {
                     logger = Logger.DEFAULT

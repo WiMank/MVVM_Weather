@@ -39,7 +39,6 @@ class CurrentlyForecastViewModel(
         refresh()
     }
 
-    @Suppress("MemberVisibilityCanBePrivate")
     fun refresh() = scope.launch(handler) {
         statusChannel()
         when {
@@ -74,14 +73,43 @@ class CurrentlyForecastViewModel(
     private suspend fun statusChannel() = scope.launch {
         statusChannel.channel.consumeEach {
             when (it) {
-                Status.LOCATION_DETERMINATION -> observableFields.status.set("Определяем местоположение...")
-                Status.LOOKING_FOR_LOCATION_NAME -> observableFields.status.set("Пытаемся найти название местоположения...")
-                Status.UPDATE_NEEDED -> observableFields.status.set("Проверяем актуальность данных...")
-                Status.DATA_UP_TO_DATE -> observableFields.status.set("Данные в актуальном состоянии!")
-                Status.SAVE_THE_DATA -> observableFields.status.set("Сохраняем новые данные...")
-                Status.DONE -> observableFields.status.set("Готово!")
-                Status.NO_NETWORK_CONNECTION -> observableFields.status.set("Нет подключения к сети!")
-                Status.PLACE_COORDINATES -> observableFields.status.set("Узнаём координаты места...")
+                Status.LOCATION_DETERMINATION -> {
+                    observableFields.status.set("Определяем местоположение...")
+                    observableFields.statusInvisible.set(false)
+                }
+                Status.LOOKING_FOR_LOCATION_NAME -> {
+                    observableFields.status.set("Пытаемся найти название местоположения...")
+                    observableFields.statusInvisible.set(false)
+                }
+                Status.UPDATE_NEEDED -> {
+                    observableFields.status.set("Проверяем актуальность данных...")
+                    observableFields.statusInvisible.set(false)
+                }
+
+                Status.SAVE_THE_DATA -> {
+                    observableFields.status.set("Сохраняем новые данные...")
+                    observableFields.statusInvisible.set(false)
+                }
+
+                Status.PLACE_COORDINATES -> {
+                    observableFields.status.set("Узнаём координаты места...")
+                    observableFields.statusInvisible.set(false)
+                }
+
+                Status.NO_NETWORK_CONNECTION -> {
+                    observableFields.status.set("Нет подключения к сети!")
+                    observableFields.statusInvisible.set(false)
+                }
+
+                Status.DONE -> {
+                    observableFields.status.set("Готово!")
+                    observableFields.statusInvisible.set(true)
+                }
+
+                Status.DATA_UP_TO_DATE -> {
+                    observableFields.status.set("Данные в актуальном состоянии!")
+                    observableFields.statusInvisible.set(true)
+                }
             }
         }
     }

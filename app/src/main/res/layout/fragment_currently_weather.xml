@@ -77,8 +77,9 @@
                     <TextView
                             android:id = "@+id/status"
                             tools:text = "STATUS"
-                            android:textColor = "@color/colorAccent"
                             android:text = "@{observableFields.status}"
+                            android:alphaAnim = "@{observableFields.statusInvisible}"
+                            android:textColor = "@color/colorAccent"
                             android:layout_width = "wrap_content"
                             android:layout_height = "wrap_content"
                             android:layout_marginBottom = "8dp"

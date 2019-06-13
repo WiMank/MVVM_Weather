@@ -1,9 +1,11 @@
 package mvvm.binding
 
+import android.view.View
+import android.view.animation.AlphaAnimation
+import android.view.animation.Animation
 import android.widget.ImageView
-import androidx.appcompat.widget.SearchView
 import androidx.databinding.BindingAdapter
-import java.util.logging.Logger
+import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 
 
 @BindingAdapter("android:bindSrc")
@@ -11,19 +13,36 @@ fun bindSrc(imageView: ImageView, resource: Int) {
     imageView.setImageResource(resource)
 }
 
-@BindingAdapter("android:queryTextListener")
-fun setOnQueryTextListener(searchView: SearchView, listener: SearchView.OnQueryTextListener) {
-    searchView.setOnQueryTextListener(listener)
+
+private val INTERPOLATOR = FastOutSlowInInterpolator()
+@BindingAdapter("android:alphaAnim")
+fun alphaAnim(view: View, go: Boolean) {
+    val animation = view.animation
+    when {
+        go -> {
+            view.startAnimation(createAnimation())
+            view.animation.setAnimationListener(object : Animation.AnimationListener {
+                override fun onAnimationRepeat(animation: Animation?) {}
+
+                override fun onAnimationEnd(animation: Animation?) {
+                    view.visibility = View.INVISIBLE
+                }
+
+                override fun onAnimationStart(animation: Animation?) {}
+            })
+        }
+        animation != null -> {
+            animation.cancel()
+            view.visibility = View.VISIBLE
+        }
+        else -> view.visibility = View.VISIBLE
+    }
 }
 
 
-@BindingAdapter("android:collapse")
-fun collapse(searchView: SearchView, collapse: Boolean) {
-    log.info("collapse $collapse")
-    searchView.setQuery("", false)
-    searchView.clearFocus()
-    searchView.isIconified = true
-
+private fun createAnimation(): Animation {
+    val anim = AlphaAnimation(1.0f, 0.0f)
+    anim.interpolator = INTERPOLATOR
+    anim.duration = 10000
+    return anim
 }
-
-private val log = Logger.getLogger("BINDING")
