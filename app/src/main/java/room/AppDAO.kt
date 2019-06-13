@@ -29,6 +29,9 @@ interface AppDAO {
     suspend fun delete(value: AppEntity)
 
     @Query("SELECT json_daily_array FROM appEntity WHERE city == :searchQueryInDb")
-    suspend fun loadJsonArrayFromDb(searchQueryInDb: String): DarkSkyForecast.Daily
+    suspend fun loadDailyJsonArrayFromDb(searchQueryInDb: String): DarkSkyForecast.Daily
+
+    @Query("SELECT json_hourly_array FROM appEntity WHERE city == :searchQueryInDb")
+    suspend fun loadHourlyJsonArrayFromDb(searchQueryInDb: String): DarkSkyForecast.Daily
 
 }

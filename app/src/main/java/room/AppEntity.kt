@@ -57,5 +57,8 @@ data class AppEntity(
     var icon: String = "",
 
     @ColumnInfo(name = "json_daily_array")
-    var jsonArray: DarkSkyForecast.Daily
+    var jsonDailyArray: DarkSkyForecast.Daily,
+
+    @ColumnInfo(name = "json_hourly_array")
+    var jsonHourlyArray: DarkSkyForecast.Hourly
 )

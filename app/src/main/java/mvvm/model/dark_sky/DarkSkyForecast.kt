@@ -7,7 +7,8 @@ object DarkSkyForecast {
         val longitude: Double,
         val timezone: String,
         val currently: Currently,
-        val daily: Daily
+        val daily: Daily,
+        val hourly: Hourly
     )
 
     data class Currently(
@@ -79,5 +80,34 @@ object DarkSkyForecast {
         val apparentTemperatureMinTime: Long,
         val apparentTemperatureMax: Double,
         val apparentTemperatureMaxTime: Long
+    )
+
+
+    data class Hourly(
+        val summary: String,
+        val data: MutableList<DataItem>,
+        val icon: String
+    )
+
+
+    data class HourlyItem(
+        val time: Long,
+        val summary: String,
+        val icon: String,
+        val precipIntensity: Double,
+        val precipProbability: Double,
+        val precipType: String,
+        val temperature: Double,
+        val apparentTemperature: Double,
+        val dewPoint: Double,
+        val humidity: Double,
+        val pressure: Double,
+        val windSpeed: Double,
+        val windGust: Double,
+        val windBearing: Int,
+        val cloudCover: Double,
+        val uvIndex: Int,
+        val visibility: Double,
+        val ozone: Double
     )
 }

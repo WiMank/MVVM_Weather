@@ -34,7 +34,8 @@ class RepoDarkSkyForecastLocalData(private val appDAO: AppDAO, private val cityD
                 darkSky.currently.cloudCover,
                 darkSky.currently.visibility,
                 darkSky.currently.icon,
-                darkSky.daily
+                darkSky.daily,
+                darkSky.hourly
             )
         )
     }
