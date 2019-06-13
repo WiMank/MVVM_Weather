@@ -3,7 +3,7 @@ package di.module
 import androidx.fragment.app.Fragment
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import mvvm.model.dark_sky.ObservableFields
+import mvvm.binding.ObservableFields
 import mvvm.model.status.StatusChannel
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.info

@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.ObsoleteCoroutinesApi
-import mvvm.model.dark_sky.ObservableFields
+import mvvm.binding.ObservableFields
 import mvvm.model.dark_sky.RepoDarkSkyForecast
 import mvvm.model.status.StatusChannel
 import utils.Settings

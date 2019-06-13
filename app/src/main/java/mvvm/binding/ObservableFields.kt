@@ -1,4 +1,4 @@
-package mvvm.model.dark_sky
+package mvvm.binding
 
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField

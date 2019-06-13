@@ -89,7 +89,6 @@ object DarkSkyForecast {
         val icon: String
     )
 
-
     data class HourlyItem(
         val time: Long,
         val summary: String,

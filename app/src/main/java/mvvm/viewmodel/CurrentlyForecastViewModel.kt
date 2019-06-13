@@ -7,7 +7,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.consumeEach
-import mvvm.model.dark_sky.ObservableFields
+import mvvm.binding.ObservableFields
 import mvvm.model.dark_sky.RepoDarkSkyForecast
 import mvvm.model.dark_sky.WeatherIcons
 import mvvm.model.status.Status

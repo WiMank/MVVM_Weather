@@ -16,7 +16,7 @@ import com.wimank.mvvm.weather.R
 import com.wimank.mvvm.weather.databinding.FragmentCurrentlyWeatherBinding
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.ObsoleteCoroutinesApi
-import mvvm.model.dark_sky.ObservableFields
+import mvvm.binding.ObservableFields
 import mvvm.viewmodel.CurrentlyForecastViewModel
 import org.kodein.di.generic.instance
 import secret.MAP_BOX_TOKEN
