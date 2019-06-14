@@ -14,7 +14,7 @@ interface AppDAO {
     suspend fun getById(id: Long): AppEntity
 
     @Query("SELECT * FROM appEntity WHERE city = :name")
-    fun getByNameAsync(name: String): Flowable<AppEntity>
+    fun getByNameAsync(name: String): Flowable<List<AppEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(previewPositionEntity: AppEntity)

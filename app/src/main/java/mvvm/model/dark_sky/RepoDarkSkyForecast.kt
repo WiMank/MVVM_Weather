@@ -62,7 +62,7 @@ class RepoDarkSkyForecast(
         else statusChannel.sendStatus(Status.NO_NETWORK_CONNECTION)
     }
 
-    suspend fun db(): Flowable<AppEntity> {
+    fun db(): Flowable<List<AppEntity>> {
         return mRepoDarkSkyForecastLocalData.forecastDB(mRepoDarkSkyForecastLocalData.getCity())
     }
 }

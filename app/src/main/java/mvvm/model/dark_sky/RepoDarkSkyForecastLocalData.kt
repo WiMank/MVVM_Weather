@@ -49,8 +49,8 @@ class RepoDarkSkyForecastLocalData(private val appDAO: AppDAO, private val cityD
 
     suspend fun saveCityQuery(cityName: String) = cityDAO.insert(CityEntity(0, cityName))
 
-    suspend fun getCity(): String = cityDAO.getCityName()?.cityName ?: ""
+    fun getCity(): String = cityDAO.getCityName()?.cityName ?: ""
 
-    fun forecastDB(cityName: String): Flowable<AppEntity> = appDAO.getByNameAsync(cityName)
+    fun forecastDB(cityName: String): Flowable<List<AppEntity>> = appDAO.getByNameAsync(cityName)
 
 }

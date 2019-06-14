@@ -12,5 +12,5 @@ interface CityDAO {
     suspend fun insert(cityEntity: CityEntity)
 
     @Query("SELECT * FROM city_query WHERE id = 0")
-    suspend fun getCityName(): CityEntity?
+    fun getCityName(): CityEntity?
 }

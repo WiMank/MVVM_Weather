@@ -30,8 +30,8 @@
 
         <ImageView
                 android:id="@+id/icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 tools:src="@drawable/ic_cloud_sun_solid"
                 tools:ignore="ContentDescription"
                 android:bindSrc="@{safeUnbox(hourlyItem.icon)}"

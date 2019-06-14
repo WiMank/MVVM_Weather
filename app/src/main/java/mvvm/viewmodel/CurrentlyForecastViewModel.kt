@@ -38,8 +38,6 @@ class CurrentlyForecastViewModel(
 
     init {
         refresh()
-
-
     }
 
     fun refresh() = scope.launch {
@@ -118,16 +116,16 @@ class CurrentlyForecastViewModel(
     }
 
     //Room does not support coroutines channels
-    private suspend fun dataBaseObserve() {
+    private fun dataBaseObserve() {
         composite.add(
             mRepoForecast.db()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
-                    observableFields.temp.set(it.temperature)
-                    observableFields.summary.set(it.summary)
-                    observableFields.toolbarTitle.value = it.city
-                    observableFields.weatherIcon.set(WeatherIcons().map().getValue(it.icon))
-                    observableFields.hourlyAdapter.set(HourlyAdapter(it.jsonHourlyArray))
+                    observableFields.temp.set(it[0].temperature)
+                    observableFields.summary.set(it[0].summary)
+                    observableFields.toolbarTitle.value = it[0].city
+                    observableFields.weatherIcon.set(WeatherIcons().map().getValue(it[0].icon))
+                    observableFields.hourlyAdapter.set(HourlyAdapter(it[0].jsonHourlyArray))
                 })
     }
 
