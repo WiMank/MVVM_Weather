@@ -8,6 +8,7 @@ import io.reactivex.disposables.CompositeDisposable
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.consumeEach
 import mvvm.binding.ObservableFields
+import mvvm.binding.recycler.HourlyAdapter
 import mvvm.model.dark_sky.RepoDarkSkyForecast
 import mvvm.model.dark_sky.WeatherIcons
 import mvvm.model.status.Status
@@ -37,6 +38,8 @@ class CurrentlyForecastViewModel(
 
     init {
         refresh()
+
+
     }
 
     fun refresh() = scope.launch {
@@ -124,6 +127,7 @@ class CurrentlyForecastViewModel(
                     observableFields.summary.set(it.summary)
                     observableFields.toolbarTitle.value = it.city
                     observableFields.weatherIcon.set(WeatherIcons().map().getValue(it.icon))
+                    observableFields.hourlyAdapter.set(HourlyAdapter(it.jsonHourlyArray))
                 })
     }
 

@@ -76,6 +76,7 @@
 
 
                     <androidx.recyclerview.widget.RecyclerView
+                            android:setAdapter="@{observableFields.hourlyAdapter}"
                             android:id="@+id/hourly_recycler"
                             android:layout_width="match_parent"
                             android:layout_height="150dp"

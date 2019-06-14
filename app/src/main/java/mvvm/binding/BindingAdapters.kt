@@ -4,8 +4,14 @@ import android.view.View
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import mvvm.binding.recycler.HourlyHolder
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 @BindingAdapter("android:bindSrc")
@@ -45,4 +51,23 @@ private fun createAnimation(): Animation {
     anim.interpolator = INTERPOLATOR
     anim.duration = 10000
     return anim
+}
+
+@BindingAdapter("android:date")
+fun textDate(textView: TextView, time: Long) {
+    textView.text = SimpleDateFormat("H:mm", Locale.getDefault()).format(Date(time * 1000))
+}
+
+
+@BindingAdapter("android:dayWeek")
+fun dayWeek(textView: TextView, time: Long) {
+    textView.text = SimpleDateFormat("EEEE", Locale.getDefault()).format(Date(time * 1000))
+}
+
+
+@BindingAdapter("android:setAdapter")
+fun bindRecyclerViewAdapter(recyclerView: RecyclerView, adapter: RecyclerView.Adapter<HourlyHolder>) {
+    recyclerView.setHasFixedSize(true)
+    recyclerView.layoutManager = LinearLayoutManager(recyclerView.context, LinearLayoutManager.HORIZONTAL, false)
+    recyclerView.adapter = adapter
 }

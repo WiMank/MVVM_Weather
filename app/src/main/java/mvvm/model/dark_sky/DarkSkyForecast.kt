@@ -36,11 +36,11 @@ object DarkSkyForecast {
 
     data class Daily(
         val summary: String,
-        val data: MutableList<DataItem>,
+        val data: MutableList<DailyItem>,
         val icon: String
     )
 
-    data class DataItem(
+    data class DailyItem(
         val time: Int,
         val summary: String,
         val icon: String,
@@ -84,9 +84,9 @@ object DarkSkyForecast {
 
 
     data class Hourly(
-        val summary: String,
-        val data: MutableList<DataItem>,
-        val icon: String
+        val summary: String = "",
+        val data: List<HourlyItem> = listOf(),
+        val icon: String = ""
     )
 
     data class HourlyItem(
