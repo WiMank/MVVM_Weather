@@ -1,6 +1,5 @@
 package mvvm.model.dark_sky
 
-import io.reactivex.Flowable
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import mvvm.model.gps.GPSCoordinates
 import mvvm.model.gps.RepoGPSCoordinates
@@ -62,7 +61,7 @@ class RepoDarkSkyForecast(
         else statusChannel.sendStatus(Status.NO_NETWORK_CONNECTION)
     }
 
-    fun db(): Flowable<List<AppEntity>> {
+    suspend fun db(): AppEntity {
         return mRepoDarkSkyForecastLocalData.forecastDB(mRepoDarkSkyForecastLocalData.getCity())
     }
 }

@@ -1,7 +1,6 @@
 package room
 
 import androidx.room.*
-import io.reactivex.Flowable
 import mvvm.model.dark_sky.DarkSkyForecast
 
 @Dao
@@ -14,7 +13,7 @@ interface AppDAO {
     suspend fun getById(id: Long): AppEntity
 
     @Query("SELECT * FROM appEntity WHERE city = :name")
-    fun getByNameAsync(name: String): Flowable<List<AppEntity>>
+    suspend fun getByNameAsync(name: String): AppEntity
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(previewPositionEntity: AppEntity)

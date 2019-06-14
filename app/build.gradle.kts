@@ -84,10 +84,6 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion")
 
-    //RX
-    implementation("io.reactivex.rxjava2:rxandroid:2.1.1")
-    implementation("io.reactivex.rxjava2:rxkotlin:2.3.0")
-
     //Lifecycle
     val lifecycleVersion = "2.2.0-alpha01"
     implementation("androidx.lifecycle:lifecycle-extensions:$lifecycleVersion")

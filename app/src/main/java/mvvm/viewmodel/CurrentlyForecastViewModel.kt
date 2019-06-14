@@ -3,7 +3,6 @@ package mvvm.viewmodel
 import androidx.lifecycle.ViewModel
 import com.mapbox.api.geocoding.v5.models.CarmenFeature
 import com.mapbox.mapboxsdk.plugins.places.autocomplete.ui.PlaceSelectionListener
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.consumeEach
@@ -40,7 +39,7 @@ class CurrentlyForecastViewModel(
         refresh()
     }
 
-    fun refresh() = scope.launch {
+    fun refresh() = scope.launch(handler) {
         statusChannel()
         when {
             settings.getBooleanSettings(PLACE_KEY) -> {
@@ -55,7 +54,7 @@ class CurrentlyForecastViewModel(
                 loadGPSForecast()
             }
         }
-        dataBaseObserve()
+        dataBaseAsync()
     }
 
     private suspend fun loadGPSForecast() {
@@ -115,18 +114,15 @@ class CurrentlyForecastViewModel(
         }
     }
 
-    //Room does not support coroutines channels
-    private fun dataBaseObserve() {
-        composite.add(
-            mRepoForecast.db()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
-                    observableFields.temp.set(it[0].temperature)
-                    observableFields.summary.set(it[0].summary)
-                    observableFields.toolbarTitle.value = it[0].city
-                    observableFields.weatherIcon.set(WeatherIcons().map().getValue(it[0].icon))
-                    observableFields.hourlyAdapter.set(HourlyAdapter(it[0].jsonHourlyArray))
-                })
+    private suspend fun dataBaseAsync() = scope.launch {
+        val forecastDB = async { mRepoForecast.db() }
+        withContext(Dispatchers.Main) {
+            observableFields.temp.set(forecastDB.await().temperature)
+            observableFields.summary.set(forecastDB.await().summary)
+            observableFields.toolbarTitle.value = forecastDB.await().city
+            observableFields.weatherIcon.set(WeatherIcons().map().getValue(forecastDB.await().icon))
+            observableFields.hourlyAdapter.set(HourlyAdapter(forecastDB.await().jsonHourlyArray))
+        }
     }
 
     override fun onCancel() {
