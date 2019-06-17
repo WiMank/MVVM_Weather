@@ -3,7 +3,6 @@ package mvvm.viewmodel
 import androidx.lifecycle.ViewModel
 import com.mapbox.api.geocoding.v5.models.CarmenFeature
 import com.mapbox.mapboxsdk.plugins.places.autocomplete.ui.PlaceSelectionListener
-import io.reactivex.disposables.CompositeDisposable
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.consumeEach
 import mvvm.binding.ObservableFields
@@ -14,7 +13,6 @@ import mvvm.model.status.Status
 import mvvm.model.status.StatusChannel
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.error
-import org.jetbrains.anko.info
 import utils.GPS_KEY
 import utils.PLACE_KEY
 import utils.SEARCH_QUERY
@@ -33,7 +31,6 @@ class CurrentlyForecastViewModel(
 
     private val job = SupervisorJob()
     private val scope = CoroutineScope(Dispatchers.Default + job)
-    private val composite = CompositeDisposable()
 
     init {
         refresh()
@@ -151,12 +148,8 @@ class CurrentlyForecastViewModel(
     }
 
     override fun onCleared() {
-        info { "VM onCleared() ${observableFields.isLoading.get()}" }
         super.onCleared()
         observableFields.isLoading.set(false)
-        //Проблема с закрытием канала
-        //statusChannel.channel.close()
-        composite.dispose()
         job.cancel()
     }
 }

@@ -54,7 +54,7 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:1.1.3")
 
     //Test
-    implementation("androidx.preference:preference:1.1.0-alpha05")
+    implementation("androidx.preference:preference:1.1.0-beta01")
     testImplementation("junit:junit:4.12")
     androidTestImplementation("androidx.test:runner:1.2.0")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.2.0")
@@ -72,7 +72,6 @@ dependencies {
     implementation("androidx.room:room-runtime:$roomVersion")
     kapt("androidx.room:room-compiler:$roomVersion")
     implementation("androidx.room:room-ktx:$roomVersion")
-    implementation("androidx.room:room-rxjava2:$roomVersion")
 
     //Anko
     val ankoVersion = "0.10.8"
