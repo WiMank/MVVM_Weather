@@ -13,8 +13,10 @@ import mvvm.model.status.Status
 import mvvm.model.status.StatusChannel
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.error
-import org.jetbrains.anko.info
-import utils.*
+import utils.GPS_KEY
+import utils.PLACE_KEY
+import utils.SEARCH_QUERY
+import utils.Settings
 
 
 @ObsoleteCoroutinesApi
@@ -35,11 +37,6 @@ class CurrentlyForecastViewModel(
     }
 
     fun refresh() = scope.launch(handler) {
-        info(
-            "W_LANGUAGE ${settings.getStringsSettings(W_LANGUAGE)} UNITS_PREF_KEY ${settings.getStringsSettings(
-                UNITS_PREF_KEY
-            )}"
-        )
         try {
             statusChannel()
             when {
