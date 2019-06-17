@@ -13,7 +13,6 @@ class RepoDarkSkyForecastRemoteData(private val ktorClient: HttpClient, private 
 
     suspend fun forecastRemote(coordinates: GPSCoordinates): DarkSkyForecast.DarkSky {
         return ktorClient.get(
-            //TODO: Выбор языка и выбор едениц измерения через настройки
             DARK_SKY_API_LINK + "${coordinates.latitude},${coordinates.longitude}?exclude=minutely,alerts,flags&lang=${settings.getStringsSettings(
                 W_LANGUAGE
             )}&units=${settings.getStringsSettings(UNITS_PREF_KEY)}"
