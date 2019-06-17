@@ -4,12 +4,15 @@ import android.Manifest
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.wimank.mvvm.weather.R
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.ObsoleteCoroutinesApi
 import org.jetbrains.anko.startActivity
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
 import utils.GPS
 
-
+@ExperimentalCoroutinesApi
+@ObsoleteCoroutinesApi
 class SplashScreenActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -18,6 +21,7 @@ class SplashScreenActivity : AppCompatActivity() {
         setContentView(R.layout.activity_splas_screen)
         checkPermission()
     }
+
 
     @AfterPermissionGranted(GPS)
     private fun checkPermission() {

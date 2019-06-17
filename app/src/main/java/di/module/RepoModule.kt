@@ -31,6 +31,7 @@ class RepoModule {
 
         bind() from singleton {
             RepoDarkSkyForecastRemoteData(
+                instance(),
                 instance()
             )
         }

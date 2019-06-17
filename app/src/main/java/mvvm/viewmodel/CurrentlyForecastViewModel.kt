@@ -13,10 +13,8 @@ import mvvm.model.status.Status
 import mvvm.model.status.StatusChannel
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.error
-import utils.GPS_KEY
-import utils.PLACE_KEY
-import utils.SEARCH_QUERY
-import utils.Settings
+import org.jetbrains.anko.info
+import utils.*
 
 
 @ObsoleteCoroutinesApi
@@ -37,21 +35,31 @@ class CurrentlyForecastViewModel(
     }
 
     fun refresh() = scope.launch(handler) {
-        statusChannel()
-        when {
-            settings.getBooleanSettings(PLACE_KEY) -> {
-                if (settings.getStringsSettings(SEARCH_QUERY).isNotEmpty())
-                    loadPlaceNameForecast(settings.getStringsSettings(SEARCH_QUERY))
-            }
+        info(
+            "W_LANGUAGE ${settings.getStringsSettings(W_LANGUAGE)} UNITS_PREF_KEY ${settings.getStringsSettings(
+                UNITS_PREF_KEY
+            )}"
+        )
+        try {
+            statusChannel()
+            when {
+                settings.getBooleanSettings(PLACE_KEY) -> {
+                    if (settings.getStringsSettings(SEARCH_QUERY).isNotEmpty())
+                        loadPlaceNameForecast(settings.getStringsSettings(SEARCH_QUERY))
+                }
 
-            settings.getBooleanSettings(GPS_KEY) -> loadGPSForecast()
+                settings.getBooleanSettings(GPS_KEY) -> loadGPSForecast()
 
-            else -> {
-                settings.saveSettings(GPS_KEY, true)
-                loadGPSForecast()
+                else -> {
+                    settings.saveSettings(GPS_KEY, true)
+                    loadGPSForecast()
+                }
             }
+            dataBaseAsync()
+        } catch (e: Exception) {
+            observableFields.status.set(e.message)
+            observableFields.isLoading.set(false)
         }
-        dataBaseAsync()
     }
 
     private suspend fun loadGPSForecast() {

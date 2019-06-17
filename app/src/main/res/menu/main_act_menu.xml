@@ -3,11 +3,6 @@
       xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
-    <!--<item
-            android:id="@+id/search"
-            android:title="@string/search"
-            app:actionViewClass="androidx.appcompat.widget.SearchView"
-            app:showAsAction="always"/>-->
 
     <item
             android:id = "@+id/search"
@@ -19,7 +14,13 @@
             android:id = "@+id/gps"
             android:icon = "@drawable/ic_baseline_gps_fixed_24px"
             app:showAsAction = "ifRoom"
-            android:title = "@string/search"/>
+            android:title="@string/location"/>
+
+
+    <item
+            android:id="@+id/settings"
+            app:showAsAction="never"
+            android:title="@string/settings"/>
 
 
 </menu>

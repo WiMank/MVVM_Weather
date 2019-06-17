@@ -22,7 +22,7 @@
         <item>Danish</item>
         <item>German</item>
         <item>Greek</item>
-        <item>English (which is the default)</item>
+        <item>English</item>
         <item>Esperanto</item>
         <item>Spanish</item>
         <item>Estonian</item>
@@ -68,59 +68,59 @@
     </string-array>
 
     <string-array name = "w_lang_array_values">
-        <item>ar:</item>
-        <item>az:</item>
-        <item>be:</item>
-        <item>bg:</item>
-        <item>bn:</item>
-        <item>bs:</item>
-        <item>ca:</item>
-        <item>cs:</item>
-        <item>da:</item>
-        <item>de:</item>
-        <item>el:</item>
-        <item>en:</item>
-        <item>eo:</item>
-        <item>es:</item>
-        <item>et:</item>
-        <item>fi:</item>
-        <item>fr:</item>
-        <item>he:</item>
-        <item>hi:</item>
-        <item>hr:</item>
-        <item>hu:</item>
-        <item>id:</item>
-        <item>is:</item>
-        <item>it:</item>
-        <item>ja:</item>
-        <item>ka:</item>
-        <item>kn:</item>
-        <item>ko:</item>
-        <item>kw:</item>
-        <item>lv:</item>
-        <item>ml:</item>
-        <item>mr:</item>
-        <item>nb:</item>
-        <item>nl:</item>
-        <item>no:</item>
-        <item>pa:</item>
-        <item>pl:</item>
-        <item>pt:</item>
-        <item>ro:</item>
-        <item>ru:</item>
-        <item>sk:</item>
-        <item>sl:</item>
-        <item>sr:</item>
-        <item>sv:</item>
-        <item>ta:</item>
-        <item>te:</item>
-        <item>tet:</item>
-        <item>tr:</item>
-        <item>uk:</item>
-        <item>ur:</item>
-        <item>x-pig-latin:</item>
-        <item>zh:</item>
-        <item>zh-tw:</item>
+        <item>ar</item>
+        <item>az</item>
+        <item>be</item>
+        <item>bg</item>
+        <item>bn</item>
+        <item>bs</item>
+        <item>ca</item>
+        <item>cs</item>
+        <item>da</item>
+        <item>de</item>
+        <item>el</item>
+        <item>en</item>
+        <item>eo</item>
+        <item>es</item>
+        <item>et</item>
+        <item>fi</item>
+        <item>fr</item>
+        <item>he</item>
+        <item>hi</item>
+        <item>hr</item>
+        <item>hu</item>
+        <item>id</item>
+        <item>is</item>
+        <item>it</item>
+        <item>ja</item>
+        <item>ka</item>
+        <item>kn</item>
+        <item>ko</item>
+        <item>kw</item>
+        <item>lv</item>
+        <item>ml</item>
+        <item>mr</item>
+        <item>nb</item>
+        <item>nl</item>
+        <item>no</item>
+        <item>pa</item>
+        <item>pl</item>
+        <item>pt</item>
+        <item>ro</item>
+        <item>ru</item>
+        <item>sk</item>
+        <item>sl</item>
+        <item>sr</item>
+        <item>sv</item>
+        <item>ta</item>
+        <item>te</item>
+        <item>tet</item>
+        <item>tr</item>
+        <item>uk</item>
+        <item>ur</item>
+        <item>x-pig-latin</item>
+        <item>zh</item>
+        <item>zh-tw</item>
     </string-array>
 
 </resources>

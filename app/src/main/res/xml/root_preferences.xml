@@ -17,7 +17,7 @@
                 app:title = "@string/weather_receiving_language"
                 app:entries = "@array/w_lang_array_entries"
                 app:entryValues = "@array/w_lang_array_values"
-                app:defaultValue = "Russian"
+                app:defaultValue="ru"
                 app:useSimpleSummaryProvider = "true"/>
 
     </PreferenceCategory>

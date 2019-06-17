@@ -18,6 +18,7 @@
             android:theme = "@style/AppTheme">
         <activity
                 android:name = "ui.activity.SettingsActivity"
+                android:parentActivityName="ui.activity.MainActivity"
                 android:label = "@string/title_activity_settings">
         </activity>
         <activity android:name = "ui.activity.PermissionActivity"/>

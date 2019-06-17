@@ -9,5 +9,7 @@
     <string name = "units">Units</string>
     <string name = "weather_receiving_language">Weather receiving language</string>
     <string name="give_permission">Give permission</string>
+    <string name="location">Location</string>
+    <string name="settings">Settings</string>
 
 </resources>

@@ -18,8 +18,10 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.ObsoleteCoroutinesApi
 import mvvm.binding.ObservableFields
 import mvvm.viewmodel.CurrentlyForecastViewModel
+import org.jetbrains.anko.startActivity
 import org.kodein.di.generic.instance
 import secret.MAP_BOX_TOKEN
+import ui.activity.SettingsActivity
 
 
 @ExperimentalCoroutinesApi
@@ -65,6 +67,11 @@ class CurrentlyWeatherFragment : KodeinFragment() {
             }
             R.id.gps -> {
                 binding.viewModel?.gps()
+                return true
+            }
+
+            R.id.settings -> {
+                context?.startActivity<SettingsActivity>()
                 return true
             }
         }
