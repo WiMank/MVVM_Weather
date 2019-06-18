@@ -1,6 +1,7 @@
 package mvvm.model.dark_sky
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import mvvm.model.RepoPreference
 import mvvm.model.gps.GPSCoordinates
 import mvvm.model.gps.RepoGPSCoordinates
 import mvvm.model.mapBox.RepoMapBox
@@ -9,6 +10,7 @@ import mvvm.model.status.StatusChannel
 import org.jetbrains.anko.AnkoLogger
 import room.AppEntity
 import utils.NetManager
+import utils.REPLACE_PREF
 
 @ExperimentalCoroutinesApi
 class RepoDarkSkyForecast(
@@ -17,7 +19,8 @@ class RepoDarkSkyForecast(
     private val mRepoDarkSkyForecastLocalData: RepoDarkSkyForecastLocalData,
     private val repoMapBox: RepoMapBox,
     private val netManager: NetManager,
-    private val statusChannel: StatusChannel
+    private val statusChannel: StatusChannel,
+    private val preference: RepoPreference
 ) : AnkoLogger {
 
     private suspend fun placeCoordinates(place: String) {
@@ -37,9 +40,14 @@ class RepoDarkSkyForecast(
 
     private suspend fun hasNeedUpdate(placeName: String, gpsCoordinates: GPSCoordinates) {
         statusChannel.sendStatus(Status.UPDATE_NEEDED)
-        if (mRepoDarkSkyForecastLocalData.checkNeedUpdate(placeName))
-            save(placeName, gpsCoordinates)
-        else statusChannel.sendStatus(Status.DATA_UP_TO_DATE)
+        when {
+            preference.getBooleanSettings(REPLACE_PREF) -> {
+                save(placeName, gpsCoordinates)
+                preference.saveSettings(REPLACE_PREF, false)
+            }
+            mRepoDarkSkyForecastLocalData.checkNeedUpdate(placeName) -> save(placeName, gpsCoordinates)
+            else -> statusChannel.sendStatus(Status.DATA_UP_TO_DATE)
+        }
     }
 
     private suspend fun save(placeName: String, gpsCoordinates: GPSCoordinates) {

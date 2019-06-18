@@ -1,8 +1,8 @@
-package utils
+package mvvm.model
 
 import android.content.SharedPreferences
 
-class Settings(private val sharedPreferences: SharedPreferences) {
+class RepoPreference(private val sharedPreferences: SharedPreferences) {
 
     private val prefEditor = sharedPreferences.edit()
 

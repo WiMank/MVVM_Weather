@@ -7,6 +7,7 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.consumeEach
 import mvvm.binding.ObservableFields
 import mvvm.binding.recycler.HourlyAdapter
+import mvvm.model.RepoPreference
 import mvvm.model.dark_sky.RepoDarkSkyForecast
 import mvvm.model.dark_sky.WeatherIcons
 import mvvm.model.status.Status
@@ -16,7 +17,6 @@ import org.jetbrains.anko.error
 import utils.GPS_KEY
 import utils.PLACE_KEY
 import utils.SEARCH_QUERY
-import utils.Settings
 
 
 @ObsoleteCoroutinesApi
@@ -25,7 +25,7 @@ class CurrentlyForecastViewModel(
     private val mRepoForecast: RepoDarkSkyForecast,
     private val handler: CoroutineExceptionHandler,
     private val observableFields: ObservableFields,
-    private val settings: Settings,
+    private val preference: RepoPreference,
     private val statusChannel: StatusChannel
 ) : ViewModel(), AnkoLogger, PlaceSelectionListener {
 
@@ -40,15 +40,15 @@ class CurrentlyForecastViewModel(
         try {
             statusChannel()
             when {
-                settings.getBooleanSettings(PLACE_KEY) -> {
-                    if (settings.getStringsSettings(SEARCH_QUERY).isNotEmpty())
-                        loadPlaceNameForecast(settings.getStringsSettings(SEARCH_QUERY))
+                preference.getBooleanSettings(PLACE_KEY) -> {
+                    if (preference.getStringsSettings(SEARCH_QUERY).isNotEmpty())
+                        loadPlaceNameForecast(preference.getStringsSettings(SEARCH_QUERY))
                 }
 
-                settings.getBooleanSettings(GPS_KEY) -> loadGPSForecast()
+                preference.getBooleanSettings(GPS_KEY) -> loadGPSForecast()
 
                 else -> {
-                    settings.saveSettings(GPS_KEY, true)
+                    preference.saveSettings(GPS_KEY, true)
                     loadGPSForecast()
                 }
             }
@@ -63,7 +63,6 @@ class CurrentlyForecastViewModel(
         observableFields.isLoading.set(true)
         mRepoForecast.loadGPSForecast()
         observableFields.isLoading.set(false)
-
     }
 
     private suspend fun loadPlaceNameForecast(query: String) {
@@ -132,8 +131,8 @@ class CurrentlyForecastViewModel(
     }
 
     fun gps() {
-        settings.saveSettings(PLACE_KEY, false)
-        settings.saveSettings(GPS_KEY, true)
+        preference.saveSettings(PLACE_KEY, false)
+        preference.saveSettings(GPS_KEY, true)
         refresh()
     }
 
@@ -142,9 +141,9 @@ class CurrentlyForecastViewModel(
         if (carmenFeature == null)
             return
         if (carmenFeature.center() != null) {
-            settings.saveSettings(PLACE_KEY, true)
-            settings.saveSettings(GPS_KEY, false)
-            settings.saveSettings(SEARCH_QUERY, carmenFeature.text() ?: "")
+            preference.saveSettings(PLACE_KEY, true)
+            preference.saveSettings(GPS_KEY, false)
+            preference.saveSettings(SEARCH_QUERY, carmenFeature.text() ?: "")
             refresh()
         } else {
             observableFields.status.set("Мы не смогли найти указанное место :(")
