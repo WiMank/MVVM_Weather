@@ -1,34 +1,36 @@
-<layout xmlns:app = "http://schemas.android.com/apk/res-auto" xmlns:tools = "http://schemas.android.com/tools">
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
 
     <data>
         <variable
-                name = "viewModel"
-                type = "mvvm.viewmodel.CurrentlyForecastViewModel"/>
+                name="viewModel"
+                type="mvvm.viewmodel.CurrentlyForecastViewModel"/>
 
         <variable
-                name = "observableFields"
+                name="observableFields"
                 type="mvvm.binding.ObservableFields"/>
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
-            xmlns:android = "http://schemas.android.com/apk/res/android"
-            android:layout_width = "match_parent"
-            android:layout_height = "match_parent">
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <LinearLayout android:layout_width = "match_parent"
-                      android:layout_height = "wrap_content"
-                      android:orientation = "vertical">
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
             <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-                    android:layout_height = "wrap_content"
-                    android:layout_width = "wrap_content"
-                    app:refreshing = "@{safeUnbox(observableFields.isLoading)}"
-                    app:onRefreshListener = "@{() -> viewModel.refresh()}">
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    app:refreshing="@{safeUnbox(observableFields.isLoading)}"
+                    app:onRefreshListener="@{() -> viewModel.refresh()}">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width = "match_parent"
-                        android:layout_height = "match_parent"
-                        tools:context = "ui.fragment.CurrentlyWeatherFragment">
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        tools:context="ui.fragment.CurrentlyWeatherFragment">
 
 
                     <ImageView
@@ -45,34 +47,34 @@
                             app:layout_constraintTop_toTopOf="parent"/>
 
                     <TextView
-                            android:id = "@+id/temp"
+                            android:id="@+id/temp"
                             android:textSize="@dimen/temp_text_size"
-                            android:textStyle = "bold"
-                            tools:text = "64.5"
-                            android:text = '@{String.format("%.0f°", observableFields.temp) ?? "??°"}'
-                            android:layout_width = "wrap_content"
-                            android:layout_height = "wrap_content"
-                            app:layout_constraintEnd_toEndOf = "parent"
-                            android:layout_marginEnd = "8dp"
-                            app:layout_constraintStart_toStartOf = "parent"
-                            android:layout_marginStart = "8dp"
-                            android:layout_marginTop = "32dp"
-                            app:layout_constraintTop_toBottomOf = "@+id/icon"/>
+                            android:textStyle="bold"
+                            tools:text="64.5"
+                            android:text='@{String.format("%.0f°", observableFields.temp) ?? "??°"}'
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            android:layout_marginEnd="8dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="32dp"
+                            app:layout_constraintTop_toBottomOf="@+id/icon"/>
 
                     <TextView
-                            android:id = "@+id/summary"
+                            android:id="@+id/summary"
                             android:textSize="@dimen/summary_text_size"
-                            android:textStyle = "bold"
-                            tools:text = "Summary"
-                            android:text = "@{observableFields.summary}"
-                            android:layout_width = "wrap_content"
-                            android:layout_height = "wrap_content"
-                            android:layout_marginStart = "8dp"
-                            app:layout_constraintStart_toStartOf = "parent"
-                            android:layout_marginEnd = "8dp"
-                            app:layout_constraintEnd_toEndOf = "parent"
-                            android:layout_marginTop = "8dp"
-                            app:layout_constraintTop_toBottomOf = "@+id/temp"/>
+                            android:textStyle="bold"
+                            tools:text="Summary"
+                            android:text="@{observableFields.summary}"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            android:layout_marginEnd="8dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            android:layout_marginTop="8dp"
+                            app:layout_constraintTop_toBottomOf="@+id/temp"/>
 
 
                     <androidx.recyclerview.widget.RecyclerView
@@ -90,19 +92,19 @@
                     </androidx.recyclerview.widget.RecyclerView>
 
                     <TextView
-                            android:id = "@+id/status"
-                            tools:text = "STATUS"
-                            android:text = "@{observableFields.status}"
-                            android:alphaAnim = "@{observableFields.statusInvisible}"
-                            android:textColor = "@color/colorAccent"
-                            android:layout_width = "wrap_content"
-                            android:layout_height = "wrap_content"
-                            android:layout_marginBottom = "8dp"
-                            app:layout_constraintBottom_toBottomOf = "parent"
-                            android:layout_marginStart = "8dp"
-                            app:layout_constraintStart_toStartOf = "parent"
-                            android:layout_marginEnd = "8dp"
-                            app:layout_constraintEnd_toEndOf = "parent"/>
+                            android:id="@+id/status"
+                            tools:text="STATUS"
+                            android:text="@{observableFields.status}"
+                            android:alphaAnim="@{observableFields.statusInvisible}"
+                            android:textColor="@color/colorAccent"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            android:layout_marginStart="8dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            android:layout_marginEnd="8dp"
+                            app:layout_constraintEnd_toEndOf="parent"/>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
