@@ -3,6 +3,7 @@ package mvvm.viewmodel
 import androidx.lifecycle.ViewModel
 import com.mapbox.api.geocoding.v5.models.CarmenFeature
 import com.mapbox.mapboxsdk.plugins.places.autocomplete.ui.PlaceSelectionListener
+import com.wimank.mvvm.weather.R
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.consumeEach
 import mvvm.binding.ObservableFields
@@ -12,6 +13,7 @@ import mvvm.model.dark_sky.RepoDarkSkyForecast
 import mvvm.model.dark_sky.WeatherIcons
 import mvvm.model.status.Status
 import mvvm.model.status.StatusChannel
+import mvvm.model.status.getStatusDescription
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.error
 import utils.GPS_KEY
@@ -54,7 +56,8 @@ class CurrentlyForecastViewModel(
             }
             dataBaseAsync()
         } catch (e: Exception) {
-            observableFields.status.set(e.message)
+            error { e.printStackTrace() }
+            observableFields.status.set(R.string.error_forecast)
             observableFields.isLoading.set(false)
         }
     }
@@ -73,44 +76,11 @@ class CurrentlyForecastViewModel(
 
     private suspend fun statusChannel() = scope.launch {
         statusChannel.channel.consumeEach {
+            observableFields.status.set(getStatusDescription(it))
             when (it) {
-                Status.LOCATION_DETERMINATION -> {
-                    observableFields.status.set("Определяем местоположение...")
-                    observableFields.statusInvisible.set(false)
-                }
-                Status.LOOKING_FOR_LOCATION_NAME -> {
-                    observableFields.status.set("Пытаемся найти название местоположения...")
-                    observableFields.statusInvisible.set(false)
-                }
-                Status.UPDATE_NEEDED -> {
-                    observableFields.status.set("Проверяем актуальность данных...")
-                    observableFields.statusInvisible.set(false)
-                }
-
-                Status.SAVE_THE_DATA -> {
-                    observableFields.status.set("Сохраняем новые данные...")
-                    observableFields.statusInvisible.set(false)
-                }
-
-                Status.PLACE_COORDINATES -> {
-                    observableFields.status.set("Узнаём координаты места...")
-                    observableFields.statusInvisible.set(false)
-                }
-
-                Status.NO_NETWORK_CONNECTION -> {
-                    observableFields.status.set("Нет подключения к сети!")
-                    observableFields.statusInvisible.set(false)
-                }
-
-                Status.DONE -> {
-                    observableFields.status.set("Готово!")
-                    observableFields.statusInvisible.set(true)
-                }
-
-                Status.DATA_UP_TO_DATE -> {
-                    observableFields.status.set("Данные в актуальном состоянии!")
-                    observableFields.statusInvisible.set(true)
-                }
+                Status.DONE -> observableFields.statusInvisible.set(true)
+                Status.DATA_UP_TO_DATE -> observableFields.statusInvisible.set(true)
+                else -> observableFields.statusInvisible.set(false)
             }
         }
     }
@@ -146,7 +116,7 @@ class CurrentlyForecastViewModel(
             preference.saveSettings(SEARCH_QUERY, carmenFeature.text() ?: "")
             refresh()
         } else {
-            observableFields.status.set("Мы не смогли найти указанное место :(")
+            observableFields.status.set(R.string.We_could_not_find)
             error { "CarmenFeature center's null." }
         }
     }

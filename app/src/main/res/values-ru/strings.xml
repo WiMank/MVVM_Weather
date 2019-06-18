@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">MVVM Weather</string>
+    <string name="rationale_gps_perm">Необходим доступ к GPS для определения местоположения</string>
+    <string name="search">Поиск</string>
+    <string name="title_activity_settings">Настройки</string>
+
+
+    <string name="weather_settings">Настройки погоды</string>
+    <string name="units">Еденицы измерения</string>
+    <string name="weather_receiving_language">Язык получения погоды</string>
+    <string name="give_permission">Дать разрешения</string>
+    <string name="location">Местоположение</string>
+    <string name="settings">Настройки</string>
+    <string name="empty"></string>
+
+    <string name="determine_the_location">Определяем местоположение…</string>
+    <string name="trying_loc">Пытаемся найти название местоположения…</string>
+    <string name="check_relevance">Проверяем актуальность данных…</string>
+    <string name="saving_new_data">Сохраняем новые данные…</string>
+    <string name="find_coordinates">Узнаём координаты места…</string>
+    <string name="no_network_connection">Нет подключения к сети!</string>
+    <string name="done">Готово!</string>
+    <string name="data_up_to_date">Данные в актуальном состоянии!</string>
+    <string name="We_could_not_find">Мы не смогли найти указанное место :(</string>
+    <string name="error_forecast">Что-то пошло не так, ошибка получения прогноза!</string>
+</resources>

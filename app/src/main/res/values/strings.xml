@@ -11,5 +11,18 @@
     <string name="give_permission">Give permission</string>
     <string name="location">Location</string>
     <string name="settings">Settings</string>
+    <string name="empty"></string>
+
+
+    <string name="determine_the_location">Determine the location…</string>
+    <string name="trying_loc">We are trying to find the location name…</string>
+    <string name="check_relevance">We check the relevance of the data…</string>
+    <string name="saving_new_data">Saving new data…</string>
+    <string name="find_coordinates">Find out the coordinates of the place…</string>
+    <string name="no_network_connection">No network connection!</string>
+    <string name="done">Done!</string>
+    <string name="data_up_to_date">Data up to date!</string>
+    <string name="We_could_not_find">We could not find the specified location :(</string>
+    <string name="error_forecast">Something went wrong, error getting forecast!</string>
 
 </resources>
