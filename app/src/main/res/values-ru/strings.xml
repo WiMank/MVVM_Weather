@@ -23,4 +23,6 @@
     <string name="data_up_to_date">Данные в актуальном состоянии!</string>
     <string name="We_could_not_find">Мы не смогли найти указанное место :(</string>
     <string name="error_forecast">Что-то пошло не так, ошибка получения прогноза!</string>
+    <string name="location_enable">Необходимо включить местоположение по всем источникам!</string>
+
 </resources>

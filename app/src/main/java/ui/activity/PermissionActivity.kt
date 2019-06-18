@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.wimank.mvvm.weather.R
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.ObsoleteCoroutinesApi
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.find
 import org.jetbrains.anko.info
@@ -15,6 +17,8 @@ import pub.devrel.easypermissions.EasyPermissions
 import utils.GPS
 
 
+@ExperimentalCoroutinesApi
+@ObsoleteCoroutinesApi
 class PermissionActivity : AppCompatActivity(), AnkoLogger, EasyPermissions.PermissionCallbacks {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,11 +34,11 @@ class PermissionActivity : AppCompatActivity(), AnkoLogger, EasyPermissions.Perm
             startActivity<MainActivity>()
         else {
             EasyPermissions.requestPermissions(
-                this,
-                getString(R.string.rationale_gps_perm),
-                GPS,
-                Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.ACCESS_COARSE_LOCATION
+                    this,
+                    getString(R.string.rationale_gps_perm),
+                    GPS,
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
             )
         }
     }
@@ -56,9 +60,9 @@ class PermissionActivity : AppCompatActivity(), AnkoLogger, EasyPermissions.Perm
 
     private fun hasGPSPermission(): Boolean {
         return EasyPermissions.hasPermissions(
-            this,
-            Manifest.permission.ACCESS_FINE_LOCATION,
-            Manifest.permission.ACCESS_COARSE_LOCATION
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION
         )
     }
 }

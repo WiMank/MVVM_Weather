@@ -24,5 +24,6 @@
     <string name="data_up_to_date">Data up to date!</string>
     <string name="We_could_not_find">We could not find the specified location :(</string>
     <string name="error_forecast">Something went wrong, error getting forecast!</string>
+    <string name="location_enable">You must include a location for all sources!</string>
 
 </resources>

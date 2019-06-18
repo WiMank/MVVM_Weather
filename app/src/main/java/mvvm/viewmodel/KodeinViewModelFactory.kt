@@ -21,6 +21,7 @@ class KodeinViewModelFactory(
     private val statusChannel: StatusChannel
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        @Suppress("UNCHECKED_CAST")
         return CurrentlyForecastViewModel(mRepoForecast, handler, observableFields, preference, statusChannel) as T
     }
 }

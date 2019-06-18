@@ -7,6 +7,7 @@ import android.provider.Settings
 import androidx.core.content.ContextCompat.startActivity
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
+import com.wimank.mvvm.weather.R
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
@@ -40,7 +41,7 @@ class RepoGPSCoordinates(private val context: Context) : AnkoLogger {
                             Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
                             null
                         )
-                        context.toast("Необходимо включить местоположение по всем источникам!")
+                        context.toast(R.string.location_enable)
                     }
                 }
             }

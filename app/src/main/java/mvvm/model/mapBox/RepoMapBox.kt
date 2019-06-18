@@ -5,15 +5,12 @@ import com.mapbox.api.geocoding.v5.MapboxGeocoding
 import com.mapbox.geojson.Point
 import mvvm.model.gps.GPSCoordinates
 import org.jetbrains.anko.AnkoLogger
-import org.jetbrains.anko.info
 import secret.MAP_BOX_TOKEN
 
 
 class RepoMapBox : AnkoLogger {
 
     fun locationName(gpsCoordinates: GPSCoordinates): String {
-
-        info("MAP BOX latitude: ${gpsCoordinates.latitude}  longitude: ${gpsCoordinates.longitude}")
 
         val map = MapboxGeocoding.builder()
             .accessToken(MAP_BOX_TOKEN)
