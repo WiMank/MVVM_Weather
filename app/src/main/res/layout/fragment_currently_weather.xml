@@ -32,8 +32,8 @@
 
 
                     <ImageView
-                            android:layout_width="120dp"
-                            android:layout_height="120dp"
+                            android:layout_width="@dimen/forecast_icon_size_width"
+                            android:layout_height="@dimen/forecast_icon_size_height"
                             android:id="@+id/icon"
                             android:bindSrc="@{safeUnbox(observableFields.weatherIcon)}"
                             android:layout_marginTop="32dp"
@@ -46,7 +46,7 @@
 
                     <TextView
                             android:id = "@+id/temp"
-                            android:textSize="26sp"
+                            android:textSize="@dimen/temp_text_size"
                             android:textStyle = "bold"
                             tools:text = "64.5"
                             android:text = '@{String.format("%.0f°", observableFields.temp) ?? "??°"}'
@@ -61,7 +61,7 @@
 
                     <TextView
                             android:id = "@+id/summary"
-                            android:textSize = "22sp"
+                            android:textSize="@dimen/summary_text_size"
                             android:textStyle = "bold"
                             tools:text = "Summary"
                             android:text = "@{observableFields.summary}"
@@ -79,7 +79,7 @@
                             android:setAdapter="@{observableFields.hourlyAdapter}"
                             android:id="@+id/hourly_recycler"
                             android:layout_width="match_parent"
-                            android:layout_height="150dp"
+                            android:layout_height="wrap_content"
                             app:layout_constraintStart_toStartOf="parent"
                             android:layout_marginStart="8dp"
                             android:layout_marginEnd="8dp"
