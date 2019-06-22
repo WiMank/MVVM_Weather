@@ -9,13 +9,13 @@ import mvvm.binding.recycler.HourlyAdapter
 import mvvm.model.dark_sky.DarkSkyForecast
 
 class ObservableFields {
-    val temp = ObservableField<Double>(0.0)
-    val summary = ObservableField<String>("SUMMARY")
-    val status = ObservableField<Int>(R.string.empty)
-    val statusInvisible = ObservableField<Boolean>(true)
+    val temp = ObservableField(0.0)
+    val summary = ObservableField("SUMMARY")
+    val status = ObservableField(R.string.empty)
+    val statusInvisible = ObservableField(true)
     val weatherIcon = ObservableInt(0)
     val isLoading = ObservableBoolean(false)
     val cancelPlaceSearch = MutableLiveData<Boolean>()
-    val toolbarTitle = MutableLiveData<String>("MVVM Weather")
+    val toolbarTitle = MutableLiveData("MVVM Weather")
     val hourlyAdapter: ObservableField<HourlyAdapter> = ObservableField(HourlyAdapter(DarkSkyForecast.Hourly()))
 }
