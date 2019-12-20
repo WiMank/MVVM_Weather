@@ -21,6 +21,12 @@ class KodeinViewModelFactory(
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         @Suppress("UNCHECKED_CAST")
-        return CurrentlyForecastViewModel(mRepoForecast, handler, observableFields, preference, statusChannel) as T
+        return CurrentlyWeatherViewModel(
+            mRepoForecast,
+            handler,
+            observableFields,
+            preference,
+            statusChannel
+        ) as T
     }
 }

@@ -1,8 +1,6 @@
 package mvvm.viewmodel
 
 import androidx.lifecycle.ViewModel
-import com.mapbox.api.geocoding.v5.models.CarmenFeature
-import com.mapbox.mapboxsdk.plugins.places.autocomplete.ui.PlaceSelectionListener
 import com.wimank.mvvm.weather.R
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.consumeEach
@@ -22,13 +20,13 @@ import utils.SEARCH_QUERY
 
 @ObsoleteCoroutinesApi
 @ExperimentalCoroutinesApi
-class CurrentlyForecastViewModel(
+class CurrentlyWeatherViewModel(
     private val mRepoForecast: RepoDarkSkyForecast,
     private val handler: CoroutineExceptionHandler,
     private val observableFields: ObservableFields,
     private val preference: RepoPreference,
     private val statusChannel: StatusChannel
-) : ViewModel(), AnkoLogger, PlaceSelectionListener {
+) : ViewModel(), AnkoLogger {
 
     private val job = SupervisorJob()
     private val scope = CoroutineScope(Dispatchers.Default + job)
@@ -95,9 +93,9 @@ class CurrentlyForecastViewModel(
         }
     }
 
-    override fun onCancel() {
-        observableFields.cancelPlaceSearch.value = true
-    }
+    /* override fun onCancel() {
+         observableFields.cancelPlaceSearch.value = true
+     }*/
 
     fun gps() {
         preference.saveSettings(PLACE_KEY, false)
@@ -105,20 +103,20 @@ class CurrentlyForecastViewModel(
         refresh()
     }
 
-    override fun onPlaceSelected(carmenFeature: CarmenFeature?) {
-        observableFields.cancelPlaceSearch.value = false
-        if (carmenFeature == null)
-            return
-        if (carmenFeature.center() != null) {
-            preference.saveSettings(PLACE_KEY, true)
-            preference.saveSettings(GPS_KEY, false)
-            preference.saveSettings(SEARCH_QUERY, carmenFeature.text() ?: "")
-            refresh()
-        } else {
-            observableFields.status.set(R.string.We_could_not_find)
-            error { "CarmenFeature center's null." }
-        }
-    }
+    /* override fun onPlaceSelected(carmenFeature: CarmenFeature?) {
+         observableFields.cancelPlaceSearch.value = false
+         if (carmenFeature == null)
+             return
+         if (carmenFeature.center() != null) {
+             preference.saveSettings(PLACE_KEY, true)
+             preference.saveSettings(GPS_KEY, false)
+             preference.saveSettings(SEARCH_QUERY, carmenFeature.text() ?: "")
+             refresh()
+         } else {
+             observableFields.status.set(R.string.We_could_not_find)
+             error { "CarmenFeature center's null." }
+         }
+     }*/
 
     override fun onCleared() {
         super.onCleared()

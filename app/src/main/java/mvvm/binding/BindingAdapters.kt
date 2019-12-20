@@ -13,12 +13,10 @@ import mvvm.binding.recycler.HourlyHolder
 import java.text.SimpleDateFormat
 import java.util.*
 
-
 @BindingAdapter("android:bindSrc")
 fun bindSrc(imageView: ImageView, resource: Int) {
     imageView.setImageResource(resource)
 }
-
 
 private val INTERPOLATOR = FastOutSlowInInterpolator()
 @BindingAdapter("android:alphaAnim")
@@ -45,7 +43,6 @@ fun alphaAnim(view: View, go: Boolean) {
     }
 }
 
-
 private fun createAnimation(): Animation {
     val anim = AlphaAnimation(1.0f, 0.0f)
     anim.interpolator = INTERPOLATOR
@@ -58,7 +55,6 @@ fun textDate(textView: TextView, time: Long) {
     textView.text = SimpleDateFormat("H:mm", Locale.getDefault()).format(Date(time * 1000))
 }
 
-
 @BindingAdapter("android:dayWeek")
 fun dayWeek(textView: TextView, time: Long) {
     textView.text = SimpleDateFormat("EEEE", Locale.getDefault()).format(Date(time * 1000))
@@ -66,8 +62,12 @@ fun dayWeek(textView: TextView, time: Long) {
 
 
 @BindingAdapter("android:setAdapter")
-fun bindRecyclerViewAdapter(recyclerView: RecyclerView, adapter: RecyclerView.Adapter<HourlyHolder>) {
+fun bindRecyclerViewAdapter(
+    recyclerView: RecyclerView,
+    adapter: RecyclerView.Adapter<HourlyHolder>
+) {
     recyclerView.setHasFixedSize(true)
-    recyclerView.layoutManager = LinearLayoutManager(recyclerView.context, LinearLayoutManager.HORIZONTAL, false)
+    recyclerView.layoutManager =
+        LinearLayoutManager(recyclerView.context, LinearLayoutManager.HORIZONTAL, false)
     recyclerView.adapter = adapter
 }

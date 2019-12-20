@@ -5,6 +5,7 @@ import androidx.databinding.Bindable
 import com.wimank.mvvm.weather.BR
 
 class HourlyItem : BaseObservable() {
+
     @get: Bindable
     var time: Long = 0
         set(value) {
