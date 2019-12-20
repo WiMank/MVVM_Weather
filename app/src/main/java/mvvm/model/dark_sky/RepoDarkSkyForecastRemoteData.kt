@@ -8,14 +8,16 @@ import secret.DARK_SKY_API_LINK
 import utils.UNITS_PREF_KEY
 import utils.W_LANGUAGE
 
-
-class RepoDarkSkyForecastRemoteData(private val ktorClient: HttpClient, private val preference: RepoPreference) {
+class RepoDarkSkyForecastRemoteData(
+    private val ktorClient: HttpClient,
+    private val preference: RepoPreference
+) {
 
     suspend fun forecastRemote(coordinates: GPSCoordinates): DarkSkyForecast.DarkSky {
         return ktorClient.get(
             DARK_SKY_API_LINK + "${coordinates.latitude},${coordinates.longitude}?exclude=minutely,alerts,flags&lang=${preference.getStringsSettings(
                 W_LANGUAGE
             )}&units=${preference.getStringsSettings(UNITS_PREF_KEY)}"
-            )
-        }
+        )
     }
+}

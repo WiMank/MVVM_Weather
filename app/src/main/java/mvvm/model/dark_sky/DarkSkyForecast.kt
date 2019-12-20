@@ -82,7 +82,6 @@ object DarkSkyForecast {
         val apparentTemperatureMaxTime: Long
     )
 
-
     data class Hourly(
         val summary: String = "",
         val data: List<HourlyItem> = listOf(),

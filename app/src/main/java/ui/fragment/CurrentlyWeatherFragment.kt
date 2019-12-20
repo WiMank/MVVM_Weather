@@ -23,7 +23,6 @@ import org.kodein.di.generic.instance
 import secret.MAP_BOX_TOKEN
 import ui.activity.SettingsActivity
 
-
 @ExperimentalCoroutinesApi
 @ObsoleteCoroutinesApi
 class CurrentlyWeatherFragment : KodeinFragment() {

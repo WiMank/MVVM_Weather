@@ -29,10 +29,15 @@ class RepoGPSCoordinates(private val context: Context) : AnkoLogger {
     fun getLocation(): Channel<GPSCoordinates> {
         if (checkPermission()) {
             locationChannel = Channel()
-            val locationSettingsRequest = LocationSettingsRequest.Builder().addLocationRequest(locationRequest).build()
+            val locationSettingsRequest =
+                LocationSettingsRequest.Builder().addLocationRequest(locationRequest).build()
             client.checkLocationSettings(locationSettingsRequest).apply {
                 addOnSuccessListener {
-                    fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null)
+                    fusedLocationClient.requestLocationUpdates(
+                        locationRequest,
+                        locationCallback,
+                        null
+                    )
                 }
                 addOnFailureListener { exception ->
                     if (exception is ResolvableApiException) {
@@ -84,7 +89,10 @@ class RepoGPSCoordinates(private val context: Context) : AnkoLogger {
 
     @AfterPermissionGranted(GPS)
     private fun checkPermission(): Boolean {
-        val perms = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
+        val perms = arrayOf(
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION
+        )
         return EasyPermissions.hasPermissions(context, *perms)
     }
 }

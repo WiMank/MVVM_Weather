@@ -8,7 +8,6 @@ import room.CityDAO
 import room.CityEntity
 import utils.ONE_HOUR
 
-
 class RepoDarkSkyForecastLocalData(private val appDAO: AppDAO, private val cityDAO: CityDAO) : AnkoLogger {
 
     suspend fun saveForecastInDb(cityName: String, darkSky: DarkSkyForecast.DarkSky) {

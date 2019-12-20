@@ -10,7 +10,6 @@ import mvvm.model.RepoPreference
 import mvvm.model.dark_sky.RepoDarkSkyForecast
 import mvvm.model.status.StatusChannel
 
-
 @ExperimentalCoroutinesApi
 @ObsoleteCoroutinesApi
 class KodeinViewModelFactory(

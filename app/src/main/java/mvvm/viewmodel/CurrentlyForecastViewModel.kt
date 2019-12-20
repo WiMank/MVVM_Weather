@@ -20,7 +20,6 @@ import utils.GPS_KEY
 import utils.PLACE_KEY
 import utils.SEARCH_QUERY
 
-
 @ObsoleteCoroutinesApi
 @ExperimentalCoroutinesApi
 class CurrentlyForecastViewModel(

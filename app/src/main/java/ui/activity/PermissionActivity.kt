@@ -16,7 +16,6 @@ import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
 import utils.GPS
 
-
 @ExperimentalCoroutinesApi
 @ObsoleteCoroutinesApi
 class PermissionActivity : AppCompatActivity(), AnkoLogger, EasyPermissions.PermissionCallbacks {

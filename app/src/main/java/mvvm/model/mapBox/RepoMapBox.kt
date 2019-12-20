@@ -7,7 +7,6 @@ import mvvm.model.gps.GPSCoordinates
 import org.jetbrains.anko.AnkoLogger
 import secret.MAP_BOX_TOKEN
 
-
 class RepoMapBox : AnkoLogger {
 
     fun locationName(gpsCoordinates: GPSCoordinates): String {

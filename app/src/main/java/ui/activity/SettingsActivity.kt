@@ -12,7 +12,6 @@ import org.kodein.di.android.x.kodein
 import org.kodein.di.generic.instance
 import utils.REPLACE_PREF
 
-
 class SettingsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
