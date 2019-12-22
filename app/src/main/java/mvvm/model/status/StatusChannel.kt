@@ -8,9 +8,9 @@ import kotlinx.coroutines.withContext
 @ExperimentalCoroutinesApi
 class StatusChannel {
 
-    val channel: ConflatedBroadcastChannel<Status> = ConflatedBroadcastChannel()
+    val mChannel: ConflatedBroadcastChannel<Status> = ConflatedBroadcastChannel()
 
     suspend fun sendStatus(status: Status) = withContext(Dispatchers.Default) {
-        channel.send(status)
+        mChannel.send(status)
     }
 }

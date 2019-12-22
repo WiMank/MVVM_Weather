@@ -14,59 +14,62 @@ import utils.REPLACE_PREF
 
 @ExperimentalCoroutinesApi
 class RepoDarkSkyForecast(
-    private val repoForecastRemoteData: RepoDarkSkyForecastRemoteData,
-    private val repoForecastLocation: RepoGPSCoordinates,
+    private val mRepoForecastRemoteData: RepoDarkSkyForecastRemoteData,
+    private val mRepoForecastLocation: RepoGPSCoordinates,
     private val mRepoDarkSkyForecastLocalData: RepoDarkSkyForecastLocalData,
-    private val repoMapBox: RepoMapBox,
-    private val netManager: NetManager,
-    private val statusChannel: StatusChannel,
-    private val preference: RepoPreference
+    private val mRepoMapBox: RepoMapBox,
+    private val mNetManager: NetManager,
+    private val mStatusChannel: StatusChannel,
+    private val mPreference: RepoPreference
 ) : AnkoLogger {
 
     private suspend fun placeCoordinates(place: String) {
-        statusChannel.sendStatus(Status.PLACE_COORDINATES)
-        hasNeedUpdate(place, repoMapBox.coordinatesByName(place))
+        mStatusChannel.sendStatus(Status.PLACE_COORDINATES)
+        hasNeedUpdate(place, mRepoMapBox.coordinatesByName(place))
     }
 
     private suspend fun locationDetermination() {
-        statusChannel.sendStatus(Status.LOCATION_DETERMINATION)
-        mapBoxPlaceName(repoForecastLocation.getLocation().receive())
+        mStatusChannel.sendStatus(Status.LOCATION_DETERMINATION)
+        mapBoxPlaceName(mRepoForecastLocation.getLocation().receive())
     }
 
     private suspend fun mapBoxPlaceName(gpsCoordinates: GPSCoordinates) {
-        statusChannel.sendStatus(Status.LOOKING_FOR_LOCATION_NAME)
-        hasNeedUpdate(repoMapBox.locationName(gpsCoordinates), gpsCoordinates)
+        mStatusChannel.sendStatus(Status.LOOKING_FOR_LOCATION_NAME)
+        hasNeedUpdate(mRepoMapBox.locationName(gpsCoordinates), gpsCoordinates)
     }
 
     private suspend fun hasNeedUpdate(placeName: String, gpsCoordinates: GPSCoordinates) {
-        statusChannel.sendStatus(Status.UPDATE_NEEDED)
+        mStatusChannel.sendStatus(Status.UPDATE_NEEDED)
         when {
-            preference.getBooleanSettings(REPLACE_PREF) -> {
+            mPreference.getBooleanSettings(REPLACE_PREF) -> {
                 save(placeName, gpsCoordinates)
-                preference.saveSettings(REPLACE_PREF, false)
+                mPreference.saveSettings(REPLACE_PREF, false)
             }
             mRepoDarkSkyForecastLocalData.checkNeedUpdate(placeName) -> save(placeName, gpsCoordinates)
-            else -> statusChannel.sendStatus(Status.DATA_UP_TO_DATE)
+            else -> mStatusChannel.sendStatus(Status.DATA_UP_TO_DATE)
         }
     }
 
     private suspend fun save(placeName: String, gpsCoordinates: GPSCoordinates) {
-        statusChannel.sendStatus(Status.SAVE_THE_DATA)
-        mRepoDarkSkyForecastLocalData.saveForecastInDb(placeName, repoForecastRemoteData.forecastRemote(gpsCoordinates))
+        mStatusChannel.sendStatus(Status.SAVE_THE_DATA)
+        mRepoDarkSkyForecastLocalData.saveForecastInDb(
+            placeName,
+            mRepoForecastRemoteData.forecastRemote(gpsCoordinates)
+        )
         mRepoDarkSkyForecastLocalData.saveCityQuery(placeName)
-        statusChannel.sendStatus(Status.DONE)
+        mStatusChannel.sendStatus(Status.DONE)
     }
 
     suspend fun loadGPSForecast() {
-        if (netManager.isConnectedToInternet!!)
+        if (mNetManager.isConnectedToInternet!!)
             locationDetermination()
-        else statusChannel.sendStatus(Status.NO_NETWORK_CONNECTION)
+        else mStatusChannel.sendStatus(Status.NO_NETWORK_CONNECTION)
     }
 
     suspend fun loadPlaceNameCoordinates(place: String) {
-        if (netManager.isConnectedToInternet!!)
+        if (mNetManager.isConnectedToInternet!!)
             placeCoordinates(place)
-        else statusChannel.sendStatus(Status.NO_NETWORK_CONNECTION)
+        else mStatusChannel.sendStatus(Status.NO_NETWORK_CONNECTION)
     }
 
     suspend fun db(): AppEntity {

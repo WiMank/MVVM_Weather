@@ -72,7 +72,7 @@ class CurrentlyWeatherViewModel(
     }
 
     private suspend fun statusChannel() = mScope.launch {
-        mStatusChannel.channel.consumeEach {
+        mStatusChannel.mChannel.consumeEach {
             mObservableFields.status.set(getStatusDescription(it))
             when (it) {
                 Status.DONE -> mObservableFields.statusInvisible.set(true)

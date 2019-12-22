@@ -8,11 +8,14 @@ import room.CityDAO
 import room.CityEntity
 import utils.ONE_HOUR
 
-class RepoDarkSkyForecastLocalData(private val appDAO: AppDAO, private val cityDAO: CityDAO) : AnkoLogger {
+class RepoDarkSkyForecastLocalData(
+    private val mAppDAO: AppDAO,
+    private val mCityDAO: CityDAO
+) : AnkoLogger {
 
     suspend fun saveForecastInDb(cityName: String, darkSky: DarkSkyForecast.DarkSky) {
         val currentTime = System.currentTimeMillis()
-        appDAO.insert(
+        mAppDAO.insert(
             AppEntity(
                 0,
                 cityName,
@@ -39,16 +42,16 @@ class RepoDarkSkyForecastLocalData(private val appDAO: AppDAO, private val cityD
     }
 
     suspend fun checkNeedUpdate(q: String): Boolean {
-        return if (q == cityDAO.getCityName()?.cityName ?: "") {
-            info { "UpdateTime: [${appDAO.updateTime(q)}] CurrentTimeMillis: [${System.currentTimeMillis()}]" }
-            appDAO.updateTime(q) ?: 0 < System.currentTimeMillis()
+        return if (q == mCityDAO.getCityName()?.cityName ?: "") {
+            info { "UpdateTime: [${mAppDAO.updateTime(q)}] CurrentTimeMillis: [${System.currentTimeMillis()}]" }
+            mAppDAO.updateTime(q) ?: 0 < System.currentTimeMillis()
         } else true
     }
 
-    suspend fun saveCityQuery(cityName: String) = cityDAO.insert(CityEntity(0, cityName))
+    suspend fun saveCityQuery(cityName: String) = mCityDAO.insert(CityEntity(0, cityName))
 
-    fun getCity(): String = cityDAO.getCityName()?.cityName ?: ""
+    fun getCity(): String = mCityDAO.getCityName()?.cityName ?: ""
 
-    suspend fun forecastDB(cityName: String): AppEntity = appDAO.getByNameAsync(cityName)
+    suspend fun forecastDB(cityName: String): AppEntity = mAppDAO.getByNameAsync(cityName)
 
 }
