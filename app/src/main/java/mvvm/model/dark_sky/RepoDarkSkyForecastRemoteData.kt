@@ -9,15 +9,15 @@ import utils.UNITS_PREF_KEY
 import utils.W_LANGUAGE
 
 class RepoDarkSkyForecastRemoteData(
-    private val ktorClient: HttpClient,
-    private val preference: RepoPreference
+    private val mKtorClient: HttpClient,
+    private val mPreference: RepoPreference
 ) {
 
     suspend fun forecastRemote(coordinates: GPSCoordinates): DarkSkyForecast.DarkSky {
-        return ktorClient.get(
-            DARK_SKY_API_LINK + "${coordinates.latitude},${coordinates.longitude}?exclude=minutely,alerts,flags&lang=${preference.getStringsSettings(
+        return mKtorClient.get(
+            DARK_SKY_API_LINK + "${coordinates.latitude},${coordinates.longitude}?exclude=minutely,alerts,flags&lang=${mPreference.getStringsSettings(
                 W_LANGUAGE
-            )}&units=${preference.getStringsSettings(UNITS_PREF_KEY)}"
+            )}&units=${mPreference.getStringsSettings(UNITS_PREF_KEY)}"
         )
     }
 }

@@ -19,7 +19,6 @@ import secret.MAP_BOX_TOKEN
 import ui.fragment.CurrentlyWeatherFragment
 import ui.fragment.ErrorFragment
 
-
 @ObsoleteCoroutinesApi
 @ExperimentalCoroutinesApi
 class MainActivity : KodeinActivity(),

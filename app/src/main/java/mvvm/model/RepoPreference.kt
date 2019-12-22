@@ -4,15 +4,15 @@ import android.content.SharedPreferences
 
 class RepoPreference(private val sharedPreferences: SharedPreferences) {
 
-    private val prefEditor = sharedPreferences.edit()
+    private val mPrefEditor = sharedPreferences.edit()
 
     fun <T> saveSettings(key: String, value: T) {
         when (value) {
-            is String -> prefEditor.putString(key, value).apply()
-            is Float -> prefEditor.putFloat(key, value).apply()
-            is Boolean -> prefEditor.putBoolean(key, value).apply()
-            is Int -> prefEditor.putInt(key, value).apply()
-            is Long -> prefEditor.putLong(key, value).apply()
+            is String -> mPrefEditor.putString(key, value).apply()
+            is Float -> mPrefEditor.putFloat(key, value).apply()
+            is Boolean -> mPrefEditor.putBoolean(key, value).apply()
+            is Int -> mPrefEditor.putInt(key, value).apply()
+            is Long -> mPrefEditor.putLong(key, value).apply()
         }
     }
 

@@ -13,27 +13,26 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.launch
 import org.jetbrains.anko.AnkoLogger
-import org.jetbrains.anko.info
 import org.jetbrains.anko.toast
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
 import utils.GPS
 
-class RepoGPSCoordinates(private val context: Context) : AnkoLogger {
+class RepoGPSCoordinates(private val mContext: Context) : AnkoLogger {
 
-    private val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
-    private val client: SettingsClient = LocationServices.getSettingsClient(context)
-    private val scope = CoroutineScope(Dispatchers.Default)
-    private lateinit var locationChannel: Channel<GPSCoordinates>
+    private val mFusedLocationClient = LocationServices.getFusedLocationProviderClient(mContext)
+    private val mClient: SettingsClient = LocationServices.getSettingsClient(mContext)
+    private val mScope = CoroutineScope(Dispatchers.Default)
+    private lateinit var mLocationChannel: Channel<GPSCoordinates>
 
     fun getLocation(): Channel<GPSCoordinates> {
         if (checkPermission()) {
-            locationChannel = Channel()
+            mLocationChannel = Channel()
             val locationSettingsRequest =
                 LocationSettingsRequest.Builder().addLocationRequest(locationRequest).build()
-            client.checkLocationSettings(locationSettingsRequest).apply {
+            mClient.checkLocationSettings(locationSettingsRequest).apply {
                 addOnSuccessListener {
-                    fusedLocationClient.requestLocationUpdates(
+                    mFusedLocationClient.requestLocationUpdates(
                         locationRequest,
                         locationCallback,
                         null
@@ -42,20 +41,20 @@ class RepoGPSCoordinates(private val context: Context) : AnkoLogger {
                 addOnFailureListener { exception ->
                     if (exception is ResolvableApiException) {
                         startActivity(
-                            context,
+                            mContext,
                             Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
                             null
                         )
-                        context.toast(R.string.location_enable)
+                        mContext.toast(R.string.location_enable)
                     }
                 }
             }
         }
-        return locationChannel
+        return mLocationChannel
     }
 
     private fun stopLocationUpdates() {
-        fusedLocationClient.removeLocationUpdates(locationCallback)
+        mFusedLocationClient.removeLocationUpdates(locationCallback)
     }
 
 
@@ -64,10 +63,9 @@ class RepoGPSCoordinates(private val context: Context) : AnkoLogger {
         override fun onLocationResult(locationResult: LocationResult?) {
             locationResult ?: return
             for (location in locationResult.locations) {
-                scope.launch {
-                    info { "LOCATION SEND ${location.longitude}, ${location.latitude}" }
-                    locationChannel.send(GPSCoordinates(location.longitude, location.latitude))
-                    locationChannel.close()
+                mScope.launch {
+                    mLocationChannel.send(GPSCoordinates(location.longitude, location.latitude))
+                    mLocationChannel.close()
                     stopLocationUpdates()
                 }
             }
@@ -75,7 +73,7 @@ class RepoGPSCoordinates(private val context: Context) : AnkoLogger {
 
         override fun onLocationAvailability(locationAvailability: LocationAvailability) {
             if (!locationAvailability.isLocationAvailable) {
-                locationChannel.close()
+                mLocationChannel.close()
                 stopLocationUpdates()
             }
         }
@@ -93,6 +91,6 @@ class RepoGPSCoordinates(private val context: Context) : AnkoLogger {
             Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.ACCESS_COARSE_LOCATION
         )
-        return EasyPermissions.hasPermissions(context, *perms)
+        return EasyPermissions.hasPermissions(mContext, *perms)
     }
 }

@@ -6,9 +6,6 @@ import mvvm.model.dark_sky.DarkSkyForecast
 @Dao
 interface AppDAO {
 
-    @Query("SELECT * FROM  appEntity")
-    suspend fun getAll(): List<AppEntity>
-
     @Query("SELECT * FROM appEntity WHERE id = :id")
     suspend fun getById(id: Long): AppEntity
 
