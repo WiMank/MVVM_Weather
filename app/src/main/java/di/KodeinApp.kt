@@ -16,9 +16,9 @@ class KodeinApp : Application(), KodeinAware {
     override val kodein by Kodein.lazy {
         import(androidXModule(this@KodeinApp))
         import(RoomModule().roomModule)
-        import(ViewModelModule().viewModelModule)
         import(RepoModule().repoModule)
         import(KtorModule().ktorClientModule)
         import(UtilsModule().utilsModule)
+        import(ViewModelModule().viewModelModule)
     }
 }

@@ -12,13 +12,14 @@ import mvvm.model.status.StatusChannel
 
 @ExperimentalCoroutinesApi
 @ObsoleteCoroutinesApi
-class KodeinViewModelFactory(
+class CurrentlyWeatherViewModelFactory(
     private val mRepoForecast: RepoDarkSkyForecast,
     private val handler: CoroutineExceptionHandler,
     private val observableFields: ObservableFields,
     private val preference: RepoPreference,
     private val statusChannel: StatusChannel
 ) : ViewModelProvider.Factory {
+
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         @Suppress("UNCHECKED_CAST")
         return CurrentlyWeatherViewModel(

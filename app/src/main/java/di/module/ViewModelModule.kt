@@ -2,7 +2,8 @@ package di.module
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.ObsoleteCoroutinesApi
-import mvvm.viewmodel.KodeinViewModelFactory
+import mvvm.viewmodel.CurrentlyWeatherViewModelFactory
+import mvvm.viewmodel.MainViewModelFactory
 import org.kodein.di.Kodein
 import org.kodein.di.generic.bind
 import org.kodein.di.generic.instance
@@ -13,8 +14,9 @@ import org.kodein.di.generic.provider
 class ViewModelModule {
 
     val viewModelModule = Kodein.Module("viewmodel_module") {
+
         bind() from provider {
-            KodeinViewModelFactory(
+            CurrentlyWeatherViewModelFactory(
                 instance(),
                 instance(),
                 instance(),
@@ -22,5 +24,10 @@ class ViewModelModule {
                 instance()
             )
         }
+
+        bind() from provider {
+            MainViewModelFactory(instance())
+        }
+
     }
 }

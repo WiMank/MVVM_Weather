@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.*
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.wimank.mvvm.weather.R
 import com.wimank.mvvm.weather.databinding.FragmentCurrentlyWeatherBinding
@@ -13,6 +12,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.ObsoleteCoroutinesApi
 import mvvm.binding.ObservableFields
 import mvvm.viewmodel.CurrentlyWeatherViewModel
+import mvvm.viewmodel.CurrentlyWeatherViewModelFactory
 import org.jetbrains.anko.startActivity
 import org.kodein.di.generic.instance
 import ui.activity.SettingsActivity
@@ -21,13 +21,13 @@ import ui.activity.SettingsActivity
 @ObsoleteCoroutinesApi
 class CurrentlyWeatherFragment : KodeinFragment() {
 
-    private val mViewModelFactory: ViewModelProvider.Factory by instance()
-
     private val mWeatherFields: ObservableFields by instance()
 
     private lateinit var mBinding: FragmentCurrentlyWeatherBinding
 
     private var mListener: CurrentlyWeatherFragmentListener? = null
+
+    private val mViewModelFactory: CurrentlyWeatherViewModelFactory by instance()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -92,20 +92,10 @@ class CurrentlyWeatherFragment : KodeinFragment() {
     }
 
     private fun observer() {
-        mWeatherFields.cancelPlaceSearch.observe(this, Observer {
-            mListener?.hidePlacesFragment()
-        })
         mWeatherFields.toolbarTitle.observe(this, Observer {
-            mListener?.setTitle(it)
+            mListener?.setActivityTitle(it)
         })
     }
-
-    /*  private fun hidePlacesFragment() {
-          if (::placeAutoCompleteFragment.isInitialized) {
-              fm.beginTransaction().hide(placeAutoCompleteFragment).commit()
-              activity?.let { hideSoftInput(it) }
-          }
-      }*/
 
     override fun onDetach() {
         super.onDetach()
@@ -114,8 +104,7 @@ class CurrentlyWeatherFragment : KodeinFragment() {
 
     interface CurrentlyWeatherFragmentListener {
         fun showPlaceSearchFragment()
-        fun hidePlacesFragment()
-        fun setTitle(title: String)
+        fun setActivityTitle(title: String)
     }
 
 }

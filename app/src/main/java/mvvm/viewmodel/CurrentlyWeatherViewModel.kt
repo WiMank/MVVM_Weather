@@ -22,105 +22,87 @@ import utils.SEARCH_QUERY
 @ExperimentalCoroutinesApi
 class CurrentlyWeatherViewModel(
     private val mRepoForecast: RepoDarkSkyForecast,
-    private val handler: CoroutineExceptionHandler,
-    private val observableFields: ObservableFields,
-    private val preference: RepoPreference,
-    private val statusChannel: StatusChannel
+    private val mHandler: CoroutineExceptionHandler,
+    private val mObservableFields: ObservableFields,
+    private val mPreference: RepoPreference,
+    private val mStatusChannel: StatusChannel
 ) : ViewModel(), AnkoLogger {
 
-    private val job = SupervisorJob()
-    private val scope = CoroutineScope(Dispatchers.Default + job)
+    private val mJob = SupervisorJob()
+    private val mScope = CoroutineScope(Dispatchers.Default + mJob)
 
     init {
         refresh()
     }
 
-    fun refresh() = scope.launch(handler) {
+    fun refresh() = mScope.launch(mHandler) {
         try {
             statusChannel()
             when {
-                preference.getBooleanSettings(PLACE_KEY) -> {
-                    if (preference.getStringsSettings(SEARCH_QUERY).isNotEmpty())
-                        loadPlaceNameForecast(preference.getStringsSettings(SEARCH_QUERY))
+                mPreference.getBooleanSettings(PLACE_KEY) -> {
+                    if (mPreference.getStringsSettings(SEARCH_QUERY).isNotEmpty())
+                        loadPlaceNameForecast(mPreference.getStringsSettings(SEARCH_QUERY))
                 }
 
-                preference.getBooleanSettings(GPS_KEY) -> loadGPSForecast()
+                mPreference.getBooleanSettings(GPS_KEY) -> loadGPSForecast()
 
                 else -> {
-                    preference.saveSettings(GPS_KEY, true)
+                    mPreference.saveSettings(GPS_KEY, true)
                     loadGPSForecast()
                 }
             }
             dataBaseAsync()
         } catch (e: Exception) {
             error { e.printStackTrace() }
-            observableFields.status.set(R.string.error_forecast)
-            observableFields.isLoading.set(false)
+            mObservableFields.status.set(R.string.error_forecast)
+            mObservableFields.isLoading.set(false)
         }
     }
 
     private suspend fun loadGPSForecast() {
-        observableFields.isLoading.set(true)
+        mObservableFields.isLoading.set(true)
         mRepoForecast.loadGPSForecast()
-        observableFields.isLoading.set(false)
+        mObservableFields.isLoading.set(false)
     }
 
     private suspend fun loadPlaceNameForecast(query: String) {
-        observableFields.isLoading.set(true)
+        mObservableFields.isLoading.set(true)
         mRepoForecast.loadPlaceNameCoordinates(query)
-        observableFields.isLoading.set(false)
+        mObservableFields.isLoading.set(false)
     }
 
-    private suspend fun statusChannel() = scope.launch {
-        statusChannel.channel.consumeEach {
-            observableFields.status.set(getStatusDescription(it))
+    private suspend fun statusChannel() = mScope.launch {
+        mStatusChannel.channel.consumeEach {
+            mObservableFields.status.set(getStatusDescription(it))
             when (it) {
-                Status.DONE -> observableFields.statusInvisible.set(true)
-                Status.DATA_UP_TO_DATE -> observableFields.statusInvisible.set(true)
-                else -> observableFields.statusInvisible.set(false)
+                Status.DONE -> mObservableFields.statusInvisible.set(true)
+                Status.DATA_UP_TO_DATE -> mObservableFields.statusInvisible.set(true)
+                else -> mObservableFields.statusInvisible.set(false)
             }
         }
     }
 
-    private suspend fun dataBaseAsync() = scope.launch {
+    private suspend fun dataBaseAsync() = mScope.launch {
         val forecastDB = async { mRepoForecast.db() }
         withContext(Dispatchers.Main) {
-            observableFields.temp.set(forecastDB.await().temperature)
-            observableFields.summary.set(forecastDB.await().summary)
-            observableFields.toolbarTitle.value = forecastDB.await().city
-            observableFields.weatherIcon.set(WeatherIcons().map().getValue(forecastDB.await().icon))
-            observableFields.hourlyAdapter.set(HourlyAdapter(forecastDB.await().jsonHourlyArray))
+            mObservableFields.temp.set(forecastDB.await().temperature)
+            mObservableFields.summary.set(forecastDB.await().summary)
+            mObservableFields.toolbarTitle.value = forecastDB.await().city
+            mObservableFields.weatherIcon.set(WeatherIcons().map().getValue(forecastDB.await().icon))
+            mObservableFields.hourlyAdapter.set(HourlyAdapter(forecastDB.await().jsonHourlyArray))
         }
     }
 
-    /* override fun onCancel() {
-         observableFields.cancelPlaceSearch.value = true
-     }*/
-
     fun gps() {
-        preference.saveSettings(PLACE_KEY, false)
-        preference.saveSettings(GPS_KEY, true)
+        mPreference.saveSettings(PLACE_KEY, false)
+        mPreference.saveSettings(GPS_KEY, true)
         refresh()
     }
 
-    /* override fun onPlaceSelected(carmenFeature: CarmenFeature?) {
-         observableFields.cancelPlaceSearch.value = false
-         if (carmenFeature == null)
-             return
-         if (carmenFeature.center() != null) {
-             preference.saveSettings(PLACE_KEY, true)
-             preference.saveSettings(GPS_KEY, false)
-             preference.saveSettings(SEARCH_QUERY, carmenFeature.text() ?: "")
-             refresh()
-         } else {
-             observableFields.status.set(R.string.We_could_not_find)
-             error { "CarmenFeature center's null." }
-         }
-     }*/
-
     override fun onCleared() {
         super.onCleared()
-        observableFields.isLoading.set(false)
-        job.cancel()
+        mObservableFields.isLoading.set(false)
+        mJob.cancel()
     }
+
 }

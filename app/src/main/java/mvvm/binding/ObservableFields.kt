@@ -15,7 +15,6 @@ class ObservableFields {
     val statusInvisible = ObservableField(true)
     val weatherIcon = ObservableInt(0)
     val isLoading = ObservableBoolean(false)
-    val cancelPlaceSearch = MutableLiveData<Boolean>()
     val toolbarTitle = MutableLiveData("MVVM Weather")
     val hourlyAdapter: ObservableField<HourlyAdapter> = ObservableField(HourlyAdapter(DarkSkyForecast.Hourly()))
 }
