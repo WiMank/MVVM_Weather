@@ -55,12 +55,8 @@ class MainActivity : KodeinActivity(),
     }
 
     override fun showPlaceSearchFragment() {
-        val options = PlaceOptions.builder()
-            .backgroundColor(ContextCompat.getColor(this, R.color.materialGray))
-            .geocodingTypes(GeocodingCriteria.TYPE_PLACE, GeocodingCriteria.TYPE_REGION).build()
-
         supportFragmentManager.beginTransaction().run {
-            PlaceAutocompleteFragment.newInstance(MAP_BOX_TOKEN, options).apply {
+            PlaceAutocompleteFragment.newInstance(MAP_BOX_TOKEN, placeOptions()).apply {
                 setOnPlaceSelectedListener(this@MainActivity)
                 replace(
                     R.id.main_frame,
@@ -71,8 +67,10 @@ class MainActivity : KodeinActivity(),
         }
     }
 
-    override fun setActivityTitle(title: String) {
-        setTitle(title)
+    private fun placeOptions(): PlaceOptions? {
+        return PlaceOptions.builder()
+            .backgroundColor(ContextCompat.getColor(this, R.color.materialGray))
+            .geocodingTypes(GeocodingCriteria.TYPE_PLACE, GeocodingCriteria.TYPE_REGION).build()
     }
 
     override fun onCancel() {
@@ -81,6 +79,10 @@ class MainActivity : KodeinActivity(),
 
     override fun onPlaceSelected(carmenFeature: CarmenFeature?) {
         mModel.savePlace(carmenFeature)
+    }
+
+    override fun setActivityTitle(title: String) {
+        setTitle(title)
     }
 
     private fun showCurrentlyWeatherFragment() {
