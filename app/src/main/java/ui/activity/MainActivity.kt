@@ -43,12 +43,10 @@ class MainActivity : KodeinActivity(),
 
     private fun observable() {
         mModel.mErrorLiveData.observe(this, Observer {
-            supportFragmentManager.beginTransaction().run {
-                if (it) {
-                    ErrorFragment().apply {
-                        replace(R.id.main_frame, this).commit()
-                    }
-                } else
+            supportFragmentManager.beginTransaction().apply {
+                if (it)
+                    ErrorFragment().apply { replace(R.id.main_frame, this).commit() }
+                else
                     showCurrentlyWeatherFragment()
             }
         })
